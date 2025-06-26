@@ -1,0 +1,7 @@
+{
+  "name": "nutritrack",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
