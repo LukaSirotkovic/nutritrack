@@ -13,7 +13,7 @@ export const authGuard: CanActivateFn = () => {
       if (firebaseUser) {
         return true;
       } else {
-        router.navigateByUrl('/authentication');
+        router.navigateByUrl('/login');
         return false;
       }
     })

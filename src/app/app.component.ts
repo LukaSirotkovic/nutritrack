@@ -14,12 +14,12 @@ export class AppComponent {
   private router = inject(Router);
 
   constructor() {
-    this.authService.currentUser$.subscribe((user) => {
+    /* this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.router.navigateByUrl('/dashboard');
       } else {
-        this.router.navigateByUrl('/authentication');
+        this.router.navigateByUrl('/login');
       }
-    });
+    }); */
   }
 }
