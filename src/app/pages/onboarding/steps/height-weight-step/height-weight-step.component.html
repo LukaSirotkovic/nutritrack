@@ -1,0 +1,21 @@
+<div class="step-wrapper">
+    <p class="intro-text">
+        Great! Let’s now enter your height and weight to personalize your plan.
+    </p>
+
+    <ion-text class="title">
+        <h2>Enter your height and weight</h2>
+    </ion-text>
+
+    <div class="range-wrapper">
+        <ion-label class="range-label">Height: {{ userData.height }} cm</ion-label>
+        <ion-range min="100" max="220" step="1" [(ngModel)]="userData.height" pin="true" color="success">
+        </ion-range>
+    </div>
+
+    <div class="range-wrapper">
+        <ion-label class="range-label">Weight: {{ userData.weight }} kg</ion-label>
+        <ion-range min="30" max="150" step="1" [(ngModel)]="userData.weight" pin="true" color="success">
+        </ion-range>
+    </div>
+</div>

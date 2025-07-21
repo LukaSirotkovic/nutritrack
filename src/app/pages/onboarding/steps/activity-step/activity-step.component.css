@@ -1,0 +1,54 @@
+.step-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    padding: 0 16px;
+}
+
+.title h2{
+    margin: 0;
+}
+
+.activity-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
+    align-items: center;
+}
+
+.activity-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 320px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+}
+
+.activity-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.activity-btn img {
+    width: auto;
+    height: auto;
+    margin-bottom: 8px;
+}
+
+.activity-label {
+    text-align: center;
+    color: #333;
+}
+
+.activity-label p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #777;
+}

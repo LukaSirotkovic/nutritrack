@@ -1,0 +1,26 @@
+<div class="step-wrapper">
+    <p class="intro-text">
+        Welcome to <strong>NutriTrack</strong> — let's improve your diet!
+    </p>
+
+    <ion-text class="title">
+        <h2>Let's get to know you</h2>
+    </ion-text>
+    <div class="gender-buttons">
+        <ion-button shape="round" size="default" [fill]="userData.gender === 'male' ? 'solid' : 'outline'"
+            (click)="selectGender('male')" class="gender-btn">
+            <div class="gender-content">
+                <img src="../../../../../assets/media/man.png" alt="Male" />
+                <div class="gender-label">Male</div>
+            </div>
+        </ion-button>
+
+        <ion-button shape="round" size="default" [fill]="userData.gender === 'female' ? 'solid' : 'outline'"
+            (click)="selectGender('female')" class="gender-btn">
+            <div class="gender-content">
+                <img src="../../../../../assets/media/woman.png" alt="Female" />
+                <div class="gender-label">Female</div>
+            </div>
+        </ion-button>
+    </div>
+</div>

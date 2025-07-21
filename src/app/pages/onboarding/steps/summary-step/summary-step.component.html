@@ -1,0 +1,24 @@
+<div class="step-wrapper">
+    <ion-text class="title">
+        <h2>Review your information</h2>
+    </ion-text>
+
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>Profile Summary</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <p><strong>Gender:</strong> {{ userData.gender }}</p>
+            <p><strong>Age:</strong> {{ userData.age }} years</p>
+            <p><strong>Height:</strong> {{ userData.height }} cm</p>
+            <p><strong>Weight:</strong> {{ userData.weight }} kg</p>
+            <p><strong>Activity Level:</strong> {{ userData.activityLevel }} training</p>
+            <p><strong>Goal:</strong> {{ userData.goal }} weight</p>
+            <p *ngIf="userData.calorieTarget"><strong>Calorie Target:</strong> {{ userData.calorieTarget }} kcal/day</p>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-text color="medium" class="note">
+        <p>You can always update this information later in settings.</p>
+    </ion-text>
+</div>

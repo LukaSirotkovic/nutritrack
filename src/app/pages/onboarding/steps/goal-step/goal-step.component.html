@@ -1,0 +1,22 @@
+<div class="step-wrapper" style="text-align: center;">
+    <ion-text class="title">
+        <h2>What is your fitness goal?</h2>
+    </ion-text>
+
+    <div class="goal-buttons">
+        <ion-button shape="round" expand="block" fill="outline" [fill]="userData.goal === 'maintain' ? 'solid' : 'outline'"
+            (click)="selectGoal('maintain')">
+            <div class="goal-label">Maintain</div>
+        </ion-button>
+
+        <ion-button shape="round" expand="block" fill="outline" [fill]="userData.goal === 'gain' ? 'solid' : 'outline'"
+            (click)="selectGoal('gain')">
+            <div class="goal-label">Gain Weight</div>
+        </ion-button>
+
+        <ion-button shape="round" expand="block" fill="outline" [fill]="userData.goal === 'lose' ? 'solid' : 'outline'"
+            (click)="selectGoal('lose')">
+            <div class="goal-label">Lose Weight</div>
+        </ion-button>
+    </div>
+</div>

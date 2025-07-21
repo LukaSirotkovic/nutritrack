@@ -1,13 +1,31 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>onboarding</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding" [scrollY]="false">
+  <ng-container *ngComponentOutlet="currentComponent inputs: { userData: userData }"></ng-container>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">onboarding</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="onboarding-nav">
+    <ion-button
+      fill="outline"
+      color="medium"
+      (click)="prevStep()"
+      [disabled]="stepIndex === 0">
+      ← Back
+    </ion-button>
+
+    <ion-button
+      shape="round"
+      size="large"
+      color="primary"
+      (click)="nextStep()"
+      *ngIf="stepIndex < steps.length - 1">
+      Next →
+    </ion-button>
+
+    <ion-button
+      shape="round"
+      size="large"
+      color="success"
+      (click)="onComplete()"
+      *ngIf="stepIndex === steps.length - 1">
+      Finish ✅
+    </ion-button>
+  </div>
 </ion-content>

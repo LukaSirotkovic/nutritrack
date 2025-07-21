@@ -1,0 +1,43 @@
+.step-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.intro-text {
+    text-align: center;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 12px;
+    padding: 0 16px;
+    line-height: 1.5;
+}
+
+.title h2 {
+    margin-top: 0;
+    margin-bottom: 24px;
+    font-size: 1.6rem;
+}
+
+.age-input-wrapper {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+.item-inner {
+    padding: 0;
+}
+
+.centered-item {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+.centered-label {
+  width: 100%;
+  text-align: center;
+}

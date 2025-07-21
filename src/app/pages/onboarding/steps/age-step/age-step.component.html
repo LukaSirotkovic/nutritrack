@@ -1,0 +1,18 @@
+<div class="step-wrapper">
+    <p class="intro-text">
+        Thanks! Let's get your age so we can tailor your plan.
+    </p>
+
+    <ion-text class="title">
+        <h2>How old are you?</h2>
+    </ion-text>
+
+    <div class="age-input-wrapper">
+        <ion-item lines="inset" class="centered-item">
+            <ion-label position="floating" class="centered-label">Enter your age</ion-label>
+            <ion-input type="number" inputmode="numeric" min="1" max="120" [(ngModel)]="age" (ionBlur)="onAgeChange()">
+            </ion-input>
+        </ion-item>
+    </div>
+
+</div>

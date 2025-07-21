@@ -1,0 +1,36 @@
+.step-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 16px;
+}
+
+.intro-text {
+  text-align: center;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.title h2 {
+  margin-bottom: 24px;
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.range-wrapper {
+  width: 100%;
+  max-width: 350px;
+  margin-bottom: 32px;
+}
+
+.range-label {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+  text-align: center;
+}

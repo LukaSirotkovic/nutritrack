@@ -1,0 +1,44 @@
+<div class="step-wrapper">
+    <p class="intro-text">
+        Tell us how active you are to help us estimate your daily needs.
+    </p>
+
+    <ion-text class="title">
+        <h2>How active are you?</h2>
+    </ion-text>
+
+    <div class="activity-buttons">
+        <ion-button shape="round" size="default" [fill]="userData.activityLevel === 'low' ? 'solid' : 'outline'"
+            (click)="selectActivity('low')" class="activity-btn">
+            <div class="activity-content">
+                <img src="../../../../../assets/media/directions_walk.svg" alt="Low" />
+                <div class="activity-label">
+                    <strong>Sedentary</strong>
+                    <p>(little or no exercise)</p>
+                </div>
+            </div>
+        </ion-button>
+
+        <ion-button shape="round" size="default" [fill]="userData.activityLevel === 'moderate' ? 'solid' : 'outline'"
+            (click)="selectActivity('moderate')" class="activity-btn">
+            <div class="activity-content">
+                <img src="../../../../../assets/media/fitness_center.svg" alt="Moderate" />
+                <div class="activity-label">
+                    <strong>Moderately active</strong>
+                    <p>(exercise/sports 3 days/week)</p>
+                </div>
+            </div>
+        </ion-button>
+
+        <ion-button shape="round" size="default" [fill]="userData.activityLevel === 'high' ? 'solid' : 'outline'"
+            (click)="selectActivity('high')" class="activity-btn">
+            <div class="activity-content">
+                <img src="../../../../../assets/media/self_improvement.svg" alt="High" />
+                <div class="activity-label">
+                    <strong>Very active</strong>
+                    <p>(hard exercise 6-7 days/week)</p>
+                </div>
+            </div>
+        </ion-button>
+    </div>
+</div>
