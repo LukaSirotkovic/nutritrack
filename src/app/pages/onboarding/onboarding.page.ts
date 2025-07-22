@@ -11,7 +11,7 @@ import { GoalStepComponent } from './steps/goal-step/goal-step.component';
 import { SummaryStepComponent } from './steps/summary-step/summary-step.component';
 import { UserProfile } from 'src/app/models/user-profile.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { FirestoreService } from 'src/app/services/firestore.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-onboarding',
@@ -36,7 +36,7 @@ export class OnboardingPage {
 
   constructor(
     private authService: AuthService,
-    private firestoreService: FirestoreService,
+    private UserService: UserService,
     private router: Router
   ) {}
 
@@ -57,14 +57,8 @@ export class OnboardingPage {
     }
 
     try {
-      await this.firestoreService.saveUserProfile(
-        uid,
-        this.userData as UserProfile
-      );
-      await this.firestoreService.saveUserProfile(
-        uid,
-        this.userData as UserProfile
-      );
+      await this.UserService.saveUserProfile(uid, this.userData as UserProfile);
+      await this.UserService.saveUserProfile(uid, this.userData as UserProfile);
       console.log('Profil spremljen u Firestore!');
       this.router.navigateByUrl('/dashboard'); // Dodaj redirect
       // redirect to dashboard?
@@ -79,6 +73,9 @@ export class OnboardingPage {
       const bmr = this.calculateBMR();
       const tdee = this.calculateTDEE(bmr);
       this.userData.calorieTarget = tdee;
+      this.userData.proteinTarget = Math.round(1.8 * this.userData.weight!);
+      this.userData.carbTarget = Math.round(4 * this.userData.weight!);
+      this.userData.fatTarget = Math.round(1 * this.userData.weight!);
     }
 
     if (this.stepIndex < this.steps.length - 1) {

@@ -1,0 +1,46 @@
+svg {
+  display: block;
+}
+
+.bg {
+  stroke: #eee;
+}
+
+.progress {
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.circle-text {
+  font-weight: bold;
+  fill: #222;
+  dominant-baseline: middle;
+  font-family: inherit;
+}
+
+.circle-label {
+  fill: #666;
+  font-family: inherit;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.circle-progress-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.circle-labels-below {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.macro-label-below {
+  font-size: 1rem;
+  color: #000000;
+  font-weight: 400;
+  margin-bottom: 2px;
+}

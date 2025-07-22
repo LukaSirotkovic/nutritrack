@@ -1,0 +1,30 @@
+<div class="circle-progress-wrapper" [class.main]="main">
+    <svg [attr.width]="main ? 140 : 100" [attr.height]="main ? 140 : 100" viewBox="0 0 100 100">
+        <circle class="bg" cx="50" cy="50" r="45" stroke-width="10" fill="none" />
+        <circle class="progress" cx="50" cy="50" r="45" [attr.stroke]="color" 
+        [attr.stroke-dasharray]="circumference"
+        [attr.stroke-dashoffset]="dashoffset" 
+        stroke-width="10" fill="none"
+            transform="rotate(-90 50 50)" />
+
+        <text x="50%" y="47%" text-anchor="middle" alignment-baseline="middle" [attr.font-size]="main ? '22px' : '13px'"
+            class="circle-text">
+            {{ displayValue | smartNumber }} 
+        </text>
+        <text *ngIf="!main" x="50%" y="65%" text-anchor="middle" alignment-baseline="middle" [attr.font-size]="'12px'"
+            fill="#aaa">
+            /{{ max }}{{ unit || '' }}
+        </text>
+        <text *ngIf="main" x="50%" y="65%" text-anchor="middle" alignment-baseline="middle"
+            [attr.font-size]="main ? '13px' : '12px'" class="circle-label" [attr.fill]="main ? '#fff' : '#bbb'">
+            {{ label }}
+        </text>
+    </svg>
+
+    <div *ngIf="!main" class="circle-labels-below">
+        <div class="macro-label-below" [style.color]="color">{{ label }}</div>
+        <div class="macro-left-below">
+            {{ (max - value) > 0 ? (max - value) + (unit || '') + ' left' : '0' + (unit || '') + ' left' }}
+        </div>
+    </div>
+</div>

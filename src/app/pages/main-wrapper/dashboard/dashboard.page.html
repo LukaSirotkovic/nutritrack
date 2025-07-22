@@ -1,0 +1,103 @@
+<ion-content>
+
+    <!-- Dobrodošlica -->
+    <ion-text *ngIf="userProfile" class="top-text">
+        <h2>Welcome!</h2>
+    </ion-text>
+
+    <!-- DASHBOARD SLIDER -->
+    <swiper-container (slideChange)="onSlideChange($event)" [pagination]="true" [spaceBetween]="20" style="width: 100%;"
+        class="dashboard-swiper">
+        <!-- Slide 1: Calories -->
+        <swiper-slide>
+            <div class="dashboard-box">
+                <div class="dashboard-header">
+                    <h2 class="category">Calories</h2>
+                    <p class="subtext">Remaining = Base goal - food intake</p>
+                </div>
+                <div class="dashboard-calorie-slide">
+                    <div class="dashboard-calorie-circle">
+
+                        <app-circle-progress [value]="totalDailyCalories" [max]="userProfile?.calorieTarget ?? 0"
+                            [color]="'#3b82f6'" [label]="'Remaining'" [main]="true" [animate]="activeSlide === 0"
+                            [displayValue]="(userProfile?.calorieTarget ?? 0) - totalDailyCalories">
+                        </app-circle-progress>
+
+                    </div>
+                    <div class="dashboard-calorie-text">
+                        <div class="goal-row">
+                            <span class="goal-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                    viewBox="0 -960 960 960" width="24px" fill="#000000">
+                                    <path
+                                        d="M200-80v-760h640l-80 200 80 200H280v360h-80Zm80-440h442l-48-120 48-120H280v240Zm0 0v-240 240Z" />
+                                </svg></span>
+                            <div>
+                                <div class="goal-label">Base Goal</div>
+                                <div class="goal-value">{{ userProfile?.calorieTarget }}</div>
+                            </div>
+
+                        </div>
+                        <div class="food-row">
+                            <span class="food-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                    viewBox="0 -960 960 960" width="24px" fill="#000000">
+                                    <path
+                                        d="M280-80v-366q-51-14-85.5-56T160-600v-280h80v280h40v-280h80v280h40v-280h80v280q0 56-34.5 98T360-446v366h-80Zm400 0v-320H560v-280q0-83 58.5-141.5T760-880v800h-80Z" />
+                                </svg></span>
+                            <div>
+                                <div class="food-label">Food</div>
+                                <div class="food-value">{{ totalDailyCalories }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </swiper-slide>
+
+        <!-- Slide 2: Macros -->
+        <swiper-slide>
+            <div class="dashboard-box">
+                <div class="dashboard-header">Macros</div>
+                <div class="dashboard-macros-slide">
+
+                    <app-circle-progress [value]="totalDailyProteins" [max]="userProfile?.proteinTarget ?? 0"
+                        [animate]="activeSlide === 1" [color]="'#10b981'" [label]="'Proteins'" [unit]="'g'"
+                        [displayValue]="totalDailyProteins">
+                    </app-circle-progress>
+                    <app-circle-progress [value]="totalDailyCarbs" [max]="userProfile?.carbTarget ?? 0"
+                        [animate]="activeSlide === 1" [color]="'#fbbf24'" [label]="'Carbs'" [unit]="'g'"
+                        [displayValue]="totalDailyCarbs">
+                    </app-circle-progress>
+                    <app-circle-progress [value]="totalDailyFats" [max]="userProfile?.fatTarget ?? 0"
+                        [animate]="activeSlide === 1" [color]="'#ef4444'" [label]="'Fats'" [unit]="'g'"
+                        [displayValue]="totalDailyFats">
+                    </app-circle-progress>
+
+                </div>
+            </div>
+        </swiper-slide>
+    </swiper-container>
+
+
+    <!-- Lista dnevnih logova -->
+    <!--   <ion-card>
+        <ion-card-header>
+            <ion-card-title>Tvoje aktivnosti zadnjih 7 dana</ion-card-title>
+        </ion-card-header>
+        <ion-list>
+            <ion-item *ngFor="let log of recentLogs">
+                <ion-label>
+                    <h3>{{ log.date }}</h3>
+                    <p>{{ log.totalDailyCalories }} kcal</p>
+                </ion-label>
+                <ion-note slot="end" *ngIf="userProfile">
+                    <span [ngClass]="{
+            'green': log.totalDailyCalories < userProfile.calorieTarget,
+            'red': log.totalDailyCalories > userProfile.calorieTarget
+          }">
+                        {{ log.totalDailyCalories < userProfile.calorieTarget ? '🟢' : '🔴' }} </span>
+                </ion-note>
+            </ion-item>
+        </ion-list>
+    </ion-card> -->
+
+</ion-content>

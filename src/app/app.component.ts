@@ -1,12 +1,16 @@
 import { Component, inject } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { IonApp, IonRouterOutlet, IonFooter, IonHeader, IonToolbar, IonTitle } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
-import { FirestoreService } from './services/firestore.service';
+import { UserService } from './services/user.service';
 
+import { register } from 'swiper/element/bundle';
+
+register();
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
+  styleUrl: 'app.component.css',
   standalone: true,
   imports: [IonApp, IonRouterOutlet],
 })
@@ -14,7 +18,7 @@ export class AppComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private firestoreService: FirestoreService
+    private UserService: UserService
   ) {
     this.authService.currentUser$.subscribe(async (user) => {
       if (!user) {
@@ -22,7 +26,7 @@ export class AppComponent {
         return;
       }
 
-      const profile = await this.firestoreService.getUserProfile(user.uid);
+      const profile = await this.UserService.getUserProfile(user.uid);
 
       if (profile && profile.calorieTarget) {
         this.router.navigateByUrl('/dashboard');

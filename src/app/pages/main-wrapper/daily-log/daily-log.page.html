@@ -1,0 +1,72 @@
+<ion-content>
+    <div class="daily-log-date">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+            <path
+                d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" />
+        </svg>
+
+        <span> {{ today | date:'EEEE, dd.MM.yyyy.' }} </span>
+    </div>
+    <div class="daily-log-list">
+        <ion-card *ngFor="let mealType of mealTypes" (click)="openMeal(mealType)">
+            <ion-card-header>
+                <ion-card-title>
+                    {{ mealType }}
+                </ion-card-title>
+                <ion-button fill="clear" size="small" (click)="removeMeal(mealType); $event.stopPropagation()">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                        fill="#000000">
+                        <path
+                            d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
+                    </svg>
+                </ion-button>
+            </ion-card-header>
+            <ion-card-content>
+                <div class="meal-content">
+                    <!-- Prikaz unesenih namirnica (ili “Još nema unosa”) -->
+                    <ng-container>
+                        <div class="meal-macros-row">
+                            <div class="macro-block calories">
+                                <div class="macro-label">Calories</div>
+                                <div class="macro-value">
+                                    {{ mealsByType[mealType]?.totalMealCalories || 0 | smartNumber}}<span
+                                        class="macro-unit">kcal</span>
+                                </div>
+                            </div>
+                            <div class="macro-block proteins">
+                                <div class="macro-label">Proteins</div>
+                                <div class="macro-value">
+                                    {{ mealsByType[mealType]?.totalMealProteins || 0 | smartNumber}}<span
+                                        class="macro-unit">g</span>
+                                </div>
+                            </div>
+                            <div class="macro-block carbs">
+                                <div class="macro-label">Carbs</div>
+                                <div class="macro-value">
+                                    {{ mealsByType[mealType]?.totalMealCarbs || 0 | smartNumber}}<span
+                                        class="macro-unit">g</span>
+                                </div>
+                            </div>
+                            <div class="macro-block fats">
+                                <div class="macro-label">Fats</div>
+                                <div class="macro-value">
+                                    {{ mealsByType[mealType]?.totalMealFats || 0 | smartNumber}}<span
+                                        class="macro-unit">g</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </ng-container>
+                </div>
+
+            </ion-card-content>
+        </ion-card>
+
+        <div class="add-meal-dashed-box" (click)="addNewMeal()">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#3b82f6">
+                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+            </svg>
+            <span>Dodaj obrok</span>
+        </div>
+    </div>
+</ion-content>

@@ -1,0 +1,17 @@
+.meal-search-wrapper {
+    padding: 16px;
+}
+
+.food-title {
+    font-weight: 600;
+    font-size: 1.09rem;
+}
+
+.food-details {
+    color: #888;
+    font-size: 0.97rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 2px;
+}

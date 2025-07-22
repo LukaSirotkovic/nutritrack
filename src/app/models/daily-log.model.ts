@@ -1,8 +1,11 @@
 import { MealEntry } from "./meal-entry.model";
 
 export interface DailyLog {
-  date: string;                      // 'YYYY-MM-DD'
+  date: string;                 
   meals: MealEntry[];
-  totalCalories: number;
-  weight?: number;                   // korisnik može unijeti novu težinu
+  totalDailyCalories: number;
+  totalDailyProteins?: number;
+  totalDailyCarbs?: number;
+  totalDailyFats?: number;
+  weight?: number;
 }

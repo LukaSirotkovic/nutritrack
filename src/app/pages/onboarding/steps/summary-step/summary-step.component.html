@@ -15,6 +15,9 @@
             <p><strong>Activity Level:</strong> {{ userData.activityLevel }} training</p>
             <p><strong>Goal:</strong> {{ userData.goal }} weight</p>
             <p *ngIf="userData.calorieTarget"><strong>Calorie Target:</strong> {{ userData.calorieTarget }} kcal/day</p>
+            <p *ngIf="userData.proteinTarget"><strong>Protein Target:</strong> {{ userData.proteinTarget }} g/day</p>
+            <p *ngIf="userData.carbTarget"><strong>Carbohydrates Target:</strong> {{ userData.carbTarget }} g/day</p>
+            <p *ngIf="userData.fatTarget"><strong>Fats Target:</strong> {{ userData.fatTarget }} g/day</p>
         </ion-card-content>
     </ion-card>
 

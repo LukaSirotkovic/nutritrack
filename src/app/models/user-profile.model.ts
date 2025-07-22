@@ -8,4 +8,7 @@ export interface UserProfile {
   goal: 'maintain' | 'gain' | 'lose' | '';
   calorieTarget: number; // izračunati TDEE
   createdAt: string; // ISO string datuma
+  proteinTarget: number; // 1.8g/kg
+  carbTarget: number; // 4g/kg
+  fatTarget: number; // 1g/kg
 }

@@ -2,12 +2,12 @@ import { inject } from '@angular/core';
 import { Auth, user } from '@angular/fire/auth';
 import { CanActivateFn, Router } from '@angular/router';
 import { switchMap, take, of } from 'rxjs';
-import { FirestoreService } from '../services/firestore.service';
+import { UserService } from '../services/user.service';
 
 export const loginGuard: CanActivateFn = (route, state) => {
   const auth = inject(Auth);
   const router = inject(Router);
-  const firestore = inject(FirestoreService);
+  const firestore = inject(UserService);
 
   return user(auth).pipe(
     take(1),

@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
 import { onboardingGuard } from './guards/onboarding.guard';
+import { MainWrapperPage } from './pages/main-wrapper/main-wrapper.page';
 
 export const routes: Routes = [
   {
@@ -34,23 +35,47 @@ export const routes: Routes = [
         (m) => m.OnboardingPage
       ),
   },
-  {
-    path: 'dashboard',
-    canActivate: [authGuard],
-    loadComponent: () =>
-      import('./pages/dashboard/dashboard.page').then((m) => m.DashboardPage),
-  },
 
+  // === WRAPPER (Layout) ROUTE ===
   {
-    path: 'add-meal',
-    canActivate: [authGuard],
-    loadComponent: () =>
-      import('./pages/add-meal/add-meal.page').then((m) => m.AddMealPage),
-  },
-  {
-    path: 'settings',
-    canActivate: [authGuard],
-    loadComponent: () =>
-      import('./pages/settings/settings.page').then((m) => m.SettingsPage),
+    path: '',
+    component: MainWrapperPage, // samo za Angular 15+ standalone, ili loadComponent: ... za Angular 16+
+    canActivate: [authGuard], // Sve child rute su zaštićene!
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./pages/main-wrapper/dashboard/dashboard.page').then(
+            (m) => m.DashboardPage
+          ),
+      },
+      {
+        path: 'add-meal',
+        loadComponent: () =>
+          import('./pages/main-wrapper/add-meal/add-meal.page').then(
+            (m) => m.AddMealPage
+          ),
+      },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('./pages/main-wrapper/settings/settings.page').then(
+            (m) => m.SettingsPage
+          ),
+      },
+      {
+        path: 'daily-log',
+        loadComponent: () =>
+          import('./pages/main-wrapper/daily-log/daily-log.page').then(
+            (m) => m.DailyLogPage
+          ),
+      },
+      // Možeš dodati još child ruta ovdje
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+    ],
   },
 ];

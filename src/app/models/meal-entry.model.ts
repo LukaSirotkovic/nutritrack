@@ -1,9 +1,12 @@
-import { FoodItem } from "./food-item.model";
+import { FoodItem } from './food-item.model';
 
 export interface MealEntry {
-  id?: string;                       // Firestore ID
+  id: string;
   type: 'breakfast' | 'lunch' | 'dinner' | 'snack';
-  timestamp: string;                // ISO format
-  items: FoodItem[];                // popis unesenih namirnica
-  totalCalories: number;           // izračunato iz `items`
+  timestamp: string; 
+  items: FoodItem[];
+  totalMealCalories?: number;
+  totalMealProteins?: number;
+  totalMealCarbs?: number;
+  totalMealFats?: number;
 }
