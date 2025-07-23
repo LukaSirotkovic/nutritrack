@@ -2,18 +2,101 @@
     text-align: center;
     color: #000;
     font-weight: 600;
-    margin: 20px 0 20px 0;
+    margin: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 8px;
+    font-size: 1.09rem;
+}
+
+.date-arrow-btn {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    height: 24px;
+    border-radius: 5px;
+    transition: background 0.15s;
+}
+
+.date-arrow-btn:active {
+    background: #f0f0f0;
+}
+
+.todays-date {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    font-size: 1.09rem;
+    gap: 5px;
 }
+
+/* Izbjegavaj overlapanje i "lijepljenje" kod draganja */
+
+.cdk-drag-placeholder {
+    opacity: 0.3 !important;
+    border: 2px dashed #3b82f6 !important;
+    min-height: 150px;
+}
+
+.cdk-drag-preview {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14) !important;
+    border-radius: 18px !important;
+    background: #fff !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    min-width: 260px !important;
+    z-index: 10000 !important;
+}
+
+/* SVG ikone unutar previewa */
+.cdk-drag-preview svg {
+    vertical-align: middle !important;
+    margin-bottom: -2px !important;
+}
+
+.cdk-drag-preview .svg-to-hide {
+    display: none !important;
+}
+
+
+/* Disabled card */
+.disabled-card {
+    pointer-events: none;
+    filter: grayscale(0.2) opacity(1);
+}
+
+.locked-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px dashed #3b82f6;
+    border-radius: 8px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.date-arrow-btn[disabled] svg {
+    fill: #ddd !important;
+    cursor: not-allowed;
+}
+
+.date-arrow-btn[disabled] {
+    pointer-events: none;
+}
+
 
 .ios,
 .hydrated {
     margin: 0;
 }
+
 
 .daily-log-list {
     display: flex;
@@ -22,17 +105,17 @@
     gap: 20px;
 }
 
-.daily-log-list ion-card{
+.daily-log-list ion-card {
     background: #fff;
 }
 
-.daily-log-list ion-card-title{
+.daily-log-list ion-card-title {
     font-size: 20px;
     margin-bottom: 0;
     padding-bottom: 0px;
 }
 
-.daily-log-list ion-card-header{
+.daily-log-list ion-card-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -61,7 +144,6 @@
     margin-left: 4px;
 }
 
-
 .meal-macros-row {
     display: flex;
     flex-direction: row;
@@ -72,7 +154,7 @@
 
 .macro-block {
     padding: 0px;
-    text-align: center;
+    text-align: left;
     min-width: 56px;
 }
 
@@ -112,28 +194,29 @@
 
 
 .add-meal-dashed-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 20px 6px 16px 6px;
-  padding: 13px 0 12px 0;
-  border: 2px dashed #b5cffc;
-  border-radius: 13px;
-  color: #3b82f6;
-  font-weight: 500;
-  font-size: 1.05rem;
-  background: #f8fbff;
-  cursor: pointer;
-  gap: 8px;
-  transition: background 0.13s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 6px 16px 6px;
+    padding: 13px 0 12px 0;
+    border: 2px dashed #b5cffc;
+    border-radius: 13px;
+    color: #3b82f6;
+    font-weight: 500;
+    font-size: 1.05rem;
+    background: #f8fbff;
+    cursor: pointer;
+    gap: 8px;
+    transition: background 0.13s;
 }
+
 .add-meal-dashed-box:hover {
-  background: #e5f1fe;
+    background: #e5f1fe;
 }
 
 ion-card-header ion-button {
-  margin-left: 10px;
-  margin-right: -6px;
-  --background: transparent;
-  --color: #ef4444;
+    margin-left: 10px;
+    margin-right: -6px;
+    --background: transparent;
+    --color: #ef4444;
 }

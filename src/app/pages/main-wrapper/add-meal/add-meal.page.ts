@@ -1,7 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonList, IonItem, IonLabel, IonSearchbar, ToastController, IonButton } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonSearchbar,
+  ToastController,
+  IonButton,
+} from '@ionic/angular/standalone';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { DailyLogService } from 'src/app/services/daily-log.service';
@@ -21,8 +29,8 @@ import { FoodItem } from 'src/app/models';
     IonItem,
     IonLabel,
     IonSearchbar,
-    IonButton
-],
+    IonButton,
+  ],
 })
 export class AddMealPage {
   searchTerm = '';
@@ -158,6 +166,8 @@ export class AddMealPage {
       0
     );
 
+    this.recalculateDailyTotals(dailyLog);
+
     // Spremi dailyLog natrag u bazu
     await this.dailyLogService.saveDailyLog(uid, dailyLog);
 
@@ -169,5 +179,24 @@ export class AddMealPage {
       position: 'bottom',
     });
     toast.present();
+  }
+
+  private recalculateDailyTotals(dailyLog: any) {
+    let totalCalories = 0;
+    let totalProteins = 0;
+    let totalCarbs = 0;
+    let totalFats = 0;
+
+    for (const meal of dailyLog.meals) {
+      totalCalories += meal.totalMealCalories ?? 0;
+      totalProteins += meal.totalMealProteins ?? 0;
+      totalCarbs += meal.totalMealCarbs ?? 0;
+      totalFats += meal.totalMealFats ?? 0;
+    }
+
+    dailyLog.totalDailyCalories = totalCalories;
+    dailyLog.totalDailyProteins = totalProteins;
+    dailyLog.totalDailyCarbs = totalCarbs;
+    dailyLog.totalDailyFats = totalFats;
   }
 }

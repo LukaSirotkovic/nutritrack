@@ -1,5 +1,4 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { MealService } from 'src/app/services/meal.service';
 import { DailyLogService } from 'src/app/services/daily-log.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
@@ -15,6 +14,12 @@ import {
 import { CommonModule } from '@angular/common';
 import { DailyLog, MealEntry } from 'src/app/models/index';
 import { SmartNumberPipe } from 'src/app/pipes/smart-number.pipe';
+import {
+  DragDropModule,
+  CdkDragDrop,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-daily-log',
@@ -30,15 +35,19 @@ import { SmartNumberPipe } from 'src/app/pipes/smart-number.pipe';
     CommonModule,
     IonButton,
     SmartNumberPipe,
+    DragDropModule,
   ],
 })
 export class DailyLogPage implements OnInit {
   today = new Date();
-  mealTypes: ('breakfast' | 'lunch' | 'dinner' | 'snack' | 'brunch')[] = [
-    'breakfast',
-    'lunch',
-    'dinner',
-  ];
+  mealTypes: (
+    | 'breakfast'
+    | 'lunch'
+    | 'dinner'
+    | 'snack'
+    | 'brunch'
+    | string
+  )[] = ['breakfast', 'lunch', 'dinner'];
 
   mealsByType: { [type: string]: MealEntry | undefined } = {};
 
@@ -58,13 +67,160 @@ export class DailyLogPage implements OnInit {
   constructor(
     private dailyLogService: DailyLogService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   async ngOnInit() {
     this.uid = this.authService.getUserId() ?? '';
+     this.route.queryParams.subscribe(params => {
+      if (params['date']) {
+        // Ako je proslijeđen datum, koristi njega
+        this.today = new Date(params['date']);
+        this.todayString = params['date'];
+      } else {
+        // Inače koristi današnji
+        this.today = new Date();
+        this.todayString = this.today.toISOString().slice(0, 10);
+      }
+      this.refreshMeals();
+    });
+  }
+
+  get isToday() {
+    const now = new Date();
+    return (
+      this.today.getFullYear() === now.getFullYear() &&
+      this.today.getMonth() === now.getMonth() &&
+      this.today.getDate() === now.getDate()
+    );
+  }
+
+  private realToday = new Date(); // stvarni današnji datum za provjere
+
+  get isTooOld() {
+    // Napravi kopije (inače setHours mijenja original!)
+    const realToday = new Date(this.realToday);
+    const compareDay = new Date(this.today);
+
+    // Uspoređuj bez vremena (samo datume)
+    realToday.setHours(0, 0, 0, 0);
+    compareDay.setHours(0, 0, 0, 0);
+
+    const diffMs = realToday.getTime() - compareDay.getTime();
+    const diffDays = diffMs / (1000 * 60 * 60 * 24);
+    return diffDays > 1;
+  }
+
+  goToPreviousDay() {
+    this.today = new Date(this.today.getTime() - 24 * 60 * 60 * 1000);
     this.todayString = this.today.toISOString().slice(0, 10);
-    await this.refreshMeals();
+    this.refreshMeals(); // Uvijek refreshaš prikaz
+  }
+
+  goToNextDay() {
+    if (this.isToday) return; // NE ide u budućnost!
+    this.today = new Date(this.today.getTime() + 24 * 60 * 60 * 1000);
+    this.todayString = this.today.toISOString().slice(0, 10);
+    this.refreshMeals();
+  }
+
+  get displayDate(): string {
+    // Normaliziraj na ponoć da izbjegneš probleme sa satima
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const target = new Date(this.today); // this.today je datum koji prikazuješ
+    target.setHours(0, 0, 0, 0);
+
+    const diffDays =
+      (today.getTime() - target.getTime()) / (1000 * 60 * 60 * 24);
+
+    if (diffDays === 0) {
+      return 'Today';
+    } else if (diffDays === 1) {
+      return 'Yesterday';
+    } else {
+      // Vrati formatirani datum kao do sada
+      // Ako imaš u templateu CommonModule importiran, radi date pipe
+      return (
+        this.today
+          .toLocaleDateString('en-GB', {
+            weekday: 'long',
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          })
+          .replace(/\//g, '.') + '.'
+      );
+
+      // Ili ostavi Angular pipe u templateu za taj slučaj!
+    }
+  }
+
+  async openMealActions(meal: MealEntry, event: Event) {
+    event?.stopPropagation();
+    const actionSheet = await this.alertCtrl.create({
+      header: meal.type.charAt(0).toUpperCase() + meal.type.slice(1),
+      buttons: [
+        {
+          text: 'Edit',
+          handler: () => this.editMeal(meal),
+        },
+        {
+          text: 'Duplicate',
+          handler: () => this.duplicateMeal(meal),
+        },
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => this.removeMeal(meal.id),
+        },
+      ],
+    });
+    await actionSheet.present();
+  }
+
+  // Dupliciranje meal-a
+  duplicateMeal(meal: MealEntry) {
+    if (!this.dailyLog) return;
+    const newMeal = {
+      ...meal,
+      id: Date.now().toString(),
+      timestamp: new Date().toISOString(),
+    };
+    this.dailyLog.meals.push(newMeal);
+    this.dailyLogService.saveDailyLog(this.uid, this.dailyLog);
+    this.refreshMeals();
+  }
+
+  async editMeal(meal: MealEntry) {
+    const alert = await this.alertCtrl.create({
+      header: 'Edit meal name',
+      inputs: [
+        {
+          name: 'name',
+          type: 'text',
+          placeholder: 'Meal name',
+          value: meal.type || '', // koristi meal.name (ako postoji), ili ostavi prazno
+        },
+      ],
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Save',
+          handler: async (data) => {
+            if (!data.name?.trim()) return false; // spriječi prazne
+            meal.type = data.name;
+            // Save changes
+            await this.dailyLogService.saveDailyLog(this.uid, this.dailyLog!);
+            await this.refreshMeals();
+            return true;
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   async refreshMeals() {
@@ -97,61 +253,77 @@ export class DailyLogPage implements OnInit {
     });
   }
 
+  dropMeal(event: CdkDragDrop<MealEntry[]>) {
+    if (!this.dailyLog?.meals) return;
+
+    moveItemInArray(
+      this.dailyLog.meals,
+      event.previousIndex,
+      event.currentIndex
+    );
+
+    this.dailyLogService.saveDailyLog(this.uid, this.dailyLog);
+  }
+
   // --- DODAVANJE NOVOG OBROKA S POPUPOM ---
   async addNewMeal() {
     const alert = await this.alertCtrl.create({
       header: 'Choose a meal',
-      inputs: this.mealTypes.map((type, i) => ({
-        name: type,
-        type: 'radio',
-        label: type.charAt(0).toUpperCase() + type.slice(1),
-        value: type,
-        checked: i === 0,
-        disabled: !!this.mealsByType[type], // Disable ako već postoji!
-      })),
+      inputs: [
+        {
+          name: 'custom',
+          type: 'radio' as const,
+          label: 'Custom',
+          value: 'custom',
+          checked: true,
+          disabled: false,
+        },
+        ...this.mealTypes.map((type, i) => ({
+          name: type,
+          type: 'radio' as const,
+          label: type.charAt(0).toUpperCase() + type.slice(1),
+          value: type,
+        })),
+        
+      ],
       buttons: [
         { text: 'Cancel', role: 'cancel' },
         {
           text: 'Add',
           handler: async (selectedType) => {
-            if (!selectedType) return;
+            if (!selectedType) return false;
 
-            // Dodaj meal u dailyLog odmah (prazan meal)
-            if (!this.dailyLog) {
-              // Ako nema dailyLog-a za danas, napravi novi
-              this.dailyLog = {
-                date: this.todayString,
-                meals: [],
-                totalDailyCalories: 0,
-                totalDailyProteins: 0,
-                totalDailyCarbs: 0,
-                totalDailyFats: 0,
-              };
+            if (selectedType === 'custom') {
+              await alert.dismiss();
+              // Otvori drugi alert za unos imena obroka!
+              const nameAlert = await this.alertCtrl.create({
+                header: 'Custom meal name',
+                inputs: [
+                  {
+                    name: 'customName',
+                    type: 'text',
+                    placeholder: 'Enter meal name',
+                  },
+                ],
+                buttons: [
+                  { text: 'Cancel', role: 'cancel' },
+                  {
+                    text: 'Add',
+                    handler: async (data) => {
+                      const mealName = data.customName?.trim();
+                      if (!mealName) return false;
+                      await this.createMeal(mealName); // stvori meal s custom imenom
+                      return true;
+                    },
+                  },
+                ],
+              });
+              await nameAlert.present();
+              return false; // ostani na prvom alertu dok korisnik ne unese custom name
+            } else {
+              await this.createMeal(selectedType);
+              return true;
             }
-
-            // Dodaj novi meal (prazan)
-            this.dailyLog.meals.push({
-              id: Date.now().toString(),
-              type: selectedType,
-              timestamp: new Date().toISOString(),
-              items: [],
-              totalMealCalories: 0,
-              totalMealProteins: 0,
-              totalMealCarbs: 0,
-              totalMealFats: 0,
-            });
-
-            // Ažuriraj total-e!
-            this.calculateDailyTotals(this.dailyLog);
-
-            // Spremi u bazu
-            await this.dailyLogService.saveDailyLog(this.uid, this.dailyLog);
-
-            // Refresha UI
-            await this.refreshMeals();
-
-            // Možeš odmah otvoriti add-meal page za daljnje editiranje
-            this.openMeal(selectedType);
           },
         },
       ],
@@ -159,8 +331,34 @@ export class DailyLogPage implements OnInit {
     await alert.present();
   }
 
+  async createMeal(type: string) {
+    if (!this.dailyLog) {
+      this.dailyLog = {
+        date: this.todayString,
+        meals: [],
+        totalDailyCalories: 0,
+        totalDailyProteins: 0,
+        totalDailyCarbs: 0,
+        totalDailyFats: 0,
+      };
+    }
+    this.dailyLog.meals.push({
+      id: Date.now().toString(),
+      type: type,
+      timestamp: new Date().toISOString(),
+      items: [],
+      totalMealCalories: 0,
+      totalMealProteins: 0,
+      totalMealCarbs: 0,
+      totalMealFats: 0,
+    });
+    await this.dailyLogService.saveDailyLog(this.uid, this.dailyLog);
+    await this.refreshMeals();
+    this.openMeal(type); // Otvori odmah edit/add page ako želiš
+  }
+
   // --- BRISANJE OBROKA S POTVRDOM ---
-  async removeMeal(mealType: string) {
+  async removeMeal(mealId: string) {
     const alert = await this.alertCtrl.create({
       header: 'Confirm deletion',
       message: 'Are you sure you want to delete your meal?',
@@ -172,24 +370,23 @@ export class DailyLogPage implements OnInit {
           handler: async () => {
             if (!this.dailyLog) return;
 
-            // Makni meal iz arraya
+            // Makni meal s točno tim ID-om
             this.dailyLog.meals = this.dailyLog.meals.filter(
-              (m) => m.type !== mealType
+              (m) => m.id !== mealId
             );
 
             // Ažuriraj total-e!
             this.calculateDailyTotals(this.dailyLog);
-
-            // Spremi novi daily log u bazu
             await this.dailyLogService.saveDailyLog(this.uid, this.dailyLog);
 
             // Refresha UI
-            await this.refreshMeals();
           },
         },
       ],
     });
     await alert.present();
+    await alert.onDidDismiss();
+    await this.refreshMeals();
   }
 
   // --- Zbroji sve makronutrijente i kalorije za dan ---

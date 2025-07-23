@@ -1,4 +1,4 @@
-.top-text h2{
+.top-text h2 {
     padding: 20px;
 }
 
@@ -15,14 +15,14 @@
 
 .dashboard-box {
     background: #fff;
-    border-radius: 24px;
+    border-radius: 8px;
     box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
-    padding: 24px 16px 34px 16px;
-    height: 250px;
+    padding: 15px 16px 15px 16px;
+    height: 234px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    justify-content: center;
+    justify-content: flex-start;
     margin-bottom: 36px;
     gap: 20px;
     margin-left: 20px;
@@ -92,3 +92,92 @@
 
 
 
+
+
+
+/* Lista dnevnih logova */
+
+.activities {
+    background-color: #fff;
+}
+
+
+.activity-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 15px 16px 8px 16px;
+}
+
+.activity-header .activity {
+    font-size: 1.13rem;
+    font-weight: 600;
+    color: #222;
+    margin: 0;
+    letter-spacing: 0.01em;
+}
+
+.activity-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.activity-row {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    border-top: 2px solid #efefef;
+    cursor: pointer;
+    transition: background 0.11s;
+}
+
+
+.activity-date {
+    display: flex;
+    flex-direction: column;
+}
+
+.activity-date-label {
+    font-size: 1rem;
+    color: #222;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.activity-calories {
+    font-size: 0.97rem;
+    color: #969696;
+    font-weight: 400;
+}
+
+.activity-remaining {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.remaining-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: inline-block;
+    background: linear-gradient(135deg, #8bffce, #45c86d);
+}
+
+.remaining-dot.red {
+    background: linear-gradient(135deg, #ffb1b1, #ff5757);
+}
+
+.remaining-label {
+    font-size: 1.08rem;
+    font-weight: 500;
+    color: #7ab68c;
+}
+
+.remaining-label.red {
+    color: #e84a4a;
+}

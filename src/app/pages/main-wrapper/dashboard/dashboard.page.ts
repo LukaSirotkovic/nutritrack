@@ -72,4 +72,55 @@ export class DashboardPage implements OnInit {
   onSlideChange(event: any) {
     this.activeSlide = event.target.swiper?.activeIndex ?? 0;
   }
+
+  get recentLogsExcludingToday(): DailyLog[] {
+    if (!this.recentLogs) return [];
+    const todayStr = this.getTodayString();
+    // Filtriraj van današnji dan
+    const logs = this.recentLogs.filter((log) => log.date !== todayStr);
+    // Sortiraj po datumu (ako backend ne šalje sortirano)
+    logs.sort((a, b) => (a.date < b.date ? 1 : -1));
+    // Vrati max 7 (ionako si fetchao 7, ali ako ikad širiš logiku)
+    return logs.slice(0, 7);
+  }
+
+  formatLogDate(logDate: string): string {
+    const todayStr = this.getTodayString();
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yestStr = yesterday.toISOString().slice(0, 10);
+
+    if (logDate === yestStr) {
+      return 'Yesterday';
+    }
+    // Prikaži formatirano: "Monday, 22.07.2025."
+    return (
+      new Date(logDate)
+        .toLocaleDateString('en-GB', {
+          weekday: 'long',
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+        })
+        .replace(/\//g, '.') + '.'
+    );
+  }
+
+  getRemainingText(log: DailyLog): string {
+    if (!this.userProfile) return '';
+    const target = this.userProfile.calorieTarget ?? 0;
+    const delta = target - (log.totalDailyCalories ?? 0);
+
+    if (delta > 0) {
+      return `${delta} in deficit`;
+    } else if (delta < 0) {
+      return `${Math.abs(delta)} over the limit`;
+    } else {
+      return 'On target!';
+    }
+  }
+
+  goToDailyLog(date: string) {
+    this.router.navigate(['/daily-log'], { queryParams: { date } });
+  }
 }

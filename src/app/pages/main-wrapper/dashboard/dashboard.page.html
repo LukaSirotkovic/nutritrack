@@ -56,7 +56,9 @@
         <!-- Slide 2: Macros -->
         <swiper-slide>
             <div class="dashboard-box">
-                <div class="dashboard-header">Macros</div>
+                <div class="dashboard-header">
+                    <h2 class="category">Macros</h2>
+                </div>
                 <div class="dashboard-macros-slide">
 
                     <app-circle-progress [value]="totalDailyProteins" [max]="userProfile?.proteinTarget ?? 0"
@@ -79,25 +81,28 @@
 
 
     <!-- Lista dnevnih logova -->
-    <!--   <ion-card>
-        <ion-card-header>
-            <ion-card-title>Tvoje aktivnosti zadnjih 7 dana</ion-card-title>
-        </ion-card-header>
-        <ion-list>
-            <ion-item *ngFor="let log of recentLogs">
-                <ion-label>
-                    <h3>{{ log.date }}</h3>
-                    <p>{{ log.totalDailyCalories }} kcal</p>
-                </ion-label>
-                <ion-note slot="end" *ngIf="userProfile">
-                    <span [ngClass]="{
-            'green': log.totalDailyCalories < userProfile.calorieTarget,
-            'red': log.totalDailyCalories > userProfile.calorieTarget
+
+
+    <ion-card class="activities">
+        <div class="activity-header">
+            <h2 class="activity">Activities</h2>
+        </div>
+        <div class="activity-list">
+            <div class="activity-row" *ngFor="let log of recentLogsExcludingToday" (click)="goToDailyLog(log.date)">
+                <div class="activity-date">
+                    <div class="activity-date-label">{{ formatLogDate(log.date) }}</div>
+                    <div class="activity-calories">{{ log.totalDailyCalories }} kcal</div>
+                </div>
+                <div class="activity-remaining">
+                    <span class="remaining-label" [ngClass]="{
+            'green': (userProfile?.calorieTarget ?? 0) > (log.totalDailyCalories ),
+            'red': (userProfile?.calorieTarget ?? 0) < (log.totalDailyCalories)
           }">
-                        {{ log.totalDailyCalories < userProfile.calorieTarget ? '🟢' : '🔴' }} </span>
-                </ion-note>
-            </ion-item>
-        </ion-list>
-    </ion-card> -->
+                        {{ getRemainingText(log) }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </ion-card>
 
 </ion-content>
