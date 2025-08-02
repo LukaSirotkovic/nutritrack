@@ -56,7 +56,17 @@ export class LoginPage {
       );
       this.showToast('Uspješna prijava!');
       console.log(result.user);
-      this.router.navigate(['/dashboard']);
+
+      const uid = result.user.uid; 
+      const isOnboarded = await this.auth.isUserOnboarded(uid);
+
+      this.showToast('Uspješna prijava!');
+
+      if (isOnboarded) {
+        this.router.navigate(['/dashboard']);
+      } else {
+        this.router.navigate(['/onboarding']);
+      }
     } catch (err: any) {
       this.errorMessage = err.message;
     }
@@ -67,7 +77,17 @@ export class LoginPage {
       const result = await this.auth.loginWithGoogle();
       this.showToast('Uspješna prijava!');
       console.log(result.user);
-      this.router.navigate(['/dashboard']);
+
+      const uid = result.user.uid; 
+      const isOnboarded = await this.auth.isUserOnboarded(uid);
+
+      this.showToast('Uspješna prijava!');
+
+      if (isOnboarded) {
+        this.router.navigate(['/dashboard']);
+      } else {
+        this.router.navigate(['/onboarding']);
+      }
     } catch (err: any) {
       this.errorMessage = err.message;
     }

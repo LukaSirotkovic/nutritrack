@@ -1,4 +1,5 @@
 export interface NotificationSetting {
+  user_id: string;
   enabled: boolean;
-  times: string[];                  // npr. ["09:00", "13:00", "18:00"]
+  notification_times: string[]; // e.g. ["09:00", "13:00"]
 }

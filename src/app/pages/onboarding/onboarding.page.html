@@ -1,31 +1,19 @@
 <ion-content class="ion-padding" [scrollY]="false">
-  <ng-container *ngComponentOutlet="currentComponent inputs: { userData: userData }"></ng-container>
+    <ng-container *ngComponentOutlet="currentComponent inputs: { userData: userData }"></ng-container>
 
-  <div class="onboarding-nav">
-    <ion-button
-      fill="outline"
-      color="medium"
-      (click)="prevStep()"
-      [disabled]="stepIndex === 0">
-      ← Back
-    </ion-button>
+    <div class="onboarding-nav">
+        <ion-button fill="outline" color="medium" (click)="prevStep()" [disabled]="stepIndex === 0">
+            ← Back
+        </ion-button>
 
-    <ion-button
-      shape="round"
-      size="large"
-      color="primary"
-      (click)="nextStep()"
-      *ngIf="stepIndex < steps.length - 1">
-      Next →
-    </ion-button>
+        <ion-button shape="round" size="large" color="primary" (click)="nextStep()"
+            *ngIf="stepIndex < steps.length - 1">
+            Next →
+        </ion-button>
 
-    <ion-button
-      shape="round"
-      size="large"
-      color="success"
-      (click)="onComplete()"
-      *ngIf="stepIndex === steps.length - 1">
-      Finish
-    </ion-button>
-  </div>
+        <ion-button shape="round" size="large" color="success" (click)="onComplete()"
+            *ngIf="stepIndex === steps.length - 1">
+            Finish
+        </ion-button>
+    </div>
 </ion-content>

@@ -12,12 +12,12 @@
             <p><strong>Age:</strong> {{ userData.age }} years</p>
             <p><strong>Height:</strong> {{ userData.height }} cm</p>
             <p><strong>Weight:</strong> {{ userData.weight }} kg</p>
-            <p><strong>Activity Level:</strong> {{ userData.activityLevel }} training</p>
+            <p><strong>Activity Level:</strong> {{ userData.activity_level }} training</p>
             <p><strong>Goal:</strong> {{ userData.goal }} weight</p>
-            <p *ngIf="userData.calorieTarget"><strong>Calorie Target:</strong> {{ userData.calorieTarget }} kcal/day</p>
-            <p *ngIf="userData.proteinTarget"><strong>Protein Target:</strong> {{ userData.proteinTarget }} g/day</p>
-            <p *ngIf="userData.carbTarget"><strong>Carbohydrates Target:</strong> {{ userData.carbTarget }} g/day</p>
-            <p *ngIf="userData.fatTarget"><strong>Fats Target:</strong> {{ userData.fatTarget }} g/day</p>
+            <p *ngIf="userData.calorie_target"><strong>Calorie Target:</strong> {{ userData.calorie_target }} kcal/day</p>
+            <p *ngIf="userData.protein_target"><strong>Protein Target:</strong> {{ userData.protein_target }} g/day</p>
+            <p *ngIf="userData.carb_target"><strong>Carbohydrates Target:</strong> {{ userData.carb_target }} g/day</p>
+            <p *ngIf="userData.fat_target"><strong>Fats Target:</strong> {{ userData.fat_target }} g/day</p>
         </ion-card-content>
     </ion-card>
 

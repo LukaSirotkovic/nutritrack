@@ -80,7 +80,38 @@ export class AuthService {
   // 🔐 Google login
   async loginWithGoogle() {
     const provider = new GoogleAuthProvider();
-    return signInWithPopup(this.auth, provider);
+    const result = await signInWithPopup(this.auth, provider);
+    const user = result.user;
+
+    // Provjeri postoji li korisnik već u Firestore
+    const userRef = doc(this.firestore, 'users', user.uid);
+    const q = query(
+      collection(this.firestore, 'users'),
+      where('uid', '==', user.uid)
+    );
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      await setDoc(userRef, {
+        uid: user.uid,
+        email: user.email,
+        username: user.email?.split('@')[0], // defaultni username
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        createdAt: new Date(),
+      });
+    }
+
+    return result;
+  }
+  async isUserOnboarded(uid: string): Promise<boolean> {
+    const snapshot = await getDocs(
+      query(collection(this.firestore, 'users'), where('uid', '==', uid))
+    );
+    if (snapshot.empty) return false;
+
+    const data = snapshot.docs[0].data();
+    return !!data;
   }
 
   async logout() {
@@ -89,5 +120,33 @@ export class AuthService {
 
   getUserId(): string | null {
     return this.auth.currentUser?.uid ?? null;
+  }
+
+  async getCurrentUser(): Promise<{
+    user: User;
+    firstName?: string;
+    lastName?: string;
+  }> {
+    const user = this.auth.currentUser;
+
+    if (!user) {
+      throw new Error('Korisnik nije prijavljen');
+    }
+
+    const userDocRef = doc(this.firestore, 'users', user.uid);
+    const userSnap = await getDocs(
+      query(collection(this.firestore, 'users'), where('uid', '==', user.uid))
+    );
+
+    let firstName: string | undefined;
+    let lastName: string | undefined;
+
+    if (!userSnap.empty) {
+      const data = userSnap.docs[0].data();
+      firstName = data['firstName'];
+      lastName = data['lastName'];
+    }
+
+    return { user, firstName, lastName };
   }
 }

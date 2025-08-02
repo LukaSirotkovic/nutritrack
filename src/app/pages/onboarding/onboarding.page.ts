@@ -46,7 +46,7 @@ export class OnboardingPage {
   }
 
   async onComplete() {
-    this.userData.createdAt = new Date().toISOString();
+    this.userData.created_at = new Date().toISOString();
 
     console.log('Konačni profil korisnika:', this.userData);
 
@@ -56,8 +56,9 @@ export class OnboardingPage {
       return;
     }
 
+    this.userData.user_id = uid; // ✅ Dodaj ovo!
+
     try {
-      await this.UserService.saveUserProfile(uid, this.userData as UserProfile);
       await this.UserService.saveUserProfile(uid, this.userData as UserProfile);
       console.log('Profil spremljen u Firestore!');
       this.router.navigateByUrl('/dashboard'); // Dodaj redirect
@@ -72,10 +73,12 @@ export class OnboardingPage {
     if (this.stepIndex === this.steps.length - 2) {
       const bmr = this.calculateBMR();
       const tdee = this.calculateTDEE(bmr);
-      this.userData.calorieTarget = tdee;
-      this.userData.proteinTarget = Math.round(1.8 * this.userData.weight!);
-      this.userData.carbTarget = Math.round(4 * this.userData.weight!);
-      this.userData.fatTarget = Math.round(1 * this.userData.weight!);
+      const adjustedCalories = this.adjustCaloriesForGoal(tdee);
+
+      this.userData.calorie_target = adjustedCalories;
+      this.userData.protein_target = Math.round(2.2 * this.userData.weight!);
+      this.userData.carb_target = Math.round(4 * this.userData.weight!);
+      this.userData.fat_target = Math.round(1 * this.userData.weight!);
     }
 
     if (this.stepIndex < this.steps.length - 1) {
@@ -106,7 +109,7 @@ export class OnboardingPage {
   }
 
   private calculateTDEE(bmr: number): number {
-    const activity = this.userData.activityLevel;
+    const activity = this.userData.activity_level;
     switch (activity) {
       case 'low':
         return Math.round(bmr * 1.2);
@@ -116,6 +119,18 @@ export class OnboardingPage {
         return Math.round(bmr * 1.9);
       default:
         return Math.round(bmr * 1.3);
+    }
+  }
+
+  private adjustCaloriesForGoal(tdee: number): number {
+    switch (this.userData.goal) {
+      case 'lose':
+        return Math.max(tdee - 300, 1200); // smanjenje, ali ne ispod 1200 kcal
+      case 'gain':
+        return tdee + 300; // povećanje
+      case 'maintain':
+      default:
+        return tdee; // bez promjene
     }
   }
 }

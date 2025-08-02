@@ -13,10 +13,20 @@ export class UserService {
     return await setDoc(ref, data);
   }
 
-  async getUserProfile(uid: string): Promise<UserProfile | null> {
-    const ref = doc(this.firestore, `users/${uid}`);
-    const snapshot = await getDoc(ref);
-    return snapshot.exists() ? (snapshot.data() as UserProfile) : null;
+  async getUserProfile(uid: string): Promise<any | undefined> {
+    const userRef = doc(this.firestore, 'users', uid);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      return userSnap.data();
+    } else {
+      return undefined;
+    }
+  }
+
+  async isUserOnboarded(uid: string): Promise<boolean> {
+    const profile = await this.getUserProfile(uid);
+    return !!(profile?.calorie_target);
   }
 
   async saveNotificationSetting(uid: string, data: NotificationSetting) {

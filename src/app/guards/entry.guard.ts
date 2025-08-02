@@ -1,28 +1,30 @@
+// guards/entry.guard.ts
 import { inject } from '@angular/core';
 import { Auth, user } from '@angular/fire/auth';
 import { CanActivateFn, Router } from '@angular/router';
 import { switchMap, take, of } from 'rxjs';
 import { UserService } from '../services/user.service';
 
-export const onboardingGuard: CanActivateFn = (route, state) => {
+export const entryGuard: CanActivateFn = () => {
   const auth = inject(Auth);
   const router = inject(Router);
-  const firestore = inject(UserService);
+  const userService = inject(UserService);
 
   return user(auth).pipe(
     take(1),
     switchMap((firebaseUser) => {
       if (!firebaseUser) {
-        router.navigateByUrl('/login');
-        return of(false);
+        return of(true); // Nije prijavljen → pusti na login/register
       }
 
-      return firestore.getUserProfile(firebaseUser.uid).then((profile) => {
-        if (profile?.calorieTarget) {
+      // Ako je prijavljen → provjeri onboarding
+      return userService.isUserOnboarded(firebaseUser.uid).then((onboarded) => {
+        if (onboarded) {
           router.navigateByUrl('/dashboard');
-          return false;
+        } else {
+          router.navigateByUrl('/onboarding');
         }
-        return true;
+        return false; // spriječi ulaz na login/register
       });
     })
   );

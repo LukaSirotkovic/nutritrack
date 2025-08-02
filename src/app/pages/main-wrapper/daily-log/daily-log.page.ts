@@ -20,7 +20,7 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { ActivatedRoute } from '@angular/router';
-
+import { DisplayDatePipe } from 'src/app/pipes/display-date.pipe';
 @Component({
   selector: 'app-daily-log',
   templateUrl: './daily-log.page.html',
@@ -36,9 +36,11 @@ import { ActivatedRoute } from '@angular/router';
     IonButton,
     SmartNumberPipe,
     DragDropModule,
+    DisplayDatePipe
   ],
 })
 export class DailyLogPage implements OnInit {
+ 
   today = new Date();
   mealTypes: (
     | 'breakfast'
@@ -68,12 +70,12 @@ export class DailyLogPage implements OnInit {
     private dailyLogService: DailyLogService,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
   async ngOnInit() {
     this.uid = this.authService.getUserId() ?? '';
-     this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       if (params['date']) {
         // Ako je proslijeđen datum, koristi njega
         this.today = new Date(params['date']);
@@ -123,39 +125,6 @@ export class DailyLogPage implements OnInit {
     this.today = new Date(this.today.getTime() + 24 * 60 * 60 * 1000);
     this.todayString = this.today.toISOString().slice(0, 10);
     this.refreshMeals();
-  }
-
-  get displayDate(): string {
-    // Normaliziraj na ponoć da izbjegneš probleme sa satima
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const target = new Date(this.today); // this.today je datum koji prikazuješ
-    target.setHours(0, 0, 0, 0);
-
-    const diffDays =
-      (today.getTime() - target.getTime()) / (1000 * 60 * 60 * 24);
-
-    if (diffDays === 0) {
-      return 'Today';
-    } else if (diffDays === 1) {
-      return 'Yesterday';
-    } else {
-      // Vrati formatirani datum kao do sada
-      // Ako imaš u templateu CommonModule importiran, radi date pipe
-      return (
-        this.today
-          .toLocaleDateString('en-GB', {
-            weekday: 'long',
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-          })
-          .replace(/\//g, '.') + '.'
-      );
-
-      // Ili ostavi Angular pipe u templateu za taj slučaj!
-    }
   }
 
   async openMealActions(meal: MealEntry, event: Event) {
@@ -253,6 +222,16 @@ export class DailyLogPage implements OnInit {
     });
   }
 
+  openMealDetails(meal: MealEntry) {
+    if (this.isTooOld) return;
+    this.router.navigate(['/meal-details'], {
+      queryParams: {
+        mealId: meal.id,
+        date: this.todayString,
+      },
+    });
+  }
+
   dropMeal(event: CdkDragDrop<MealEntry[]>) {
     if (!this.dailyLog?.meals) return;
 
@@ -284,7 +263,6 @@ export class DailyLogPage implements OnInit {
           label: type.charAt(0).toUpperCase() + type.slice(1),
           value: type,
         })),
-        
       ],
       buttons: [
         { text: 'Cancel', role: 'cancel' },

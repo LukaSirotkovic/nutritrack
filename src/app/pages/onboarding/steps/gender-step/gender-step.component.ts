@@ -21,7 +21,7 @@ export class GenderStepComponent {
   }
 
   ngOnInit() {
-    if (this.userData?.gender) {
+    if (!this.userData?.gender) {
       this.userData.gender = '';
     }
   }

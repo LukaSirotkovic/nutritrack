@@ -8,7 +8,7 @@
         </button>
 
         <span class="todays-date">
-            <span> {{ displayDate }} </span>
+            <span> {{ today | displayDate}} </span>
         </span>
         <button class="date-arrow-btn" (click)="goToNextDay()" [disabled]="isToday">
 
@@ -20,7 +20,7 @@
     </div>
     <div cdkDropList [cdkDropListData]="dailyLog?.meals ?? []" (cdkDropListDropped)="dropMeal($event)"
         class="daily-log-list">
-        <ion-card *ngFor="let meal of dailyLog?.meals ?? []" cdkDrag (click)="!isTooOld && openMeal(meal.type)"
+        <ion-card *ngFor="let meal of dailyLog?.meals ?? []" cdkDrag (click)="openMealDetails(meal)"
             [class.disabled-card]="isTooOld" (press)="openMealActions(meal, $event)">
             <div *ngIf="isTooOld" class="locked-overlay"></div>
 

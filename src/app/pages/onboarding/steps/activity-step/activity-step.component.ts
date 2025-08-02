@@ -15,12 +15,12 @@ export class ActivityStepComponent {
   @Input() userData!: Partial<UserProfile>;
 
   selectActivity(level: 'low' | 'moderate' | 'high') {
-    this.userData.activityLevel = level;
+    this.userData.activity_level = level;
   }
 
   ngOnInit() {
-    if (!this.userData.activityLevel) {
-      this.userData.activityLevel = '';
+    if (!this.userData.activity_level) {
+      this.userData.activity_level = '';
     }
   }
 }

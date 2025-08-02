@@ -1,0 +1,86 @@
+
+
+.meal-summary-header {
+    background: #f8f9fa;
+    border-radius: 14px;
+    margin: 16px 20px 18px 20px;
+    padding: 14px 20px;
+    box-shadow: 0 2px 9px 0 #0002;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.nutrients-totals-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 10px;
+}
+
+.macro-label {
+    color: #aaa;
+    font-size: 0.93em;
+}
+
+.macro-value {
+    font-weight: 700;
+}
+
+.macro-value.calories {
+    color: #3b82f6;
+}
+
+.macro-value.proteins {
+    color: #10b981;
+}
+
+.macro-value.carbs {
+    color: #fbbf24;
+}
+
+.macro-value.fats {
+    color: #ef4444;
+}
+
+.meal-info-row {
+    display: flex;
+    justify-content: space-between;
+    color: #555;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+.meal-name {
+    font-size: 1.13rem;
+    font-weight: 600;
+    color: #222;
+    margin: 0;
+    letter-spacing: 0.01em;
+}
+
+.meal-food-list {
+    margin: 10px 16px 0 16px;
+    padding: 0;
+}
+
+.food-title {
+    font-weight: 500;
+}
+
+.food-macros {
+    color: #888;
+    font-size: 0.98em;
+}
+
+.cals {
+    margin-right: 8px;
+}
+
+.prots {
+    margin-right: 8px;
+}
+
+.carbs {
+    margin-right: 8px;
+}

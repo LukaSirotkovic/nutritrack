@@ -3,13 +3,9 @@ import { authGuard } from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
 import { onboardingGuard } from './guards/onboarding.guard';
 import { MainWrapperPage } from './pages/main-wrapper/main-wrapper.page';
+import { entryGuard } from './guards/entry.guard';
 
 export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'loading',
-    pathMatch: 'full',
-  },
   {
     path: 'loading',
     loadComponent: () =>
@@ -17,19 +13,19 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    canActivate: [loginGuard],
+    canActivate: [entryGuard],
     loadComponent: () =>
       import('./pages/login/login.page').then((m) => m.LoginPage),
   },
   {
     path: 'register',
-    canActivate: [loginGuard],
+    canActivate: [entryGuard],
     loadComponent: () =>
       import('./pages/register/register.page').then((m) => m.RegisterPage),
   },
   {
     path: 'onboarding',
-    canActivate: [onboardingGuard],
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/onboarding/onboarding.page').then(
         (m) => m.OnboardingPage
@@ -70,7 +66,13 @@ export const routes: Routes = [
             (m) => m.DailyLogPage
           ),
       },
-      // Možeš dodati još child ruta ovdje
+      {
+        path: 'meal-details',
+        loadComponent: () =>
+          import('./pages/main-wrapper/meal-details/meal-details.page').then(
+            (m) => m.MealDetailsPage
+          ),
+      },
       {
         path: '',
         redirectTo: 'dashboard',

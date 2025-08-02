@@ -1,14 +1,15 @@
 export interface UserProfile {
-  uid: string; // Firebase UID
+  user_id: string;
   gender: 'male' | 'female' | '';
   age: number;
-  height: number; // u centimetrima
-  weight: number; // u kilogramima
-  activityLevel: 'low' | 'moderate' | 'high' | '';
+  height: number; // cm
+  weight: number; // kg
+  activity_level: 'low' | 'moderate' | 'high' | '';
   goal: 'maintain' | 'gain' | 'lose' | '';
-  calorieTarget: number; // izračunati TDEE
-  createdAt: string; // ISO string datuma
-  proteinTarget: number; // 1.8g/kg
-  carbTarget: number; // 4g/kg
-  fatTarget: number; // 1g/kg
+  calorie_target: number;
+  protein_target: number;
+  carb_target: number;
+  fat_target: number;
+  created_at: string; // ISO string
+  photo_url?: string;
 }

@@ -8,7 +8,7 @@
     </ion-text>
 
     <div class="activity-buttons">
-        <ion-button shape="round" size="default" [fill]="userData.activityLevel === 'low' ? 'solid' : 'outline'"
+        <ion-button shape="round" size="default" [fill]="userData.activity_level === 'low' ? 'solid' : 'outline'"
             (click)="selectActivity('low')" class="activity-btn">
             <div class="activity-content">
                 <img src="../../../../../assets/media/directions_walk.svg" alt="Low" />
@@ -19,7 +19,7 @@
             </div>
         </ion-button>
 
-        <ion-button shape="round" size="default" [fill]="userData.activityLevel === 'moderate' ? 'solid' : 'outline'"
+        <ion-button shape="round" size="default" [fill]="userData.activity_level === 'moderate' ? 'solid' : 'outline'"
             (click)="selectActivity('moderate')" class="activity-btn">
             <div class="activity-content">
                 <img src="../../../../../assets/media/fitness_center.svg" alt="Moderate" />
@@ -30,7 +30,7 @@
             </div>
         </ion-button>
 
-        <ion-button shape="round" size="default" [fill]="userData.activityLevel === 'high' ? 'solid' : 'outline'"
+        <ion-button shape="round" size="default" [fill]="userData.activity_level === 'high' ? 'solid' : 'outline'"
             (click)="selectActivity('high')" class="activity-btn">
             <div class="activity-content">
                 <img src="../../../../../assets/media/self_improvement.svg" alt="High" />

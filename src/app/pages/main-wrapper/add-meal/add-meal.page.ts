@@ -108,9 +108,9 @@ export class AddMealPage {
 
     // Pretvori podatke u svoj FoodItem model
     const foodItem: FoodItem = {
-      id: food.id || food._id || food.product_name + Date.now(),
+      food_id: food.id || food._id || food.product_name + Date.now(),
       name: food.product_name,
-      quantity: 100, // default: 100g
+      default_quantity: 100, // default: 100g
       unit: 'g',
       calories: food.nutriments?.['energy-kcal_100g'] || 0,
       proteins: food.nutriments?.['proteins_100g'] || 0,

@@ -1,0 +1,58 @@
+<ion-content>
+    <ng-container *ngIf="loading">
+        <div style="text-align:center; margin-top:60px; color:#888;">
+            Loading...
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="!loading && meal; else noMeal">
+        <div class="meal-summary-header">
+             <div class="meal-info-row">
+                <span class="meal-name">{{ meal.type }}</span>
+                <span class="meal-date">{{ formattedDate }}</span>
+            </div>
+            <div class="nutrients-totals-row">
+                <div>
+                    <div class="macro-label">Calories</div>
+                    <div class="macro-value calories">{{ totalCalories }} <span>kcal</span></div>
+                </div>
+                <div>
+                    <div class="macro-label">Proteins</div>
+                    <div class="macro-value proteins">{{ totalProteins }} <span>g</span></div>
+                </div>
+                <div>
+                    <div class="macro-label">Carbs</div>
+                    <div class="macro-value carbs">{{ totalCarbs }} <span>g</span></div>
+                </div>
+                <div>
+                    <div class="macro-label">Fats</div>
+                    <div class="macro-value fats">{{ totalFats }} <span>g</span></div>
+                </div>
+            </div>
+           
+        </div>
+
+        <div class="meal-food-list">
+            <ion-list>
+                <ion-item *ngFor="let item of meal.items">
+                    <ion-label>
+                        <div class="food-title">{{ item.name }}</div>
+                        <div class="food-macros">
+                            <span class="cals">{{ item.calories }} kcal</span>
+                            <span class="prots">{{ item.proteins }}g Protein</span>
+                            <span class="carbs">{{ item.carbs }}g Carbs</span>
+                            <span class="fats">{{ item.fats }}g Fats</span>
+                        </div>
+                    </ion-label>
+                    <ion-note slot="end">{{ item.default_quantity }}{{ item.unit }}</ion-note>
+                </ion-item>
+            </ion-list>
+        </div>
+    </ng-container>
+
+    <ng-template #noMeal>
+        <div style="text-align:center; color:#aaa; margin-top:60px;">
+            No meal found for this date.
+        </div>
+    </ng-template>
+</ion-content>

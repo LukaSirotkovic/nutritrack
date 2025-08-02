@@ -1,10 +1,10 @@
 export interface FoodItem {
-  id: string;               // optional – ako koristiš bazu
-  name: string;              // npr. "Banana"
-  quantity: number;          // količina (u gramima)
-  unit: 'g' | 'ml' | 'pcs';  // jedinica
-  calories?: number;          // kalorije za tu količinu
-  proteins?: number;
-  fats?: number;
-  carbs?: number;
+  food_id: string;
+  name: string;
+  default_quantity: number;
+  unit: 'g' | 'ml' | 'pcs';
+  calories: number;
+  proteins: number;
+  fats: number;
+  carbs: number;
 }
