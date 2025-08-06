@@ -34,7 +34,8 @@ import { filter } from 'rxjs/operators';
 })
 export class MainWrapperPage implements OnInit {
   userInitials: string = '';
-  userPhotoUrl?: string;
+  userPhotoUrl: string | null = null;
+
   pageTitle: string = '';
 
   constructor(private router: Router, private authService: AuthService) {}
@@ -46,28 +47,15 @@ export class MainWrapperPage implements OnInit {
       .subscribe((event: any) => {
         this.setPageTitle(event.urlAfterRedirects);
       });
-
     // ➤ Dohvati korisničke podatke
-    try {
-      const result = await this.authService.getCurrentUser();
-      const firebaseUser = result.user;
-      const photoURL = firebaseUser.photoURL;
-
-      if (photoURL) {
-        this.userPhotoUrl = firebaseUser.photoURL;
-;
-      } else {
-        const ime = result.firstName || '';
-        const prezime = result.lastName || '';
-        this.userInitials = `${ime[0] || ''}${prezime[0] || ''}`.toUpperCase();
-      }
-    } catch (error) {
-      console.error('Greška pri dohvaćanju korisnika:', error);
-    }
+    const currentUser = await this.authService.getCurrentUser();
+    console.log(currentUser);
+    this.userPhotoUrl = currentUser.photoURL;
+    this.userInitials = `${currentUser.displayName?.[0] ?? ''}`.toUpperCase();
   }
 
   onImageError() {
-    this.userPhotoUrl = undefined;
+    this.userPhotoUrl = null;
   }
   setPageTitle(url: string) {
     if (url.includes('/dashboard')) this.pageTitle = 'Dashboard';

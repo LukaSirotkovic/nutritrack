@@ -1,40 +1,37 @@
-<ion-content>
-    <div class="meal-search-wrapper">
-        <ion-searchbar placeholder="Search food" [(ngModel)]="searchTerm" (ionInput)="onSearch()" debounce="400">
-        </ion-searchbar>
-    </div>
-    <ion-list>
-        <ion-item *ngIf="loading">
-            <ion-label>Searching...</ion-label>
-        </ion-item>
-        <ion-item *ngFor="let food of foodList">
-            <ion-label>
-                <div class="food-title">{{ food.product_name }}</div>
-                <div class="food-details">
-                    <span *ngIf="food.nutriments?.['energy-kcal_100g']">
-                        {{ food.nutriments['energy-kcal_100g'] | number: '1.0-0' }} kcal / 100g
-                    </span>
-                    <span *ngIf="food.nutriments?.['proteins_100g']">
-                        Protein: {{ food.nutriments['proteins_100g'] }}g
-                    </span>
-                    <span *ngIf="food.nutriments?.['carbohydrates_100g']">
-                        Carbs: {{ food.nutriments['carbohydrates_100g'] }}g
-                    </span>
-                    <span *ngIf="food.nutriments?.['fat_100g']">
-                        Fat: {{ food.nutriments['fat_100g'] }}g
-                    </span>
-                </div>
-            </ion-label>
-            <!-- PLUSAJ -->
-            <ion-button fill="clear" size="small" slot="end" (click)="addFoodToMeal(food); $event.stopPropagation()">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                    fill="#000000">
-                    <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-                </svg>
-            </ion-button>
-        </ion-item>
-        <ion-item *ngIf="!loading && foodList.length === 0 && searchTerm">
-            <ion-label>No food found.</ion-label>
-        </ion-item>
-    </ion-list>
-</ion-content>
+<div class="meal-search-wrapper">
+    <ion-searchbar placeholder="Search food" [(ngModel)]="searchTerm" (ionInput)="onSearch()" debounce="400">
+    </ion-searchbar>
+</div>
+<ion-list>
+    <ion-item *ngIf="loading">
+        <ion-label>Searching...</ion-label>
+    </ion-item>
+    <ion-item *ngFor="let food of foodList">
+        <ion-label>
+            <div class="food-title">{{ food.product_name }}</div>
+            <div class="food-details">
+                <span *ngIf="food.nutriments?.['energy-kcal_100g']">
+                    {{ food.nutriments['energy-kcal_100g'] | number: '1.0-0' }} kcal / 100g
+                </span>
+                <span *ngIf="food.nutriments?.['proteins_100g']">
+                    Protein: {{ food.nutriments['proteins_100g'] }}g
+                </span>
+                <span *ngIf="food.nutriments?.['carbohydrates_100g']">
+                    Carbs: {{ food.nutriments['carbohydrates_100g'] }}g
+                </span>
+                <span *ngIf="food.nutriments?.['fat_100g']">
+                    Fat: {{ food.nutriments['fat_100g'] }}g
+                </span>
+            </div>
+        </ion-label>
+        <!-- PLUSAJ -->
+        <ion-button fill="clear" size="small" slot="end" (click)="addFoodToMeal(food); $event.stopPropagation()">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+            </svg>
+        </ion-button>
+    </ion-item>
+    <ion-item *ngIf="!loading && foodList.length === 0 && searchTerm">
+        <ion-label>No food found.</ion-label>
+    </ion-item>
+</ion-list>

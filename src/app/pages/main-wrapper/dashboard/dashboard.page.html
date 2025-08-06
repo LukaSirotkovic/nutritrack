@@ -1,162 +1,157 @@
-<ion-content>
-    <!-- DASHBOARD KALENDAR (uvijek prikazan, ali možeš i njega skeletonizirati ako treba) -->
-    <div class="dashboard-calendar">
-        <ng-container *ngIf="!loading; else calendarSkeleton">
-            <div class="calendar-header-row">
-                <button class="calendar-arrow-btn" (click)="goToPreviusDay()">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px">
-                        <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" />
-                    </svg>
-                </button>
-                <span class="todays-date">
-                    {{ selectedDate | displayDate }}
-                </span>
-                <button class="calendar-arrow-btn" (click)="goToNextDay()">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px">
-                        <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z" />
-                    </svg>
-                </button>
+<!-- DASHBOARD KALENDAR (uvijek prikazan, ali možeš i njega skeletonizirati ako treba) -->
+<div class="dashboard-calendar">
+    <ng-container *ngIf="!loading; else calendarSkeleton">
+        <div class="calendar-header-row">
+            <button class="calendar-arrow-btn" (click)="goToPreviusDay()">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px">
+                    <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" />
+                </svg>
+            </button>
+            <span class="todays-date">
+                {{ selectedDate | displayDate }}
+            </span>
+            <button class="calendar-arrow-btn" (click)="goToNextDay()">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px">
+                    <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z" />
+                </svg>
+            </button>
+        </div>
+        <div class="calendar-week">
+            <div *ngFor="let day of weekDays" class="calendar-day" [class.selected]="isSelectedDate(day.date)"
+                [class.disabled]="isFuture(day.date)" (click)="selectDate(day.date)">
+                <span class="calendar-day-week">{{ day.weekday }}</span>
+                <span class="calendar-day-date">{{ day.day }}</span>
             </div>
-            <div class="calendar-week">
-                <div *ngFor="let day of weekDays" class="calendar-day" [class.selected]="isSelectedDate(day.date)"
-                    [class.disabled]="isFuture(day.date)" (click)="selectDate(day.date)">
-                    <span class="calendar-day-week">{{ day.weekday }}</span>
-                    <span class="calendar-day-date">{{ day.day }}</span>
-                </div>
-            </div>
-        </ng-container>
-
-
-        <ng-template #calendarSkeleton>
-            <div class="calendar-header-row">
-                <div class="skeleton-btn"></div>
-                <div class="skeleton-line skeleton-date"></div>
-                <div class="skeleton-btn"></div>
-            </div>
-            <div class="calendar-week">
-                <div *ngFor="let x of [1,2,3,4,5,6,7]" class="calendar-day">
-                    <div class="skeleton-line skeleton-xs" style="height: 12px; width: 25px; margin-bottom: 2px;"></div>
-                    <div class="skeleton-line skeleton-xxs" style="height: 16px; width: 20px;"></div>
-                </div>
-            </div>
-        </ng-template>
-    </div>
-
-    <!-- DASHBOARD SLIDER SKELETON -->
-    <ng-container *ngIf="!loading; else sliderSkeleton">
-        <swiper-container (slideChange)="onSlideChange($event)" [pagination]="true" [spaceBetween]="20"
-            style="width: 100%;" class="dashboard-swiper" (click)="goToDailyLog(selectedDate)">
-            <!-- Slide 1: Calories -->
-            <swiper-slide>
-                <div class="dashboard-box">
-                    <div class="dashboard-header">
-                        <h2 class="category">Calories</h2>
-                        <p class="subtext">Remaining = Base goal - food intake</p>
-                    </div>
-                    <div class="dashboard-calorie-slide">
-                        <div class="dashboard-calorie-circle">
-                            <app-circle-progress [value]="totalDailyCalories" [max]="userProfile?.calorie_target ?? 0"
-                                [color]="'#3b82f6'" [label]="'Remaining'" [main]="true" [animate]="activeSlide === 0"
-                                [displayValue]="(userProfile?.calorie_target ?? 0) - totalDailyCalories">
-                            </app-circle-progress>
-                        </div>
-                        <div class="dashboard-calorie-text">
-                            <div class="goal-row">
-                                <span class="goal-icon">
-                                    <!-- SVG -->
-                                </span>
-                                <div>
-                                    <div class="goal-label">Base Goal</div>
-                                    <div class="goal-value">{{ userProfile?.calorie_target }}</div>
-                                </div>
-                            </div>
-                            <div class="food-row">
-                                <span class="food-icon">
-                                    <!-- SVG -->
-                                </span>
-                                <div>
-                                    <div class="food-label">Food</div>
-                                    <div class="food-value">{{ totalDailyCalories }}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </swiper-slide>
-            <!-- Slide 2: Macros -->
-            <swiper-slide>
-                <div class="dashboard-box">
-                    <div class="dashboard-header">
-                        <h2 class="category">Macros</h2>
-                    </div>
-                    <div class="dashboard-macros-slide">
-                        <app-circle-progress [value]="totalDailyProteins" [max]="userProfile?.protein_target ?? 0"
-                            [animate]="activeSlide === 1" [color]="'#10b981'" [label]="'Proteins'" [unit]="'g'"
-                            [displayValue]="totalDailyProteins">
-                        </app-circle-progress>
-                        <app-circle-progress [value]="totalDailyCarbs" [max]="userProfile?.carb_target ?? 0"
-                            [animate]="activeSlide === 1" [color]="'#fbbf24'" [label]="'Carbs'" [unit]="'g'"
-                            [displayValue]="totalDailyCarbs">
-                        </app-circle-progress>
-                        <app-circle-progress [value]="totalDailyFats" [max]="userProfile?.fat_target ?? 0"
-                            [animate]="activeSlide === 1" [color]="'#ef4444'" [label]="'Fats'" [unit]="'g'"
-                            [displayValue]="totalDailyFats">
-                        </app-circle-progress>
-                    </div>
-                </div>
-            </swiper-slide>
-        </swiper-container>
+        </div>
     </ng-container>
-    <ng-template #sliderSkeleton>
-        <div class="dashboard-swiper">
-            <div class="dashboard-box skeleton-card" style="height:240px"></div>
+
+
+    <ng-template #calendarSkeleton>
+        <div class="calendar-header-row">
+            <div class="skeleton-btn"></div>
+            <div class="skeleton-line skeleton-date"></div>
+            <div class="skeleton-btn"></div>
+        </div>
+        <div class="calendar-week">
+            <div *ngFor="let x of [1,2,3,4,5,6,7]" class="calendar-day">
+                <div class="skeleton-line skeleton-xs" style="height: 12px; width: 25px; margin-bottom: 2px;"></div>
+                <div class="skeleton-line skeleton-xxs" style="height: 16px; width: 20px;"></div>
+            </div>
         </div>
     </ng-template>
+</div>
 
-    <!-- ACTIVITIES LIST SKELETON -->
-    <ion-card class="activities">
-        <ng-container *ngIf="!loading; else activitiesSkeleton">
-            <div class="activity-header">
-                <h2 class="activity">Activities</h2>
-            </div>
-            <div class="activity-list">
-                <div class="activity-row" *ngFor="let log of recentLogsExcludingToday" (click)="goToDailyLog(log.date)">
-                    <div class="activity-date">
-                        <div class="activity-date-label">{{ formatLogDate(log.date) }}</div>
-                        <div class="activity-calories">
-                            {{ log.totalDailyCalories }} kcal
+<!-- DASHBOARD SLIDER SKELETON -->
+<ng-container *ngIf="!loading; else sliderSkeleton">
+    <swiper-container (slideChange)="onSlideChange($event)" [pagination]="true" [spaceBetween]="20" style="width: 100%;"
+        class="dashboard-swiper" (click)="goToDailyLog(selectedDate)">
+        <!-- Slide 1: Calories -->
+        <swiper-slide>
+            <div class="dashboard-box">
+                <div class="dashboard-header">
+                    <h2 class="category">Calories</h2>
+                    <p class="subtext">Remaining = Base goal - food intake</p>
+                </div>
+                <div class="dashboard-calorie-slide">
+                    <div class="dashboard-calorie-circle">
+                        <app-circle-progress [value]="totalDailyCalories" [max]="userProfile?.calorie_target ?? 0"
+                            [color]="'#3b82f6'" [label]="'Remaining'" [main]="true" [animate]="activeSlide === 0"
+                            [displayValue]="(userProfile?.calorie_target ?? 0) - totalDailyCalories">
+                        </app-circle-progress>
+                    </div>
+                    <div class="dashboard-calorie-text">
+                        <div class="goal-row">
+                            <span class="goal-icon">
+                                <!-- SVG -->
+                            </span>
+                            <div>
+                                <div class="goal-label">Base Goal</div>
+                                <div class="goal-value">{{ userProfile?.calorie_target }}</div>
+                            </div>
+                        </div>
+                        <div class="food-row">
+                            <span class="food-icon">
+                                <!-- SVG -->
+                            </span>
+                            <div>
+                                <div class="food-label">Food</div>
+                                <div class="food-value">{{ totalDailyCalories }}</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="activity-remaining">
-                        <span class="remaining-label" [ngClass]="{
+                </div>
+            </div>
+        </swiper-slide>
+        <!-- Slide 2: Macros -->
+        <swiper-slide>
+            <div class="dashboard-box">
+                <div class="dashboard-header">
+                    <h2 class="category">Macros</h2>
+                </div>
+                <div class="dashboard-macros-slide">
+                    <app-circle-progress [value]="totalDailyProteins" [max]="userProfile?.protein_target ?? 0"
+                        [animate]="activeSlide === 1" [color]="'#10b981'" [label]="'Proteins'" [unit]="'g'"
+                        [displayValue]="totalDailyProteins">
+                    </app-circle-progress>
+                    <app-circle-progress [value]="totalDailyCarbs" [max]="userProfile?.carb_target ?? 0"
+                        [animate]="activeSlide === 1" [color]="'#fbbf24'" [label]="'Carbs'" [unit]="'g'"
+                        [displayValue]="totalDailyCarbs">
+                    </app-circle-progress>
+                    <app-circle-progress [value]="totalDailyFats" [max]="userProfile?.fat_target ?? 0"
+                        [animate]="activeSlide === 1" [color]="'#ef4444'" [label]="'Fats'" [unit]="'g'"
+                        [displayValue]="totalDailyFats">
+                    </app-circle-progress>
+                </div>
+            </div>
+        </swiper-slide>
+    </swiper-container>
+</ng-container>
+<ng-template #sliderSkeleton>
+    <div class="dashboard-swiper">
+        <div class="dashboard-box skeleton-card" style="height:240px"></div>
+    </div>
+</ng-template>
+
+<!-- ACTIVITIES LIST SKELETON -->
+<ion-card class="activities">
+    <ng-container *ngIf="!loading; else activitiesSkeleton">
+        <div class="activity-header">
+            <h2 class="activity">Activities</h2>
+        </div>
+        <div class="activity-list">
+            <div class="activity-row" *ngFor="let log of recentLogsExcludingToday" (click)="goToDailyLog(log.date)">
+                <div class="activity-date">
+                    <div class="activity-date-label">{{ formatLogDate(log.date) }}</div>
+                    <div class="activity-calories">
+                        {{ log.totalDailyCalories }} kcal
+                    </div>
+                </div>
+                <div class="activity-remaining">
+                    <span class="remaining-label" [ngClass]="{
                             green: (userProfile?.calorie_target ?? 0) > log.totalDailyCalories,
                             red: (userProfile?.calorie_target ?? 0) < log.totalDailyCalories
                         }">
-                            {{ getRemainingText(log) }}
-                        </span>
-                    </div>
+                        {{ getRemainingText(log) }}
+                    </span>
                 </div>
             </div>
-        </ng-container>
-        <ng-template #activitiesSkeleton>
-            <div class="activity-header">
-                <div class="skeleton-line skeleton-md" style="width: 100px; height: 22px; margin-bottom: 8px"></div>
-            </div>
-            <div class="activity-list">
-                <div *ngFor="let sk of [1, 2, 3, 4]" class="activity-row">
-                    <div class="activity-date">
-                        <div class="skeleton-line skeleton-sm" style="width: 110px"></div>
-                        <div class="skeleton-line skeleton-xs" style="width: 60px"></div>
-                    </div>
-                    <div class="activity-remaining">
-                        <div class="skeleton-dot"></div>
-                        <div class="skeleton-line skeleton-xxs" style="width: 80px"></div>
-                    </div>
+        </div>
+    </ng-container>
+    <ng-template #activitiesSkeleton>
+        <div class="activity-header">
+            <div class="skeleton-line skeleton-md" style="width: 100px; height: 22px; margin-bottom: 8px"></div>
+        </div>
+        <div class="activity-list">
+            <div *ngFor="let sk of [1, 2, 3, 4]" class="activity-row">
+                <div class="activity-date">
+                    <div class="skeleton-line skeleton-sm" style="width: 110px"></div>
+                    <div class="skeleton-line skeleton-xs" style="width: 60px"></div>
+                </div>
+                <div class="activity-remaining">
+                    <div class="skeleton-dot"></div>
+                    <div class="skeleton-line skeleton-xxs" style="width: 80px"></div>
                 </div>
             </div>
-        </ng-template>
-    </ion-card>
-
-    
-
-</ion-content>
+        </div>
+    </ng-template>
+</ion-card>

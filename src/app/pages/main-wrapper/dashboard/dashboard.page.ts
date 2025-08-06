@@ -11,6 +11,7 @@ import { AppCircleProgressComponent } from 'src/app/components/app-circle-progre
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { DisplayDatePipe } from 'src/app/pipes/display-date.pipe';
+import { CalendarHeaderComponent } from 'src/app/components/calendar-header/calendar-header.component';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
@@ -18,7 +19,6 @@ import { DisplayDatePipe } from 'src/app/pipes/display-date.pipe';
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
-    IonContent,
     CommonModule,
     FormsModule,
     AppCircleProgressComponent,
@@ -184,11 +184,13 @@ export class DashboardPage implements OnInit {
   goToPreviusDay() {
     const previousDate = new Date(this.selectedDate);
     previousDate.setDate(previousDate.getDate() - 1);
+
     if (previousDate < new Date('2024-01-01')) {
       return;
     }
 
     this.selectedDate = previousDate.toISOString().slice(0, 10);
+    this.selectDate(this.selectedDate);
     this.generateWeek(this.selectedDate);
   }
 
@@ -203,6 +205,7 @@ export class DashboardPage implements OnInit {
     }
 
     this.selectedDate = nextDateStr.toISOString().slice(0, 10);
+    this.selectDate(this.selectedDate);
     this.generateWeek(this.selectedDate);
   }
 

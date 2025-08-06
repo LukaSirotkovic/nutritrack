@@ -1,25 +1,36 @@
-<ion-content>
+<ng-container *ngIf="!loading; else dailyLogSkeleton">
     <div class="daily-log-date">
         <button class="date-arrow-btn" (click)="goToPreviousDay()">
-
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
                 <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" />
             </svg>
         </button>
 
         <span class="todays-date">
-            <span> {{ today | displayDate}} </span>
+            <span>{{ today | displayDate }}</span>
         </span>
-        <button class="date-arrow-btn" (click)="goToNextDay()" [disabled]="isToday">
 
+        <button class="date-arrow-btn" (click)="goToNextDay()" [disabled]="isToday">
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 [attr.fill]="isToday ? '#9c9c9c' : '#222'">
                 <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z" />
             </svg>
         </button>
     </div>
+
     <div cdkDropList [cdkDropListData]="dailyLog?.meals ?? []" (cdkDropListDropped)="dropMeal($event)"
         class="daily-log-list">
+
+        <ng-container *ngIf="!loading;">
+            <div *ngIf="!isTooOld" class="add-meal-dashed-box" (click)="addNewMeal()">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    fill="#3b82f6">
+                    <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                </svg>
+                <span>Dodaj obrok</span>
+            </div>
+        </ng-container>
+
         <ion-card *ngFor="let meal of dailyLog?.meals ?? []" cdkDrag (click)="openMealDetails(meal)"
             [class.disabled-card]="isTooOld" (press)="openMealActions(meal, $event)">
             <div *ngIf="isTooOld" class="locked-overlay"></div>
@@ -36,50 +47,68 @@
                         <circle cx="19" cy="12" r="2"></circle>
                     </svg>
                 </ion-button>
-
             </ion-card-header>
 
             <ion-card-content>
                 <div class="meal-content">
-                    <ng-container>
-                        <div class="meal-macros-row">
-                            <div class="macro-block calories">
-                                <div class="macro-label">Calories</div>
-                                <div class="macro-value">
-                                    {{ meal.totalMealCalories || 0 | smartNumber}}<span class="macro-unit">kcal</span>
-                                </div>
-                            </div>
-                            <div class="macro-block proteins">
-                                <div class="macro-label">Proteins</div>
-                                <div class="macro-value">
-                                    {{ meal.totalMealProteins || 0 | smartNumber}}<span class="macro-unit">g</span>
-                                </div>
-                            </div>
-                            <div class="macro-block carbs">
-                                <div class="macro-label">Carbs</div>
-                                <div class="macro-value">
-                                    {{ meal.totalMealCarbs || 0 | smartNumber}}<span class="macro-unit">g</span>
-                                </div>
-                            </div>
-                            <div class="macro-block fats">
-                                <div class="macro-label">Fats</div>
-                                <div class="macro-value">
-                                    {{ meal.totalMealFats || 0 | smartNumber}}<span class="macro-unit">g</span>
-                                </div>
+                    <div class="meal-macros-row">
+                        <div class="macro-block calories">
+                            <div class="macro-label">Calories</div>
+                            <div class="macro-value">
+                                {{ meal.totalMealCalories || 0 | smartNumber }}<span class="macro-unit">kcal</span>
                             </div>
                         </div>
-
-                    </ng-container>
+                        <div class="macro-block proteins">
+                            <div class="macro-label">Proteins</div>
+                            <div class="macro-value">
+                                {{ meal.totalMealProteins || 0 | smartNumber }}<span class="macro-unit">g</span>
+                            </div>
+                        </div>
+                        <div class="macro-block carbs">
+                            <div class="macro-label">Carbs</div>
+                            <div class="macro-value">
+                                {{ meal.totalMealCarbs || 0 | smartNumber }}<span class="macro-unit">g</span>
+                            </div>
+                        </div>
+                        <div class="macro-block fats">
+                            <div class="macro-label">Fats</div>
+                            <div class="macro-value">
+                                {{ meal.totalMealFats || 0 | smartNumber }}<span class="macro-unit">g</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </ion-card-content>
         </ion-card>
 
-        <div *ngIf="!isTooOld" class="add-meal-dashed-box" (click)="addNewMeal()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#3b82f6">
-                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-            </svg>
-            <span>Dodaj obrok</span>
+
+    </div>
+</ng-container>
+
+<!-- SKELETON -->
+<ng-template #dailyLogSkeleton>
+    <!-- <div class="daily-log-date">
+        <div class="skeleton-btn"></div>
+        <div class="skeleton-line skeleton-date"></div>
+        <div class="skeleton-btn"></div>
+    </div> -->
+
+
+    <div class="daily-log-list">
+
+        <div class="skeleton-add-meal"></div>
+        <div class="skeleton-meal-card" *ngFor="let _ of dailyLog?.meals">
+            <div class="skeleton-meal-header">
+                <div class="skeleton-line skeleton-sm" style="width: 120px;"></div>
+                <div class="skeleton-btn" style="width: 28px; height: 28px;"></div>
+            </div>
+
+            <div class="skeleton-meal-macros">
+                <div class="skeleton-macro" *ngFor="let __ of [1,2,3,4]">
+                    <div class="skeleton-line skeleton-xxs" style="width: 50px; margin-bottom: 6px;"></div>
+                    <div class="skeleton-line skeleton-xs" style="width: 40px;"></div>
+                </div>
+            </div>
         </div>
     </div>
-</ion-content>
+</ng-template>

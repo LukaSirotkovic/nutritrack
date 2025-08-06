@@ -21,6 +21,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { ActivatedRoute } from '@angular/router';
 import { DisplayDatePipe } from 'src/app/pipes/display-date.pipe';
+import { CalendarHeaderComponent } from 'src/app/components/calendar-header/calendar-header.component';
 @Component({
   selector: 'app-daily-log',
   templateUrl: './daily-log.page.html',
@@ -31,16 +32,15 @@ import { DisplayDatePipe } from 'src/app/pipes/display-date.pipe';
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
-    IonContent,
     CommonModule,
     IonButton,
     SmartNumberPipe,
     DragDropModule,
-    DisplayDatePipe
+    DisplayDatePipe,
   ],
 })
 export class DailyLogPage implements OnInit {
- 
+  loading: boolean = true;
   today = new Date();
   mealTypes: (
     | 'breakfast'
@@ -193,28 +193,32 @@ export class DailyLogPage implements OnInit {
   }
 
   async refreshMeals() {
-    this.dailyLog = await this.dailyLogService.getDailyLog(
-      this.uid,
-      this.todayString
-    );
-    this.mealsByType = {};
-    if (this.dailyLog && this.dailyLog.meals) {
-      for (const meal of this.dailyLog.meals) {
-        this.mealsByType[meal.type] = meal;
+    this.loading = true;
+    try {
+      this.dailyLog = await this.dailyLogService.getDailyLog(
+        this.uid,
+        this.todayString
+      );
+      this.mealsByType = {};
+      if (this.dailyLog && this.dailyLog.meals) {
+        for (const meal of this.dailyLog.meals) {
+          this.mealsByType[meal.type] = meal;
+        }
+        this.calculateDailyTotals(this.dailyLog);
+      } else {
+        // Ako nema obroka, sve resetiraj
+        this.totalCalories = 0;
+        this.totalProteins = 0;
+        this.totalCarbs = 0;
+        this.totalFats = 0;
       }
-      // Izračunaj total svaki put kad se refresha dailyLog!
-      this.calculateDailyTotals(this.dailyLog);
-    } else {
-      // Ako nema obroka, sve resetiraj
-      this.totalCalories = 0;
-      this.totalProteins = 0;
-      this.totalCarbs = 0;
-      this.totalFats = 0;
+    } finally {
+      this.loading = false;
     }
   }
 
   openMeal(type: string) {
-    this.router.navigate(['/add-meal'], {
+    this.router.navigate(['/meal-details'], {
       queryParams: {
         type,
         date: this.todayString,

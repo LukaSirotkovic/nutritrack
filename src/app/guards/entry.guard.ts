@@ -1,4 +1,3 @@
-// guards/entry.guard.ts
 import { inject } from '@angular/core';
 import { Auth, user } from '@angular/fire/auth';
 import { CanActivateFn, Router } from '@angular/router';

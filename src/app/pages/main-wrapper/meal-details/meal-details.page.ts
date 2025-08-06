@@ -19,7 +19,6 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./meal-details.page.css'],
   standalone: true,
   imports: [
-    IonContent,
     CommonModule,
     FormsModule,
     IonList,

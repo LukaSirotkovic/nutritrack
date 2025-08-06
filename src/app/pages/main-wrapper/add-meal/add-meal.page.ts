@@ -22,7 +22,6 @@ import { FoodItem } from 'src/app/models';
   styleUrls: ['./add-meal.page.css'],
   standalone: true,
   imports: [
-    IonContent,
     CommonModule,
     FormsModule,
     IonList,
