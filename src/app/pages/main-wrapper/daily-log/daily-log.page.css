@@ -6,10 +6,7 @@
     border-radius: 13px;
     background: white;
     animation: shimmer 1.2s linear infinite;
-
 }
-
-
 
 .skeleton-meal-card {
     background: white;
@@ -232,7 +229,7 @@
 .daily-log-list {
     display: flex;
     flex-direction: column;
-    padding: 0 20px;
+    padding: 20px 20px 40px 20px;
     gap: 20px;
 }
 

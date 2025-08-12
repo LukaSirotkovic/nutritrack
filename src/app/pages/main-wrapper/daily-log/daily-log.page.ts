@@ -22,6 +22,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { DisplayDatePipe } from 'src/app/pipes/display-date.pipe';
 import { CalendarHeaderComponent } from 'src/app/components/calendar-header/calendar-header.component';
+import { CalendarStateService } from 'src/app/services/calendar-state.service';
 @Component({
   selector: 'app-daily-log',
   templateUrl: './daily-log.page.html',
@@ -36,7 +37,7 @@ import { CalendarHeaderComponent } from 'src/app/components/calendar-header/cale
     IonButton,
     SmartNumberPipe,
     DragDropModule,
-    DisplayDatePipe,
+    CalendarHeaderComponent,
   ],
 })
 export class DailyLogPage implements OnInit {
@@ -70,22 +71,19 @@ export class DailyLogPage implements OnInit {
     private dailyLogService: DailyLogService,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cal: CalendarStateService
   ) {}
 
   async ngOnInit() {
     this.uid = this.authService.getUserId() ?? '';
-    this.route.queryParams.subscribe((params) => {
-      if (params['date']) {
-        // Ako je proslijeđen datum, koristi njega
-        this.today = new Date(params['date']);
-        this.todayString = params['date'];
-      } else {
-        // Inače koristi današnji
-        this.today = new Date();
-        this.todayString = this.today.toISOString().slice(0, 10);
-      }
-      this.refreshMeals();
+    if (!this.uid) return;
+
+    // reagiraj na promjenu datuma iz shared calendar state-a
+    this.cal.selectedDate$.subscribe(async (date) => {
+      this.today = new Date(date);
+      this.todayString = date;
+      await this.refreshMeals();
     });
   }
 

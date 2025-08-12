@@ -1,0 +1,46 @@
+<div class="dashboard-calendar">
+    <ng-container *ngIf="!loading; else calendarSkeleton">
+
+        <div class="calendar-header-row">
+            <button class="calendar-arrow-btn" (click)="goToPreviousDay()">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px">
+                    <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" />
+                </svg>
+            </button>
+
+            <span class="todays-date">
+                {{ (cal.selectedDate$ | async) | displayDate }}
+            </span>
+
+            <button class="calendar-arrow-btn" (click)="goToNextDay()">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px">
+                    <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="calendar-week">
+            <div *ngFor="let day of (cal.weekDays$ | async) ?? []" class="calendar-day"
+                [class.selected]="cal.isSelected(day.date)" [class.disabled]="cal.isFuture(day.date)"
+                (click)="selectDate(day.date)">
+                <span class="calendar-day-week">{{ day.weekday }}</span>
+                <span class="calendar-day-date">{{ day.day }}</span>
+            </div>
+        </div>
+
+    </ng-container>
+
+    <ng-template #calendarSkeleton>
+        <div class="calendar-header-row">
+            <div class="skeleton-btn"></div>
+            <div class="skeleton-line skeleton-date"></div>
+            <div class="skeleton-btn"></div>
+        </div>
+        <div class="calendar-week">
+            <div *ngFor="let x of [1,2,3,4,5,6,7]" class="calendar-day">
+                <div class="skeleton-line skeleton-xs" style="height: 12px; width: 25px; margin-bottom: 2px;"></div>
+                <div class="skeleton-line skeleton-xxs" style="height: 16px; width: 20px;"></div>
+            </div>
+        </div>
+    </ng-template>
+</div>

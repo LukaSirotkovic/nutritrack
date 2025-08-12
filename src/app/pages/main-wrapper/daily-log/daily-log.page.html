@@ -1,22 +1,6 @@
+<app-calendar-header ></app-calendar-header>
 <ng-container *ngIf="!loading; else dailyLogSkeleton">
-    <div class="daily-log-date">
-        <button class="date-arrow-btn" (click)="goToPreviousDay()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
-                <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" />
-            </svg>
-        </button>
 
-        <span class="todays-date">
-            <span>{{ today | displayDate }}</span>
-        </span>
-
-        <button class="date-arrow-btn" (click)="goToNextDay()" [disabled]="isToday">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                [attr.fill]="isToday ? '#9c9c9c' : '#222'">
-                <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z" />
-            </svg>
-        </button>
-    </div>
 
     <div cdkDropList [cdkDropListData]="dailyLog?.meals ?? []" (cdkDropListDropped)="dropMeal($event)"
         class="daily-log-list">
@@ -87,16 +71,9 @@
 
 <!-- SKELETON -->
 <ng-template #dailyLogSkeleton>
-    <!-- <div class="daily-log-date">
-        <div class="skeleton-btn"></div>
-        <div class="skeleton-line skeleton-date"></div>
-        <div class="skeleton-btn"></div>
-    </div> -->
-
-
     <div class="daily-log-list">
 
-        <div class="skeleton-add-meal"></div>
+        <div *ngIf="!isTooOld" class="skeleton-add-meal"></div>
         <div class="skeleton-meal-card" *ngFor="let _ of dailyLog?.meals">
             <div class="skeleton-meal-header">
                 <div class="skeleton-line skeleton-sm" style="width: 120px;"></div>

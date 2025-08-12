@@ -1,0 +1,140 @@
+.dashboard-calendar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0 20px 0 20px;
+    border-radius: 8px;
+    padding: 15px 16px;
+    background: #fff;
+    box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
+    align-items: stretch;
+}
+
+.calendar-header-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.todays-date {
+    flex: 1;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #000000;
+    letter-spacing: 0.03em;
+}
+
+.calendar-arrow-btn {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding: 3px 5px;
+}
+
+.calendar-arrow-btn[disabled] {
+    opacity: 0.34;
+}
+
+.calendar-week {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calendar-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 38px;
+    border-radius: 8px;
+    padding: 8px 2px 5px 2px;
+    color: #000;
+    background: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.13s, color 0.13s;
+    user-select: none;
+}
+
+.calendar-day.selected {
+    background: #7ab68c;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(33, 104, 66, 0.11);
+}
+
+
+.calendar-day.disabled {
+    color: #6a626b;
+    pointer-events: none;
+    opacity: 0.45;
+}
+
+.calendar-day-week {
+    font-size: 0.89em;
+    opacity: 0.74;
+    margin-bottom: 2px;
+}
+
+.calendar-day-date {
+    font-size: 1.14em;
+    font-weight: 600;
+}
+
+/* skeletons (isti stil kao što koristiš na dashboardu) */
+.skeleton-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e3e3e3;
+    animation: shimmer 1.2s linear infinite;
+    margin: 0 6px;
+    display: inline-block;
+}
+
+.skeleton-line.skeleton-date {
+    width: 80px;
+    height: 16px;
+    border-radius: 7px;
+    background: #e3e3e3;
+    animation: shimmer 1.2s linear infinite;
+    display: inline-block;
+}
+
+.skeleton-line {
+    height: 14px;
+    background: #e3e3e3;
+    border-radius: 7px;
+    margin-bottom: 7px;
+    width: 80px;
+    animation: shimmer 1.2s linear infinite;
+}
+
+.skeleton-line.skeleton-xs {
+    width: 60px;
+    height: 12px;
+}
+
+.skeleton-line.skeleton-xxs {
+    width: 56px;
+    height: 11px;
+    margin-bottom: 0;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -100px 0;
+    }
+
+    100% {
+        background-position: 200px 0;
+    }
+}
