@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { MainWrapperPage } from './pages/main-wrapper/main-wrapper.page';
 import { entryGuard } from './guards/entry.guard';
 import { onboardingGate } from './guards/onboarding-gate.guard';
-import { mustBeAuthed } from './guards/mustBeAuthed.guard';
 import { appGate } from './guards/app-gate.guard';
 
 export const routes: Routes = [
