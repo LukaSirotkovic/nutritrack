@@ -17,6 +17,10 @@ export class CalendarHeaderComponent {
 
   constructor(public cal: CalendarStateService) {}
 
+  ngOnInit() {
+    this.cal.resetToToday(); // ⟵ svaki cold start vrati na današnji dan
+  }
+
   async selectDate(date: string) {
     this.cal.selectDate(date);
   }

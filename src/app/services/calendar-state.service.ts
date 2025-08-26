@@ -24,6 +24,10 @@ export class CalendarStateService {
     });
   }
 
+  resetToToday() {
+    const today = this.getTodayString();
+    this._selectedDate$.next(today);
+  }
   /** Init iz localStorage ili današnji */
   private getInitialDate(): string {
     try {
@@ -36,6 +40,10 @@ export class CalendarStateService {
   getTodayString(): string {
     const now = new Date();
     return now.toISOString().slice(0, 10);
+  }
+
+  getSelectedDate(): string {
+    return this._selectedDate$.value;
   }
 
   isFuture(date: string): boolean {

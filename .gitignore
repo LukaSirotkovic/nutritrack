@@ -17,6 +17,9 @@ log.txt
 /.versions
 /coverage
 
+# Prettier config
+.prettierrc
+
 # Ionic
 /.ionic
 /www

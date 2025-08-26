@@ -6,39 +6,51 @@ import { NotificationSetting } from '../models/notification-setting.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  constructor(private firestore: Firestore) {}
+	constructor(private firestore: Firestore) {}
 
-  async saveUserProfile(uid: string, data: UserProfile) {
-    const ref = doc(this.firestore, `users/${uid}`);
-    return await setDoc(ref, data);
-  }
+	async saveUserProfile(uid: string, data: Partial<UserProfile>) {
+		const ref = doc(this.firestore, `users/${uid}`);
+		return setDoc(
+			ref,
+			{
+				...data,
+				onboarded: true, // ✅ označi da je korisnik završio onboarding
+			},
+			{ merge: true } // ✅ ne prepisuj postojeća polja
+		);
+	}
 
-  async getUserProfile(uid: string): Promise<any | undefined> {
-    const userRef = doc(this.firestore, 'users', uid);
-    const userSnap = await getDoc(userRef);
+	async isUserOnboarded(uid: string): Promise<boolean> {
+		const ref = doc(this.firestore, 'users', uid);
+		const snap = await getDoc(ref);
+		if (!snap.exists()) return false;
 
-    if (userSnap.exists()) {
-      return userSnap.data();
-    } else {
-      return undefined;
-    }
-  }
+		const d = snap.data() as any;
+		// primarno: flag
+		if (d?.onboarded === true) return true;
+		// fallback za stare korisnike: ima li ključna polja?
+		return !!(d?.calorie_target && d?.gender && d?.height && d?.weight && d?.activity_level && d?.goal);
+	}
 
-  async isUserOnboarded(uid: string): Promise<boolean> {
-    const profile = await this.getUserProfile(uid);
-    return !!(profile?.calorie_target);
-  }
+	async getUserProfile(uid: string): Promise<any | undefined> {
+		const userRef = doc(this.firestore, 'users', uid);
+		const userSnap = await getDoc(userRef);
 
-  async saveNotificationSetting(uid: string, data: NotificationSetting) {
-    const ref = doc(this.firestore, `users/${uid}/settings/notification`);
-    return await setDoc(ref, data);
-  }
+		if (userSnap.exists()) {
+			return userSnap.data();
+		} else {
+			return undefined;
+		}
+	}
 
-  async getNotificationSetting(
-    uid: string
-  ): Promise<NotificationSetting | null> {
-    const ref = doc(this.firestore, `users/${uid}/settings/notification`);
-    const snapshot = await getDoc(ref);
-    return snapshot.exists() ? (snapshot.data() as NotificationSetting) : null;
-  }
+	async saveNotificationSetting(uid: string, data: NotificationSetting) {
+		const ref = doc(this.firestore, `users/${uid}/settings/notification`);
+		return await setDoc(ref, data);
+	}
+
+	async getNotificationSetting(uid: string): Promise<NotificationSetting | null> {
+		const ref = doc(this.firestore, `users/${uid}/settings/notification`);
+		const snapshot = await getDoc(ref);
+		return snapshot.exists() ? (snapshot.data() as NotificationSetting) : null;
+	}
 }

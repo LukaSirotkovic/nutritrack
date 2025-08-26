@@ -1,37 +1,67 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-avatar *ngIf="userPhotoUrl; else initialsAvatar">
-                <img [src]="userPhotoUrl" (error)="onImageError()" />
-            </ion-avatar>
-            <ng-template #initialsAvatar>
-                <div class="initials-avatar">
-                    {{ userInitials }}
-                </div>
+        <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-button id="userMenuBtn" fill="clear">
+                    <ion-avatar *ngIf="userPhotoUrl; else initialsAvatar">
+                        <img [src]="userPhotoUrl" (error)="onImageError()" />
+                    </ion-avatar>
+                    <ng-template #initialsAvatar>
+                        <div class="initials-avatar">{{ userInitials }}</div>
+                    </ng-template>
+                </ion-button>
+            </ion-buttons>
+
+            <div class="app-title">
+                <span class="page-title">{{ pageTitle }}</span>
+                <span class="app-name">Nutritrack</span>
+            </div>
+
+
+            <ion-buttons slot="end">
+                <ion-button (click)="goToNotifications()">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                        fill="#000000">
+                        <path
+                            d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z" />
+                    </svg>
+                </ion-button>
+            </ion-buttons>
+
+            <!-- <ion-popover #userMenu trigger="userMenuBtn" triggerAction="click">
+            <ng-template>
+                <ion-list>
+                    <ion-item button (click)="goToSettings()">
+                        <ion-label>Settings</ion-label>
+                    </ion-item>
+                    <ion-item button (click)="logout()">
+                        <ion-label>Sign out</ion-label>
+                    </ion-item>
+                </ion-list>
             </ng-template>
-
-        </ion-buttons>
-
-        <div class="app-title">
-            <span class="page-title">{{ pageTitle }}</span>
-            <span class="app-name">Nutritrack</span>
-        </div>
+        </ion-popover> -->
 
 
-        <ion-buttons slot="end">
-            <ion-button (click)="goToNotifications()">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                    fill="#000000">
-                    <path
-                        d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z" />
-                </svg>
-            </ion-button>
-        </ion-buttons>
-    </ion-toolbar>
-</ion-header>
 
-<ion-content class="">
+            <ion-popover trigger="userMenuBtn" triggerAction="click" dismissOnSelect="true" side="bottom"
+                alignment="start" class="user-menu-popover">
+                <ng-template>
+                    <ion-list>
+                        <ion-item button lines="none" detail="false" (click)="goToSettings()">Settings</ion-item>
+                        <ion-item button lines="none" detail="false" (click)="logout()">Sign out</ion-item>
+                    </ion-list>
+                </ng-template>
+            </ion-popover>
+        </ion-toolbar>
+    </ion-header>
+<ion-content>
+    
+
     <router-outlet></router-outlet>
+
+
+
+
+
 </ion-content>
 
 <ion-footer class="custom-footer">

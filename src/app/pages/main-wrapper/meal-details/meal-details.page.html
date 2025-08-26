@@ -1,56 +1,69 @@
-<ng-container *ngIf="loading">
-    <div style="text-align:center; margin-top:60px; color:#888;">
-        Loading...
-    </div>
-</ng-container>
-
-<ng-container *ngIf="!loading && meal; else noMeal">
+<ng-container *ngIf="!loading && meal">
     <div class="meal-summary-header">
         <div class="meal-info-row">
             <span class="meal-name">{{ meal.type }}</span>
-            <span class="meal-date">{{ formattedDate }}</span>
+            <span class="meal-date">{{ mealDate | displayDate }}</span>
         </div>
         <div class="nutrients-totals-row">
             <div>
                 <div class="macro-label">Calories</div>
-                <div class="macro-value calories">{{ totalCalories }} <span>kcal</span></div>
+                <div class="macro-value calories">{{ totalCalories | smartNumber }} <span>kcal</span></div>
             </div>
             <div>
                 <div class="macro-label">Proteins</div>
-                <div class="macro-value proteins">{{ totalProteins }} <span>g</span></div>
+                <div class="macro-value proteins">{{ totalProteins| smartNumber }} <span>g</span></div>
             </div>
             <div>
                 <div class="macro-label">Carbs</div>
-                <div class="macro-value carbs">{{ totalCarbs }} <span>g</span></div>
+                <div class="macro-value carbs">{{ totalCarbs| smartNumber }} <span>g</span></div>
             </div>
             <div>
                 <div class="macro-label">Fats</div>
-                <div class="macro-value fats">{{ totalFats }} <span>g</span></div>
+                <div class="macro-value fats">{{ totalFats| smartNumber }} <span>g</span></div>
             </div>
         </div>
+    </div>
 
+    <!-- Nova sekcija s gumbima -->
+    <div class="meal-action-buttons">
+        <button class="meal-action-btn" (click)="scanBarcode()">
+            <svg xmlns="http://www.w3.org/2000/svg" height="28" viewBox="0 0 24 24" width="28" fill="#3b82f6">
+                <path
+                    d="M0 0h2v24H0V0zm3 0h1v24H3V0zm3 0h1v24H6V0zm3 0h1v24H9V0zm3 0h1v24h-1V0zm3 0h1v24h-1V0zm3 0h1v24h-1V0zm3 0h1v24h-1V0z" />
+            </svg>
+            <span>Scan Barcode</span>
+        </button>
+
+        <button class="meal-action-btn" (click)="logFood()">
+            <svg xmlns="http://www.w3.org/2000/svg" height="28" viewBox="0 0 24 24" width="28" fill="#10b981">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 
+                0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 14H7v-2h4v2zm6-4H7v-2h10v2zm0-4H7V7h10v2z" />
+            </svg>
+            <span>Log Food</span>
+        </button>
     </div>
 
     <div class="meal-food-list">
         <ion-list>
-            <ion-item *ngFor="let item of meal.items">
-                <ion-label>
+            <ion-item lines="full" *ngFor="let item of meal.items; let i = index">
+                <ion-label class="food-label">
                     <div class="food-title">{{ item.name }}</div>
-                    <div class="food-macros">
-                        <span class="cals">{{ item.calories }} kcal</span>
-                        <span class="prots">{{ item.proteins }}g Protein</span>
-                        <span class="carbs">{{ item.carbs }}g Carbs</span>
-                        <span class="fats">{{ item.fats }}g Fats</span>
+
+                    <!-- 2x2 grid: gore 2, dolje 2 -->
+                    <div class="food-macros-grid">
+                        <div class="macro"><span>Calories</span><strong>{{ item.calories }} kcal</strong></div>
+                        <div class="macro"><span>Proteins</span><strong>{{ item.proteins }} g</strong></div>
+                        <div class="macro"><span>Carbs</span><strong>{{ item.carbs }} g</strong></div>
+                        <div class="macro"><span>Fats</span><strong>{{ item.fats }} g</strong></div>
                     </div>
                 </ion-label>
-                <ion-note slot="end">{{ item.default_quantity }}{{ item.unit }}</ion-note>
+
+                <!-- klik na količinu otvara food-details -->
+                <button class="qty-chip" slot="end" (click)="openFoodDetails(i)">
+                    {{ item.default_quantity }}{{ item.unit }}
+                </button>
             </ion-item>
         </ion-list>
+
     </div>
 </ng-container>
-
-<ng-template #noMeal>
-    <div style="text-align:center; color:#aaa; margin-top:60px;">
-        No meal found for this date.
-    </div>
-</ng-template>

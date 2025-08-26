@@ -29,8 +29,44 @@ ion-toolbar {
     --border-width: 0 0 0 0 !important;
 }
 
+
+/* ciljamo samo ovaj popover preko klase */
+ion-popover.user-menu-popover {
+    --width: 120px;
+    /* uži meni */
+    --background: #fff;
+    --box-shadow: 0 6px 20px rgba(0, 0, 0, .12);
+    --border-radius: 10px;
+    --padding: 0
+}
+
+/* makni trokutić/strelicu */
+ion-popover.user-menu-popover::part(arrow) {
+    display: none;
+}
+
+/* pomakni cijeli box malo udesno (dotjeraj broj da se poravna s kalendarom) */
+ion-popover.user-menu-popover::part(content) {
+    transform: translateX(20px);
+    /* npr. 20–40px, ovisno o layoutu */
+}
+
+/* stavke menija kompaktnije */
+ion-popover.user-menu-popover ion-item {
+    --padding-start: 12px;
+    --inner-padding-end: 12px;
+    --min-height: 40px;
+    font-size: 14px;
+}
+
+/* po želji: hover/active efekt (iOS/MD kompatibilno) */
+ion-popover.user-menu-popover ion-item:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+
 ion-content {
-    height: calc(100% -1px) !important;
+    --height: calc(100% -1px) !important;
     -ms-overflow-style: none;
     /* IE 10+ */
     scrollbar-width: none;

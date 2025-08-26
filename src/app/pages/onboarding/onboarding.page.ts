@@ -48,15 +48,13 @@ export class OnboardingPage {
   async onComplete() {
     this.userData.created_at = new Date().toISOString();
 
-    console.log('Konačni profil korisnika:', this.userData);
-
     const uid = this.authService.getUserId();
     if (!uid) {
       console.error('Nema UID-a!');
       return;
     }
 
-    this.userData.user_id = uid; // ✅ Dodaj ovo!
+    this.userData.user_id = uid;
 
     try {
       await this.UserService.saveUserProfile(uid, this.userData as UserProfile);

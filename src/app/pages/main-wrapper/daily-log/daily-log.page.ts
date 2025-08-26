@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { DailyLogService } from 'src/app/services/daily-log.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ActionSheetController } from '@ionic/angular';
 import {
   IonContent,
   IonCard,
@@ -72,7 +72,8 @@ export class DailyLogPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private cal: CalendarStateService
+    private cal: CalendarStateService,
+    private actionSheetCtrl: ActionSheetController
   ) {}
 
   async ngOnInit() {
@@ -127,7 +128,7 @@ export class DailyLogPage implements OnInit {
 
   async openMealActions(meal: MealEntry, event: Event) {
     event?.stopPropagation();
-    const actionSheet = await this.alertCtrl.create({
+    const actionSheet = await this.actionSheetCtrl.create({
       header: meal.type.charAt(0).toUpperCase() + meal.type.slice(1),
       buttons: [
         {
@@ -144,6 +145,7 @@ export class DailyLogPage implements OnInit {
           handler: () => this.removeMeal(meal.id),
         },
       ],
+      mode: 'ios',
     });
     await actionSheet.present();
   }
@@ -215,16 +217,8 @@ export class DailyLogPage implements OnInit {
     }
   }
 
-  openMeal(type: string) {
-    this.router.navigate(['/meal-details'], {
-      queryParams: {
-        type,
-        date: this.todayString,
-      },
-    });
-  }
-
   openMealDetails(meal: MealEntry) {
+    console.log(meal);
     if (this.isTooOld) return;
     this.router.navigate(['/meal-details'], {
       queryParams: {
@@ -322,21 +316,29 @@ export class DailyLogPage implements OnInit {
         totalDailyFats: 0,
       };
     }
-    this.dailyLog.meals.push({
-      id: Date.now().toString(),
-      type: type,
+
+    const meal: MealEntry = {
+      id: (crypto as any)?.randomUUID?.() ?? Date.now().toString(),
+      type,
       timestamp: new Date().toISOString(),
       items: [],
       totalMealCalories: 0,
       totalMealProteins: 0,
       totalMealCarbs: 0,
       totalMealFats: 0,
-    });
+    };
+
+    this.dailyLog.meals.push(meal);
+
     await this.dailyLogService.saveDailyLog(this.uid, this.dailyLog);
     await this.refreshMeals();
-    this.openMeal(type); // Otvori odmah edit/add page ako želiš
+    const sameMealRef = this.dailyLog?.meals.find((m) => m.id === meal.id);
+    if (sameMealRef && !this.isTooOld) {
+      this.openMealDetails(sameMealRef); // isto kao u HTML-u
+    }
   }
 
+  
   // --- BRISANJE OBROKA S POTVRDOM ---
   async removeMeal(mealId: string) {
     const alert = await this.alertCtrl.create({

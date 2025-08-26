@@ -1,8 +1,10 @@
+type Unit = 'g' | 'ml' | 'pcs';
+
 export interface FoodItem {
   food_id: string;
   name: string;
   default_quantity: number;
-  unit: 'g' | 'ml' | 'pcs';
+  unit: Unit;
   calories: number;
   proteins: number;
   fats: number;

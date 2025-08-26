@@ -1,30 +1,24 @@
 import { inject } from '@angular/core';
 import { Auth, user } from '@angular/fire/auth';
-import { CanActivateFn, Router } from '@angular/router';
-import { switchMap, take, of } from 'rxjs';
+import { CanActivateFn, Router, UrlTree } from '@angular/router';
+import { switchMap, take, map, of, from } from 'rxjs';
 import { UserService } from '../services/user.service';
 
 export const entryGuard: CanActivateFn = () => {
-  const auth = inject(Auth);
-  const router = inject(Router);
-  const userService = inject(UserService);
+	const auth = inject(Auth);
+	const router = inject(Router);
+	const userService = inject(UserService);
 
-  return user(auth).pipe(
-    take(1),
-    switchMap((firebaseUser) => {
-      if (!firebaseUser) {
-        return of(true); // Nije prijavljen → pusti na login/register
-      }
+	return user(auth).pipe(
+		take(1),
+		switchMap((firebaseUser) => {
+			// Nije prijavljen → pusti na login/register
+			if (!firebaseUser) return of(true);
 
-      // Ako je prijavljen → provjeri onboarding
-      return userService.isUserOnboarded(firebaseUser.uid).then((onboarded) => {
-        if (onboarded) {
-          router.navigateByUrl('/dashboard');
-        } else {
-          router.navigateByUrl('/onboarding');
-        }
-        return false; // spriječi ulaz na login/register
-      });
-    })
-  );
+			// Prijavljen → odluči kamo
+			return from(userService.isUserOnboarded(firebaseUser.uid)).pipe(
+				map((onboarded) => (onboarded ? router.createUrlTree(['/dashboard']) : router.createUrlTree(['/onboarding'])))
+			);
+		})
+	);
 };

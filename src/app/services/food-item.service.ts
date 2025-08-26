@@ -27,9 +27,9 @@ export class FoodItemService {
     const foodRef = collection(this.firestore, `foodItems`);
     const snapshot = await getDocs(foodRef);
     let items: FoodItem[] = [];
-    snapshot.forEach((docSnap) =>
+    /* snapshot.forEach((docSnap) =>
       items.push({ ...docSnap.data(), id: docSnap.id } as FoodItem)
-    );
+    ); */
     return items;
   }
 
