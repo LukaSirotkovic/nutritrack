@@ -1,0 +1,198 @@
+.login-wrap {
+    max-width: 560px;
+    margin: 16px auto 5cqmax auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+}
+
+.logo {
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: .4px;
+    color: #2a2a2a;
+    margin-bottom: 8px;
+}
+
+.form-list {
+    background: transparent;
+}
+
+.form-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
+    margin-bottom: 12px;
+}
+
+.error-text {
+    font-size: 0.9rem;
+    margin-top: 2px;
+}
+
+/* zajedničke postavke za ION gumbove */
+ion-button.btn {
+    --height: 48px;
+    /* ista visina */
+    --border-radius: 16px;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    font-size: 16px;
+}
+
+/* puna varijanta (crni) – po želji */
+ion-button.btn-primary {
+    --background: #000;
+    --color: #fff;
+}
+
+/* outline varijanta – ista visina i radius */
+ion-button.btn-outline {
+    --border-color: #1f1f1f;
+    --color: #1f1f1f;
+    --border-radius: 16px;
+    --background: #fff;
+}
+
+/* GOOGLE gumb – ujednači s ion-button (48px, 16px radius) */
+.gsi-material-button.btn-google {
+    height: 48px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: none;
+    /* poravnaj s ion-button */
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1;
+    /* bez vert. rastezanja */
+    display: block;
+    margin-top: 12px;
+    padding: 0 16px;
+    /* isto kao ion-button */
+    box-sizing: border-box;
+}
+
+/* unutarnji layout googla – centriraj i izbjegni drukčiju visinu */
+.gsi-material-button .gsi-material-button-content-wrapper {
+    height: 100%;
+}
+
+.gsi-material-button .gsi-material-button-icon {
+    height: 20px;
+    width: 20px;
+    min-width: 20px;
+    margin-right: 10px;
+}
+
+
+
+/* Google */
+
+.gsi-material-button {
+    user-select: none;
+    appearance: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-appearance: none;
+    background-color: WHITE;
+    background-image: none;
+    border: 1px solid #747775;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #1f1f1f;
+    cursor: pointer;
+    font-family: 'Roboto', arial, sans-serif;
+    font-size: min(1rem, 48px);
+    ;
+    height: 40px;
+    letter-spacing: 0.25px;
+    outline: none;
+    overflow: hidden;
+    padding: 0 12px;
+    position: relative;
+    text-align: center;
+    -webkit-transition: background-color .218s, border-color .218s, box-shadow .218s;
+    transition: background-color .218s, border-color .218s, box-shadow .218s;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 100%;
+    max-width: 400px;
+    min-width: min-content;
+}
+
+.gsi-material-button .gsi-material-button-icon {
+    height: 20px;
+    margin-right: 12px;
+    min-width: 20px;
+    width: 20px;
+}
+
+.gsi-material-button .gsi-material-button-content-wrapper {
+    -webkit-align-items: center;
+    align-items: center;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    height: 100%;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+}
+
+.gsi-material-button .gsi-material-button-contents {
+    font-family: 'Roboto', arial, sans-serif;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+}
+
+.gsi-material-button .gsi-material-button-state {
+    -webkit-transition: opacity .218s;
+    transition: opacity .218s;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.gsi-material-button:disabled {
+    cursor: default;
+    background-color: #ffffff61;
+    border-color: #1f1f1f1f;
+}
+
+.gsi-material-button:disabled .gsi-material-button-contents {
+    opacity: 38%;
+}
+
+.gsi-material-button:disabled .gsi-material-button-icon {
+    opacity: 38%;
+}
+
+.gsi-material-button:not(:disabled):active .gsi-material-button-state,
+.gsi-material-button:not(:disabled):focus .gsi-material-button-state {
+    background-color: #303030;
+    opacity: 12%;
+}
+
+.gsi-material-button:not(:disabled):hover {
+    -webkit-box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+}
+
+.gsi-material-button:not(:disabled):hover .gsi-material-button-state {
+    background-color: #303030;
+    opacity: 8%;
+}

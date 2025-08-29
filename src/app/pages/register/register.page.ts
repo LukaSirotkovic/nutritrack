@@ -1,17 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {
-  IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonItem,
-  IonLabel,
-  IonText,
-  IonButton,
-  IonInput,
-} from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonText, IonButton, IonInput, IonList } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastController } from '@ionic/angular';
 import { Router, RouterModule } from '@angular/router';
@@ -34,7 +24,8 @@ import { Router, RouterModule } from '@angular/router';
     IonButton,
     RouterModule,
     IonInput,
-  ],
+    IonList
+],
 })
 export class RegisterPage {
   username = '';

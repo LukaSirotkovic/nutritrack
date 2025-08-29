@@ -4,34 +4,44 @@
     </ion-toolbar>
 </ion-header>
 
+
 <ion-content class="ion-padding">
+    <div class="login-wrap">
+        <div class="logo">NutriTrack</div>
 
-    <ion-item>
-        <ion-label position="floating">Username</ion-label>
-        <ion-input name="username" type="text" [(ngModel)]="username"></ion-input>
-    </ion-item>
+        <!-- underline inputi -->
+        <ion-list>
+            <ion-item>
+                <ion-label position="floating">Username</ion-label>
+                <ion-input name="username" type="text" [(ngModel)]="username"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Email</ion-label>
+                <ion-input name="email" type="email" [(ngModel)]="email"></ion-input>
+            </ion-item>
 
-    <ion-item>
-        <ion-label position="floating">Email</ion-label>
-        <ion-input name="email" type="email" [(ngModel)]="email"></ion-input>
-    </ion-item>
+            <ion-item>
+                <ion-label position="floating">Password</ion-label>
+                <ion-input name="password" type="password" [(ngModel)]="password"></ion-input>
+            </ion-item>
 
-    <ion-item>
-        <ion-label position="floating">Password</ion-label>
-        <ion-input name="password" type="password" [(ngModel)]="password"></ion-input>
-    </ion-item>
+            <ion-item>
+                <ion-label position="floating">Repeat Password</ion-label>
+                <ion-input name="confirmPassword" type="password" [(ngModel)]="confirmPassword"></ion-input>
+            </ion-item>
+        </ion-list>
 
-    <ion-item>
-        <ion-label position="floating">Repeat Password</ion-label>
-        <ion-input name="confirmPassword" type="password" [(ngModel)]="confirmPassword"></ion-input>
-    </ion-item>
+        <ion-text color="danger" *ngIf="errorMessage" class="error-text">
+            <p>{{ errorMessage }}</p>
+        </ion-text>
 
-    <ion-text color="danger" *ngIf="errorMessage">
-        <p>{{ errorMessage }}</p>
-    </ion-text>
+        <!-- gumbi -->
+        <ion-button expand="block" class="btn btn-primary" (click)="register()">
+            Sign up
+        </ion-button>
 
-    <ion-button expand="block" (click)="register()">Sign up</ion-button>
-    <ion-button expand="block" fill="outline" routerLink="/login" routerDirection="back">
-        Aleary have an account?
-    </ion-button>
+        <ion-button expand="block" class="btn btn-outline" fill="outline" routerLink="/login" routerDirection="back">
+            Already have an account?
+        </ion-button>
+    </div>
 </ion-content>
