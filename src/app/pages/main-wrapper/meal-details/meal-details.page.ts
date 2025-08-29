@@ -146,7 +146,7 @@ export class MealDetailsPage implements OnInit {
 			queryParams: {
 				date: this.mealDate,
 				mealId: this.meal?.id,
-				index, // ili pošalji item.id ako ga imaš
+				index,
 			},
 		});
 	}

@@ -27,18 +27,12 @@
     <!-- Nova sekcija s gumbima -->
     <div class="meal-action-buttons">
         <button class="meal-action-btn" (click)="scanBarcode()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="28" viewBox="0 0 24 24" width="28" fill="#3b82f6">
-                <path
-                    d="M0 0h2v24H0V0zm3 0h1v24H3V0zm3 0h1v24H6V0zm3 0h1v24H9V0zm3 0h1v24h-1V0zm3 0h1v24h-1V0zm3 0h1v24h-1V0zm3 0h1v24h-1V0z" />
-            </svg>
+            <img src="../../../../assets/media/barcode_scanner_plavi.svg" alt="">
             <span>Scan Barcode</span>
         </button>
 
         <button class="meal-action-btn" (click)="logFood()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="28" viewBox="0 0 24 24" width="28" fill="#10b981">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 
-                0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 14H7v-2h4v2zm6-4H7v-2h10v2zm0-4H7V7h10v2z" />
-            </svg>
+           <img src="../../../../assets/media/menu_book_plavi.svg" alt="">
             <span>Log Food</span>
         </button>
     </div>
@@ -49,19 +43,25 @@
                 <ion-label class="food-label">
                     <div class="food-title">{{ item.name }}</div>
 
-                    <!-- 2x2 grid: gore 2, dolje 2 -->
-                    <div class="food-macros-grid">
-                        <div class="macro"><span>Calories</span><strong>{{ item.calories }} kcal</strong></div>
-                        <div class="macro"><span>Proteins</span><strong>{{ item.proteins }} g</strong></div>
-                        <div class="macro"><span>Carbs</span><strong>{{ item.carbs }} g</strong></div>
-                        <div class="macro"><span>Fats</span><strong>{{ item.fats }} g</strong></div>
+
+                    <div class="food-details">
+                        <!-- 2x2 grid: gore 2, dolje 2 -->
+                        <div class="food-macros-grid">
+                            <div class="macro"><span>Calories(kcal)</span><strong>{{ item.calories }}</strong></div>
+                            <div class="macro"><span>Proteins(g)</span><strong>{{ item.proteins }}</strong></div>
+                            <div class="macro"><span>Carbs(g)</span><strong>{{ item.carbs }}</strong></div>
+                            <div class="macro"><span>Fats(g)</span><strong>{{ item.fats }}</strong></div>
+                        </div>
+
+                        <button class="qty-chip" slot="end" (click)="openFoodDetails(i)">
+                            {{ item.default_quantity }}{{ item.unit }}
+                        </button>
+
                     </div>
                 </ion-label>
 
                 <!-- klik na količinu otvara food-details -->
-                <button class="qty-chip" slot="end" (click)="openFoodDetails(i)">
-                    {{ item.default_quantity }}{{ item.unit }}
-                </button>
+
             </ion-item>
         </ion-list>
 

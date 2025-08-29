@@ -70,6 +70,7 @@ export class MainWrapperPage implements OnInit {
 		else if (url.includes('/meal-details')) this.pageTitle = 'Meal Details';
 		else if (url.includes('/add-meal')) this.pageTitle = 'Add Meal';
 		else if (url.includes('/settings')) this.pageTitle = 'Settings';
+		else if (url.includes('/food-details')) this.pageTitle = 'Food Details';
 		else this.pageTitle = '';
 	}
 

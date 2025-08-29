@@ -1,0 +1,230 @@
+.food-details-container {
+    padding: 15px 16px;
+}
+
+.custom-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+}
+
+.header-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #222;
+}
+
+.header-btn {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #3b82f6;
+    cursor: pointer;
+    transition: opacity .2s;
+}
+
+.header-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.header-btn:not(:disabled):hover {
+    opacity: 0.7;
+}
+
+
+.food-name {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 10px 0 6px;
+    padding: 0px 16px;
+}
+
+.unit {
+    margin-left: 6px;
+}
+
+.macro-card {
+    margin: 18px 0 10px;
+    background: #1112;
+    /* lagana podloga ili #fff u light temi */
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 12px;
+    align-items: center;
+}
+
+.ring {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+}
+
+.ring svg {
+    position: absolute;
+    inset: 0;
+    transform: rotate(-90deg);
+}
+
+.ring-bg {
+    fill: none;
+    stroke: #e5e7eb;
+    stroke-width: 12;
+}
+
+.ring-fg {
+    fill: none;
+    stroke: #3b82f6;
+    /* samo dekoracija; možeš napraviti pravi progress kasnije */
+    stroke-width: 12;
+    stroke-dasharray: 326;
+    /* 2πr, r=52 → ~327 */
+    stroke-dashoffset: 0;
+}
+
+.kcal {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.kcal-label {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: end center;
+    padding-bottom: 18px;
+    font-size: 12px;
+    color: #666;
+}
+
+.legend {
+    display: grid;
+    gap: 8px;
+}
+
+.legend-row {
+    display: grid;
+    grid-template-columns: 14px auto 1fr auto;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.legend .value {
+    color: #111;
+    font-weight: 600;
+}
+
+.legend .pct {
+    color: #666;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot.carbs {
+    background: #10b981;
+}
+
+.dot.fats {
+    background: #fbbf24;
+}
+
+.dot.prots {
+    background: #ef4444;
+}
+
+.ring {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+}
+
+.ring svg {
+    position: absolute;
+    inset: 0;
+    transform: rotate(-90deg);
+}
+
+.ring-bg {
+    fill: none;
+    stroke: #e5e7eb;
+    stroke-width: 12;
+}
+
+.ring-seg {
+    fill: none;
+    stroke-width: 12;
+    stroke-linecap: butt;
+    /* ili round ako želiš zaobljene krajeve */
+    /* start: ništa nacrtano (0), ostatak ‘rupa’ do opsega */
+    stroke-dasharray: 0 var(--C);
+    /* animacija od 0 → var(--len) */
+    animation: ring-draw 800ms ease-out forwards;
+    animation-delay: var(--delay, 0s);
+}
+
+/* boje segmenta – iste kao dot klase */
+.ring-seg.carbs {
+    stroke: #fbbf24;
+}
+
+.ring-seg.fats {
+    stroke: #ef4444;
+}
+
+.ring-seg.prots {
+    stroke: #10b981;
+}
+
+@keyframes ring-draw {
+    to {
+        stroke-dasharray: var(--len) var(--C);
+    }
+}
+
+
+/* zelena */
+
+.dot.carbs {
+    background: #fbbf24;
+}
+
+.dot.fats {
+    background: #ef4444;
+}
+
+.dot.prots {
+    background: #10b981;
+}
+
+
+.unit-note,
+.meal-note {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.qty-row {
+    cursor: pointer;
+}
+
+.qty-row:active {
+    opacity: .8;
+}

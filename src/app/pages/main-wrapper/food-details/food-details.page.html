@@ -1,5 +1,63 @@
-<ng-container *ngIf="product">
-    <h2>{{ product.name }}</h2>
-    <p>{{ product.calories }} kcal / {{ product.default_quantity }}{{ product.unit }}</p>
-    <button (click)="addToMeal()">Add to meal</button>
-</ng-container>
+<div class="food-details-container">
+    <!-- Custom header -->
+    <div class="custom-header">
+        <button class="header-btn" (click)="back()" aria-label="Back"><img src="../../../../assets/media/arrow_back.svg" alt=""></button>
+        <div class="header-title">Add Food</div>
+        <button class="header-btn" (click)="save()" [disabled]="saving" aria-label="Save"><img src="../../../../assets/media/check.svg" alt=""></button>
+    </div>
+
+
+    <div class="food-name">{{ item?.name }}</div>
+
+    <ion-item lines="full">
+        <ion-label>Meal</ion-label>
+        <ion-note slot="end" class="meal-note">{{ mealType }}</ion-note>
+    </ion-item>
+
+    <ion-item lines="full" button detail="false" (click)="openQtyPopup()" class="qty-row">
+        <ion-label>Serving Size</ion-label>
+        <ion-note slot="end" class="unit-note">
+            {{ qty }} {{ unit }}
+        </ion-note>
+    </ion-item>
+
+    <div class="macro-card">
+        <div class="ring">
+            <div class="kcal">{{ calories }}</div>
+            <div class="kcal-label">Cal</div>
+            <svg viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" class="ring-bg" />
+                <g *ngFor="let seg of segments">
+                    <circle cx="60" cy="60" r="52" class="ring-seg" cx="60" cy="60" r="52" class="ring-seg"
+                        [ngClass]="seg.cls" [attr.stroke-dashoffset]="seg.dashoffset" [style.--C]="circumference"
+                        [style.--len]="seg.len" [style.--delay.sec]="seg.delay ?? 0" [attr.data-anim-key]="animKey" />
+                </g>
+            </svg>
+
+        </div>
+
+        <div class="legend">
+            <div class="legend-row">
+                <span class="dot carbs"></span>
+                <span class="label">Carbs</span>
+                <span class="value">{{ carbs }} g</span>
+                <span class="pct">{{ pctC }}%</span>
+            </div>
+
+            <div class="legend-row">
+                <span class="dot fats"></span>
+                <span class="label">Fat</span>
+                <span class="value">{{ fats }} g</span>
+                <span class="pct">{{ pctF }}%</span>
+            </div>
+
+            <div class="legend-row">
+                <span class="dot prots"></span>
+                <span class="label">Protein</span>
+                <span class="value">{{ proteins }} g</span>
+                <span class="pct">{{ pctP }}%</span>
+            </div>
+        </div>
+    </div>
+
+</div>

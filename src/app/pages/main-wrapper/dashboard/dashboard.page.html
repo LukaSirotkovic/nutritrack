@@ -10,7 +10,7 @@
             <div class="dashboard-box">
                 <div class="dashboard-header">
                     <h2 class="category">Calories</h2>
-                    <p class="subtext">Remaining = Base goal - food intake</p>
+                    <p class="subtext">Remaining = Base goal - calorie intake</p>
                 </div>
                 <div class="dashboard-calorie-slide">
                     <div class="dashboard-calorie-circle">
@@ -22,19 +22,19 @@
                     <div class="dashboard-calorie-text">
                         <div class="goal-row">
                             <span class="goal-icon">
-                                <!-- SVG -->
+                                <img src="../../../../assets/media/award_meal.svg" alt="">
                             </span>
-                            <div>
+                            <div class="goal-text">
                                 <div class="goal-label">Base Goal</div>
                                 <div class="goal-value">{{ userProfile?.calorie_target }}</div>
                             </div>
                         </div>
                         <div class="food-row">
                             <span class="food-icon">
-                                <!-- SVG -->
+                                <img src="../../../../assets/media/local_fire_departmet.svg" alt="">
                             </span>
-                            <div>
-                                <div class="food-label">Food</div>
+                            <div class="goal-text">
+                                <div class="food-label">Calorie intake</div>
                                 <div class="food-value">{{ totalDailyCalories }}</div>
                             </div>
                         </div>
