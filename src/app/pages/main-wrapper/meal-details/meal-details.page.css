@@ -1,7 +1,28 @@
+.meal-header {
+    display: flex;
+    align-items: center;
+    margin: 15px 16px 0px;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    margin-right: 12px;
+    padding: 12px 16px;
+}
+
+.meal-header-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #222;
+}
+
 .meal-summary-header {
     background: #f8f9fa;
     border-radius: 14px;
-    margin: 16px 20px 18px 20px;
+    margin: 0 20px 18px 20px;
     padding: 14px 20px;
     box-shadow: 0 2px 9px 0 #0002;
     display: flex;
@@ -175,4 +196,159 @@
 
 .qty-chip:active {
     transform: scale(.98);
+}
+
+
+/* ====== Skeletons (reuse + a few helpers) ====== */
+/* ===== Skeleton base ===== */
+@keyframes shimmer {
+    0% {
+        background-position: -160px 0;
+    }
+
+    100% {
+        background-position: 240px 0;
+    }
+}
+
+.sk-line,
+.sk-block {
+    background: linear-gradient(100deg, #eee 40%, #f5f5f5 50%, #eee 60%);
+    background-size: 240px 100%;
+    animation: shimmer 1.2s linear infinite;
+    border-radius: 8px;
+}
+
+/* ===== Header ===== */
+.sk-header-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+/* ===== Summary card (isti layout kao .meal-summary-header) ===== */
+.sk-summary {
+    background: #f8f9fa;
+    border-radius: 14px;
+    margin: 0 20px 18px 20px;
+    /* isto kao .meal-summary-header */
+    padding: 14px 20px;
+    box-shadow: 0 2px 9px 0 #0002;
+}
+
+.sk-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* meal-info-row skeleton */
+.sk-title {
+    width: 120px;
+    height: 16px;
+}
+
+.sk-date {
+    width: 80px;
+    height: 16px;
+}
+
+/* nutrients-totals-row skeleton */
+.sk-macro-col {
+    display: grid;
+    gap: 8px;
+}
+
+.sk-label {
+    width: 70px;
+    height: 12px;
+    border-radius: 6px;
+}
+
+.sk-value {
+    width: 86px;
+    height: 16px;
+    border-radius: 6px;
+}
+
+/* ===== Action buttons (isti razmaci i visina kao .meal-action-btn) ===== */
+.sk-actions {
+    display: flex;
+    justify-content: space-around;
+    margin: 0 20px 16px 20px;
+    gap: 16px;
+}
+
+.sk-action {
+    flex: 1;
+    height: 76px;
+    /* ~ padding + ikona + label */
+    border-radius: 13px;
+    border: 2px dashed #dbe7ff;
+    /* blago svjetlije od #b5cffc */
+    background: #f8fbff;
+    position: relative;
+    overflow: hidden;
+}
+
+.sk-action .sk-block {
+    inset: 0;
+    position: absolute;
+    opacity: .35;
+    /* da zadržiš “dashed” feel */
+    border-radius: 11px;
+}
+
+/* ===== List ===== */
+
+.sk-food-title {
+    width: 58%;
+    height: 14px;
+    margin-bottom: 8px;
+}
+
+.sk-macros-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+    row-gap: 6px;
+    width: 100%;
+}
+
+.sk-macro-line {
+    height: 12px;
+    width: 100%;
+    border-radius: 6px;
+}
+
+/* qty chip placeholder */
+.sk-chip {
+    width: 64px;
+    height: 28px;
+    border-radius: 12px;
+}
+
+/* ===== Header container spacing to match .meal-header ===== */
+.sk-meal-header {
+    display: flex;
+    align-items: center;
+    margin: 15px 16px 0px;
+    /* isto kao .meal-header */
+}
+
+/* opcionalno: lagani fade-in pravog sadržaja kad stigne */
+.fade-in {
+    animation: fadeIn .18s ease-out both;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
 }

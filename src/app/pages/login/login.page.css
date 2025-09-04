@@ -9,9 +9,19 @@
 
 .logo {
     text-align: center;
+    font-size: 28px;
     font-weight: 800;
     letter-spacing: .4px;
     color: #2a2a2a;
+    margin-bottom: 8px;
+}
+
+.flavour-text {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: .4px;
+    color: #5a5a5a;
     margin-bottom: 8px;
 }
 

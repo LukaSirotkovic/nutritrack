@@ -17,6 +17,8 @@ type Seg = { cls: 'carbs' | 'fats' | 'prots'; pct: number; start: number };
 	styleUrls: ['./food-details.page.css'],
 })
 export class FoodDetailsPage implements OnInit {
+	loading = true;
+
 	uid!: string;
 	date!: string;
 	mealId!: string;
@@ -89,6 +91,8 @@ export class FoodDetailsPage implements OnInit {
 		this.puFats = (this.item.fats || 0) / this.baseQty;
 
 		this.recompute();
+
+		this.loading = false;
 	}
 
 	back() {

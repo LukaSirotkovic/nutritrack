@@ -1,63 +1,133 @@
-<div class="food-details-container">
-    <!-- Custom header -->
-    <div class="custom-header">
-        <button class="header-btn" (click)="back()" aria-label="Back"><img src="../../../../assets/media/arrow_back.svg" alt=""></button>
-        <div class="header-title">Add Food</div>
-        <button class="header-btn" (click)="save()" [disabled]="saving" aria-label="Save"><img src="../../../../assets/media/check.svg" alt=""></button>
-    </div>
+<ng-container *ngIf="!loading || !item; else skeleton">
 
-
-    <div class="food-name">{{ item?.name }}</div>
-
-    <ion-item lines="full">
-        <ion-label>Meal</ion-label>
-        <ion-note slot="end" class="meal-note">{{ mealType }}</ion-note>
-    </ion-item>
-
-    <ion-item lines="full" button detail="false" (click)="openQtyPopup()" class="qty-row">
-        <ion-label>Serving Size</ion-label>
-        <ion-note slot="end" class="unit-note">
-            {{ qty }} {{ unit }}
-        </ion-note>
-    </ion-item>
-
-    <div class="macro-card">
-        <div class="ring">
-            <div class="kcal">{{ calories }}</div>
-            <div class="kcal-label">Cal</div>
-            <svg viewBox="0 0 120 120">
-                <circle cx="60" cy="60" r="52" class="ring-bg" />
-                <g *ngFor="let seg of segments">
-                    <circle cx="60" cy="60" r="52" class="ring-seg" cx="60" cy="60" r="52" class="ring-seg"
-                        [ngClass]="seg.cls" [attr.stroke-dashoffset]="seg.dashoffset" [style.--C]="circumference"
-                        [style.--len]="seg.len" [style.--delay.sec]="seg.delay ?? 0" [attr.data-anim-key]="animKey" />
-                </g>
-            </svg>
-
+    <div class="food-details-container">
+        <!-- Custom header -->
+        <div class="custom-header">
+            <button class="header-btn" (click)="back()" aria-label="Back"><img
+                    src="../../../../assets/media/arrow_back.svg" alt=""></button>
+            <div class="header-title">Add Food</div>
+            <button class="header-btn" (click)="save()" [disabled]="saving" aria-label="Save"><img
+                    src="../../../../assets/media/check.svg" alt=""></button>
         </div>
 
-        <div class="legend">
-            <div class="legend-row">
-                <span class="dot carbs"></span>
-                <span class="label">Carbs</span>
-                <span class="value">{{ carbs }} g</span>
-                <span class="pct">{{ pctC }}%</span>
+
+        <div class="food-name">{{ item?.name }}</div>
+
+        <ion-item lines="full">
+            <ion-label>Meal</ion-label>
+            <ion-note slot="end" class="meal-note">{{ mealType }}</ion-note>
+        </ion-item>
+
+        <ion-item lines="full" button detail="false" (click)="openQtyPopup()" class="qty-row">
+            <ion-label>Serving Size</ion-label>
+            <ion-note slot="end" class="unit-note">
+                {{ qty }} {{ unit }}
+            </ion-note>
+        </ion-item>
+
+        <div class="macro-card">
+            <div class="ring">
+                <div class="kcal">{{ calories }}</div>
+                <div class="kcal-label">Cal</div>
+                <svg viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="52" class="ring-bg" />
+                    <g *ngFor="let seg of segments">
+                        <circle cx="60" cy="60" r="52" class="ring-seg" cx="60" cy="60" r="52" class="ring-seg"
+                            [ngClass]="seg.cls" [attr.stroke-dashoffset]="seg.dashoffset" [style.--C]="circumference"
+                            [style.--len]="seg.len" [style.--delay.sec]="seg.delay ?? 0"
+                            [attr.data-anim-key]="animKey" />
+                    </g>
+                </svg>
+
             </div>
 
-            <div class="legend-row">
-                <span class="dot fats"></span>
-                <span class="label">Fat</span>
-                <span class="value">{{ fats }} g</span>
-                <span class="pct">{{ pctF }}%</span>
+            <div class="legend">
+                <div class="legend-row">
+                    <span class="dot carbs"></span>
+                    <span class="label">Carbs</span>
+                    <span class="value">{{ carbs }} g</span>
+                    <span class="pct">{{ pctC }}%</span>
+                </div>
+
+                <div class="legend-row">
+                    <span class="dot fats"></span>
+                    <span class="label">Fat</span>
+                    <span class="value">{{ fats }} g</span>
+                    <span class="pct">{{ pctF }}%</span>
+                </div>
+
+                <div class="legend-row">
+                    <span class="dot prots"></span>
+                    <span class="label">Protein</span>
+                    <span class="value">{{ proteins }} g</span>
+                    <span class="pct">{{ pctP }}%</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</ng-container>
+
+
+<ng-template #skeleton>
+    <div class="food-details-container">
+        <!-- header -->
+        <div class="custom-header">
+            <div class="sk-header-btn sk-block"></div>
+            <div class="sk-title sk-line"></div>
+            <div class="sk-header-btn sk-block"></div>
+        </div>
+
+        <!-- naziv hrane -->
+        <div class="sk-food-name sk-line"></div>
+
+        <!-- redovi: Meal i Serving Size -->
+        <ion-item lines="full">
+            <ion-label>
+                <div class="sk-line sk-label-sm"></div>
+            </ion-label>
+            <ion-note slot="end" class="meal-note">
+                <div class="sk-chip sk-block"></div>
+            </ion-note>
+        </ion-item>
+
+        <ion-item lines="full" class="qty-row">
+            <ion-label>
+                <div class="sk-line sk-label-sm"></div>
+            </ion-label>
+            <ion-note slot="end" class="unit-note">
+                <div class="sk-chip sk-block"></div>
+            </ion-note>
+        </ion-item>
+
+        <!-- macro kartica -->
+        <div class="macro-card">
+            <!-- lijevo: krug -->
+            <div class="ring sk-ring">
+                <div class="sk-ring-circle sk-block"></div>
             </div>
 
-            <div class="legend-row">
-                <span class="dot prots"></span>
-                <span class="label">Protein</span>
-                <span class="value">{{ proteins }} g</span>
-                <span class="pct">{{ pctP }}%</span>
+            <!-- desno: legenda -->
+            <div class="legend">
+                <div class="legend-row">
+                    <span class="sk-dot sk-block"></span>
+                    <span class="sk-line sk-label-xs"></span>
+                    <span class="sk-line sk-value-sm"></span>
+                    <span class="sk-line sk-pct"></span>
+                </div>
+                <div class="legend-row">
+                    <span class="sk-dot sk-block"></span>
+                    <span class="sk-line sk-label-xs"></span>
+                    <span class="sk-line sk-value-sm"></span>
+                    <span class="sk-line sk-pct"></span>
+                </div>
+                <div class="legend-row">
+                    <span class="sk-dot sk-block"></span>
+                    <span class="sk-line sk-label-xs"></span>
+                    <span class="sk-line sk-value-sm"></span>
+                    <span class="sk-line sk-pct"></span>
+                </div>
             </div>
         </div>
     </div>
-
-</div>
+</ng-template>

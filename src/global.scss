@@ -46,6 +46,9 @@
 	--ion-color-primary-tint: #929292;
 	--ion-background-color: #eeeeee; /* tvoja nova boja pozadine */
 	--ion-background-color-rgb: 24, 25, 36; /* ako trebaš rgb */
+	--icon-color-success: #000000 !important;
+	--highlight-color: #000000 !important;
+	--highlight-color-valid: #000000 !important;
 }
 
 html,
@@ -53,4 +56,10 @@ body {
 	margin: 0 !important;
 	padding: 0 !important;
 	overflow-x: hidden;
+}
+
+
+.ion-valid.sc-ion-input-ios-h {
+    --highlight-color: #000000 !important;
+    --highlight-color-valid: #000000 !important;
 }

@@ -1,13 +1,8 @@
-<ion-header>
-    <ion-toolbar>
-        <ion-title>Registracija</ion-title>
-    </ion-toolbar>
-</ion-header>
-
-
 <ion-content class="ion-padding">
-    <div class="login-wrap">
+    <div class="register-wrap">
         <div class="logo">NutriTrack</div>
+        <span class="flavour-text">Track your meals & macros easily</span>
+
 
         <!-- underline inputi -->
         <ion-list>
@@ -32,7 +27,7 @@
         </ion-list>
 
         <ion-text color="danger" *ngIf="errorMessage" class="error-text">
-            <p>{{ errorMessage }}</p>
+            {{ errorMessage }}
         </ion-text>
 
         <!-- gumbi -->

@@ -1,4 +1,9 @@
-<ng-container *ngIf="!loading && meal">
+<ng-container *ngIf="!loading && meal; else skeleton">
+    <div class="meal-header">
+        <button class="back-btn" (click)="goBack()">
+            <img src="../../../../assets/media/arrow_back.svg" alt="">
+        </button>
+    </div>
     <div class="meal-summary-header">
         <div class="meal-info-row">
             <span class="meal-name">{{ meal.type }}</span>
@@ -32,7 +37,7 @@
         </button>
 
         <button class="meal-action-btn" (click)="logFood()">
-           <img src="../../../../assets/media/menu_book_plavi.svg" alt="">
+            <img src="../../../../assets/media/menu_book_plavi.svg" alt="">
             <span>Log Food</span>
         </button>
     </div>
@@ -67,3 +72,70 @@
 
     </div>
 </ng-container>
+
+
+<!-- SKELETON -->
+<ng-template #skeleton>
+    <!-- Header -->
+    <div class="sk-meal-header">
+        <div class="sk-header-btn sk-block"></div>
+    </div>
+
+    <!-- Summary -->
+    <div class="sk-summary">
+        <div class="sk-row" style="margin-top:10px;">
+            <div class="sk-title sk-line"></div>
+            <div class="sk-date sk-line"></div>
+        </div>
+
+        <div class="sk-row" style="gap:18px; margin-top:16px;">
+            <div class="sk-macro-col">
+                <div class="sk-label sk-line"></div>
+                <div class="sk-value sk-line"></div>
+            </div>
+            <div class="sk-macro-col">
+                <div class="sk-label sk-line"></div>
+                <div class="sk-value sk-line"></div>
+            </div>
+            <div class="sk-macro-col">
+                <div class="sk-label sk-line"></div>
+                <div class="sk-value sk-line"></div>
+            </div>
+            <div class="sk-macro-col">
+                <div class="sk-label sk-line"></div>
+                <div class="sk-value sk-line"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="sk-actions">
+        <div class="sk-action">
+            <div class="sk-block"></div>
+        </div>
+        <div class="sk-action">
+            <div class="sk-block"></div>
+        </div>
+    </div>
+
+    <!-- Food list -->
+    <div class="meal-food-list">
+        <ion-list>
+            <ion-item lines="full" *ngFor="let _ of [1,2,3]">
+                <ion-label class="food-label" style="width:100%;">
+                    <div class="sk-food-title sk-line"></div>
+
+                    <div class="food-details" style="gap:15px;">
+                        <div class="sk-macros-grid">
+                            <div class="sk-macro-line sk-line"></div>
+                            <div class="sk-macro-line sk-line"></div>
+                            <div class="sk-macro-line sk-line"></div>
+                            <div class="sk-macro-line sk-line"></div>
+                        </div>
+                        <div class="sk-chip sk-block"></div>
+                    </div>
+                </ion-label>
+            </ion-item>
+        </ion-list>
+    </div>
+</ng-template>

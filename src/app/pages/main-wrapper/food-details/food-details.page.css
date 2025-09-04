@@ -228,3 +228,117 @@
 .qty-row:active {
     opacity: .8;
 }
+
+
+/* Skeleton */
+
+
+/* shimmer */
+@keyframes sk-shimmer {
+    0% {
+        background-position: -160px 0;
+    }
+
+    100% {
+        background-position: 240px 0;
+    }
+}
+
+.sk-line,
+.sk-block {
+    background: linear-gradient(100deg, #eee 40%, #f5f5f5 50%, #eee 60%);
+    background-size: 240px 100%;
+    animation: sk-shimmer 1.2s linear infinite;
+    border-radius: 8px;
+}
+
+/* header skeleton */
+.sk-header-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.sk-title {
+    width: 120px;
+    height: 18px;
+}
+
+/* food name skeleton */
+.sk-food-name {
+    width: 70%;
+    height: 20px;
+    margin: 10px 16px 6px;
+    border-radius: 6px;
+}
+
+/* ion-item skeleton komadi */
+.sk-label-sm {
+    width: 90px;
+    height: 14px;
+    border-radius: 6px;
+}
+
+.sk-chip {
+    width: 64px;
+    height: 28px;
+    border-radius: 12px;
+}
+
+/* macro-kartica: krug skeleton */
+.sk-ring {
+    display: grid;
+    place-items: center;
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+}
+
+.sk-ring-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 999px;
+}
+
+/* legenda skeleton (poravnanja preuzima iz .legend/.legend-row) */
+.sk-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.sk-label-xs {
+    width: 56px;
+    height: 12px;
+    border-radius: 6px;
+}
+
+.sk-value-sm {
+    width: 72px;
+    height: 14px;
+    border-radius: 6px;
+}
+
+.sk-pct {
+    width: 36px;
+    height: 12px;
+    border-radius: 6px;
+}
+
+/* Opcionalno: lagani fade kad se pojavi pravi sadržaj */
+.fade-in {
+    animation: fadeIn .18s ease-out both;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}

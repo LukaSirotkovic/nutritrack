@@ -150,4 +150,9 @@ export class MealDetailsPage implements OnInit {
 			},
 		});
 	}
+
+    goBack() {
+        this.router.navigate(['/daily-log']);
+    }
+
 }
