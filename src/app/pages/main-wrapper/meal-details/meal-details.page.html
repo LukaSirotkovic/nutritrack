@@ -64,33 +64,49 @@
         <ion-list>
             <ion-item lines="full" *ngFor="let item of meal.items; let i = index">
                 <ion-label class="food-label">
-                    <div class="food-title">{{ item.name }}</div>
-
-
-                    <div class="food-details">
-                        <!-- 2x2 grid: gore 2, dolje 2 -->
-                        <div class="food-macros-grid">
-                            <div class="macro macro-calories"><span>Calories(kcal)</span><strong>{{ item.calories
-                                    }}</strong></div>
-                            <div class="macro macro-proteins"><span>Proteins(g)</span><strong>{{ item.proteins
-                                    }}</strong></div>
-                            <div class="macro macro-carbs"><span>Carbs(g)</span><strong>{{ item.carbs }}</strong></div>
-                            <div class="macro macro-fats"><span>Fats(g)</span><strong>{{ item.fats }}</strong></div>
+                    <!-- header: NAME + QTY chip -->
+                    <div class="food-header">
+                        <div class="food-header-left">
+                            <div class="food-title">
+                                {{ item.name }}
+                            </div>
+                            <ion-badge class="gram-badge">{{item.default_quantity}}</ion-badge>
                         </div>
+                        <ion-button slot="end" fill="clear" class="more-btn" (click)="openItemMenu(i, item)">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                                fill="#888">
+                                <circle cx="5" cy="12" r="2"></circle>
+                                <circle cx="12" cy="12" r="2"></circle>
+                                <circle cx="19" cy="12" r="2"></circle>
+                            </svg>
+                        </ion-button>
+                    </div>
 
-                        <button class="qty-chip" slot="end" (click)="openFoodDetails(i)">
-                            {{ item.default_quantity }}{{ item.unit }}
-                        </button>
-
+                    <!-- macros -->
+                    <div class="food-details">
+                        <div class="food-macros-grid">
+                            <div class="macro macro-calories">
+                                <span>Calories(kcal)</span><strong>{{ item.calories }}</strong>
+                            </div>
+                            <div class="macro macro-proteins">
+                                <span>Proteins(g)</span><strong>{{ item.proteins }}</strong>
+                            </div>
+                            <div class="macro macro-carbs">
+                                <span>Carbs(g)</span><strong>{{ item.carbs }}</strong>
+                            </div>
+                            <div class="macro macro-fats">
+                                <span>Fats(g)</span><strong>{{ item.fats }}</strong>
+                            </div>
+                        </div>
                     </div>
                 </ion-label>
 
-                <!-- klik na količinu otvara food-details -->
+                <!-- … options on the far right -->
 
             </ion-item>
         </ion-list>
-
     </div>
+
 </ng-container>
 
 

@@ -1,3 +1,8 @@
+ion-content {
+    --padding-top: env(safe-area-inset-top);
+    --padding-bottom: env(safe-area-inset-bottom);
+}
+
 .onboarding-content {
     --padding-start: 16px;
     --padding-end: 16px;

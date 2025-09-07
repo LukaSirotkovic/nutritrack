@@ -1,17 +1,181 @@
-.meal-search-wrapper {
-    padding: 10px;
+:host {
+    --clr-kcal: #2563eb;
+    --clr-pro: #16a34a;
+    --clr-carb: #f59e0b;
+    --clr-fat: #ef4444;
 }
 
-.food-title {
-    font-weight: 600;
-    font-size: 1.09rem;
-}
-
-.food-details {
-    color: #888;
-    font-size: 0.97rem;
+.meal-header {
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
+    margin: 15px 16px 0px;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    margin-right: 12px;
+    padding: 12px 16px;
+}
+
+
+.meal-search-wrapper {
+    padding: 12px 16px;
+
+    ion-searchbar {
+        --background: #f8fafc;
+        --border-radius: 999px;
+        --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        --icon-color: #6b7280;
+        --placeholder-color: #9ca3af;
+        --color: #111827;
+        --clear-button-color: #6b7280;
+
+        input {
+            font-size: 15px;
+            font-weight: 500;
+        }
+    }
+
+    /* Fokus animacija */
+    ion-searchbar.searchbar-has-focus {
+        --background: #ffffff;
+        --box-shadow: 0 0 0 2px #2563eb33, 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all .2s ease;
+    }
+}
+
+
+.food-list {
+    padding: 0 16px;
+}
+
+ion-item.food-card::part(native) {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .04);
+    margin: 8px 4px;
+
+}
+
+.food-card {
+    --inner-padding-end: 10px;
+    --inner-padding-top: 10px;
+    --inner-padding-bottom: 10px;
+
+}
+
+.food-label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.header-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     gap: 10px;
-    margin-top: 2px;
+    margin-bottom: 6px;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #0f172a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gram-badge {
+    border-radius: 999px;
+    font-weight: 700;
+    padding: 6px 10px;
+    background: #e8f0ff;
+    color: var(--clr-kcal);
+}
+
+.food-macros-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+    row-gap: 4px;
+    width: 100%;
+}
+
+.food-macros-grid .macro {
+    font-size: 13px;
+    color: #666;
+    display: flex;
+    justify-content: space-between;
+}
+
+.macro-calories strong {
+    color: #1149a5;
+}
+
+.macro-proteins strong {
+    color: #10b981;
+}
+
+.macro-carbs strong {
+    color: #fbbf24;
+}
+
+.macro-fats strong {
+    color: #ef4444;
+}
+
+/* blue "+ Add" box on the right */
+.add-box {
+    --border-radius: 12px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    font-weight: 700;
+    margin-inline-start: 20px;
+    margin-inline-end: 20px;
+
+}
+
+/* SKELETON */
+.skeleton-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    margin: 8px 4px;
+    overflow: hidden;
+
+    ion-item::part(native) {
+        --inner-padding-end: 10px;
+        --inner-padding-top: 10px;
+        --inner-padding-bottom: 10px;
+        border-radius: 12px;
+    }
+}
+
+.skeleton-label {
+    width: 100%;
+
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .food-macros-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px 16px;
+    }
+
+    .macro {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 }

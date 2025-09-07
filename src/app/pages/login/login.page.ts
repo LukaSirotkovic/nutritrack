@@ -41,9 +41,9 @@ export class LoginPage {
 
 			await this.router.navigateByUrl('/', { replaceUrl: true });
 
-			this.showToast('Uspješna prijava!');
+			this.showToast('Login successful!');
 		} catch (err: any) {
-			this.errorMessage = err?.message ?? 'Neuspjela prijava.';
+			this.errorMessage = err?.message ?? 'Login unsuccessful.';
 			this.showToast(this.errorMessage);
 		} finally {
 			this.loading = false;
@@ -59,9 +59,9 @@ export class LoginPage {
 			// neutralno: pusti guard da odluči kamo (dashboard / onboarding)
 			await this.router.navigateByUrl('/', { replaceUrl: true });
 
-			this.showToast('Uspješna prijava!');
+			this.showToast('Login successful!');
 		} catch (err: any) {
-			this.errorMessage = err?.message ?? 'Neuspjela prijava.';
+			this.errorMessage = err?.message ?? 'Login unsuccessful.';
 			this.showToast(this.errorMessage);
 		} finally {
 			this.loading = false;

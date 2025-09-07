@@ -122,6 +122,11 @@ export class DailyLogPage implements OnInit {
 					role: 'destructive',
 					handler: () => this.removeMeal(meal.id),
 				},
+
+				{
+					text: 'Cancel',
+					role: 'cancel',
+				},
 			],
 			mode: 'ios',
 		});

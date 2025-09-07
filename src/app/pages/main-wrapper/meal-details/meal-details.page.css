@@ -153,13 +153,34 @@ ion-label {
     padding: 0;
 }
 
+.gram-badge {
+    border-radius: 999px;
+    font-weight: 700;
+    padding: 6px 10px;
+    background: #e8f0ff;
+    color: #2563eb;
+}
+
+.food-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.food-header-left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
 .food-label {
     display: block;
 }
 
 .food-title {
     font-weight: 600;
-    margin-bottom: 6px;
 }
 
 .food-details {
@@ -177,6 +198,7 @@ ion-label {
     column-gap: 16px;
     row-gap: 4px;
     width: 100%;
+    padding-right: 15px;
 }
 
 .food-macros-grid .macro {
@@ -202,22 +224,8 @@ ion-label {
     color: #ef4444;
 }
 
-/* desni “čip” s količinom */
-.qty-chip {
-    appearance: none;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 6px 10px;
-    font-size: 13px;
-    line-height: 1;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
-    cursor: pointer;
-    background-color: #1149a5;
-}
 
-.qty-chip:active {
-    transform: scale(.98);
-}
+
 
 
 /* ====== Skeletons (reuse + a few helpers) ====== */

@@ -52,7 +52,7 @@ export class OnboardingPage {
 			return;
 		}
 
-		this.userData.user_id = uid;
+		this.userData.uid = uid;
 
 		try {
 			await this.UserService.saveUserProfile(uid, this.userData as UserProfile);

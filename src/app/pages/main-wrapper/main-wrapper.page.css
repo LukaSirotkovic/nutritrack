@@ -10,6 +10,11 @@ ion-header {
     --background-color: none;
 }
 
+ion-content {
+    --padding-top: env(safe-area-inset-top);
+    --padding-bottom: env(safe-area-inset-bottom);
+}
+
 ion-avatar {
     width: 30px;
     height: 30px;
@@ -66,7 +71,8 @@ ion-popover.user-menu-popover ion-item:hover {
 
 
 ion-content {
-    --height: calc(100% -1px) !important;
+    --height: calc(100% - 1px) !important;
+
     -ms-overflow-style: none;
     /* IE 10+ */
     scrollbar-width: none;

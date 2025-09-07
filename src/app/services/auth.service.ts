@@ -11,7 +11,7 @@ import {
 	updateProfile,
 } from '@angular/fire/auth';
 
-import { Firestore, doc, setDoc, collection, query, where, getDocs, getDoc } from '@angular/fire/firestore';
+import { Firestore, doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs, serverTimestamp } from '@angular/fire/firestore';
 
 import { BehaviorSubject } from 'rxjs';
 
@@ -29,15 +29,18 @@ export class AuthService {
 	// ✅ REGISTRACIJA
 	async register(email: string, password: string, username: string) {
 		const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-
 		const uid = userCredential.user.uid;
 
-		await setDoc(doc(this.firestore, 'users', uid), {
-			uid,
-			email,
-			username,
-			createdAt: new Date(),
-		});
+		await setDoc(
+			doc(this.firestore, 'users', uid),
+			{
+				email,
+				username,
+				created_at: serverTimestamp(), // ⬅️ umjesto createdAt: new Date()
+				onboarded: false,
+			},
+			{ merge: true }
+		);
 
 		return userCredential;
 	}
@@ -46,14 +49,8 @@ export class AuthService {
 	async loginWithUsername(username: string, password: string) {
 		const q = query(collection(this.firestore, 'users'), where('username', '==', username));
 		const snapshot = await getDocs(q);
-
-		if (snapshot.empty) {
-			throw new Error('User not found.');
-		}
-
-		const userDoc = snapshot.docs[0].data();
-		const email = userDoc['email'];
-
+		if (snapshot.empty) throw new Error('User not found.');
+		const email = snapshot.docs[0].data()['email'];
 		return signInWithEmailAndPassword(this.auth, email, password);
 	}
 
@@ -64,30 +61,39 @@ export class AuthService {
 		const user = result.user;
 
 		const userRef = doc(this.firestore, 'users', user.uid);
-
-		// Provjeri postoji li u Firestore bazi
-		const snapshot = await getDocs(query(collection(this.firestore, 'users'), where('uid', '==', user.uid)));
+		const snap = await getDoc(userRef);
 
 		const username = user.email?.split('@')[0] || 'user';
+		const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=random`;
 
-		if (snapshot.empty) {
-			await setDoc(userRef, {
-				uid: user.uid,
-				email: user.email,
-				username,
-				displayName: user.displayName,
-				photoURL: user.photoURL,
-				createdAt: new Date(),
-				onboarded: false,
-				calorie_target: null,
-			});
+		if (!snap.exists()) {
+			await setDoc(
+				userRef,
+				{
+					email: user.email ?? '',
+					username,
+					displayName: user.displayName ?? username,
+					photoURL: user.photoURL ?? fallbackAvatar,
+					created_at: serverTimestamp(),
+					onboarded: false,
+					calorie_target: null,
+				},
+				{ merge: true }
+			);
+		} else {
+			// po želji: dopuni displayName/photoURL ako fale
+			const data = snap.data();
+			const updates: any = {};
+			if (!data['displayName'] && (user.displayName || username)) updates.displayName = user.displayName ?? username;
+			if (!data['photoURL'] && (user.photoURL || fallbackAvatar)) updates.photoURL = user.photoURL ?? fallbackAvatar;
+			if (Object.keys(updates).length) await updateDoc(userRef, updates);
 		}
 
-		// Ako nije postavljen photoURL u auth profilu
+		// osvježi Firebase Auth profil samo ako treba
 		if (!user.displayName || !user.photoURL) {
 			await updateProfile(user, {
-				displayName: username,
-				photoURL: `https://ui-avatars.com/api/?name=${username}&background=random`,
+				displayName: user.displayName ?? username,
+				photoURL: user.photoURL ?? fallbackAvatar,
 			});
 		}
 
@@ -106,14 +112,19 @@ export class AuthService {
 		const ref = doc(this.firestore, 'users', uid);
 		const snap = await getDoc(ref);
 		if (!snap.exists()) return false;
+		const d = snap.data() as any;
 
-		const data = snap.data() as any;
+		if (d.onboarded === true) return true;
 
-		// Primarni način – bool flag
-		if (data.onboarded === true) return true;
-
-		// Fallback: ako nema flag, smatraj onboardanim ako su svi bitni fieldovi popunjeni
-		const hasAll = !!data.calorie_target && !!data.gender && !!data.height_cm && !!data.weight_kg && !!data.activity_level && !!data.goal;
+		// prilagodi ovdje nazive koje stvarno koristiš u appu
+		const hasAll =
+			!!d.gender &&
+			!!d.dateOfBirth &&
+			Number.isFinite(d.height) &&
+			Number.isFinite(d.weight) &&
+			!!d.activity_level &&
+			!!d.goal &&
+			Number.isFinite(d.calorie_target);
 
 		return hasAll;
 	}

@@ -20,6 +20,10 @@ log.txt
 # Prettier config
 .prettierrc
 
+
+#Android
+/android
+
 # Ionic
 /.ionic
 /www

@@ -1,3 +1,8 @@
+ion-content {
+    --padding-top: env(safe-area-inset-top);
+    --padding-bottom: env(safe-area-inset-bottom);
+}
+
 .register-wrap {
     max-width: 560px;
     margin: 16px auto 5cqmax auto;
