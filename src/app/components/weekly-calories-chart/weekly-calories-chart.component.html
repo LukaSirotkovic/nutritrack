@@ -1,0 +1,31 @@
+<div class="chart-wrap">
+    <svg [attr.viewBox]="'0 0 ' + width + ' ' + height" preserveAspectRatio="xMidYMid meet">
+        <!-- target linija -->
+        <line *ngIf="maxY && data?.length" class="target" [attr.x1]="padding.left" [attr.x2]="width - padding.right"
+            [attr.y1]="y(data[0].target)" [attr.y2]="y(data[0].target)"></line>
+
+        <text class="target-label" *ngIf="maxY && data?.length" [attr.x]="padding.left" [attr.y]="y(data[0].target) - 6"
+            text-anchor="start">
+            Base goal: {{ data[0].target }}
+        </text>
+
+        <!-- PON–PET stupci -->
+        <g *ngFor="let d of data; let i = index">
+            <rect [attr.x]="barX(i)" [attr.y]="y(d.calories)" [attr.width]="barW()" [attr.height]="barH(d.calories)"
+                class="bar" [class.selected]="d.date === selectedDate"
+                [class.dim]="selectedDate && d.date !== selectedDate" (click)="select.emit(d.date)"></rect>
+
+            <!-- broj iznad stupa -->
+            <text class="calories-label" [class.dim]="selectedDate && d.date !== selectedDate"
+                [attr.x]="barX(i) + barW()/2" [attr.y]="y(d.calories) - 4" text-anchor="middle">
+                {{ d.calories }}
+            </text>
+
+            <!-- labela dana -->
+            <text class="xlabel" [class.dim]="selectedDate && d.date !== selectedDate" [attr.x]="barX(i) + barW()/2"
+                [attr.y]="height - 8" text-anchor="middle">
+                {{ dayLabel(d.date) }}
+            </text>
+        </g>
+    </svg>
+</div>

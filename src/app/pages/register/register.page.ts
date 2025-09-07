@@ -55,7 +55,7 @@ export class RegisterPage {
     this.showToast('Registracija uspješna!');
     this.router.navigate(['/login']);
   } catch (err: any) {
-    this.errorMessage = err.message || 'Došlo je do pogreške.';
+    this.errorMessage = 'Došlo je do pogreške.';
   }
 }
 

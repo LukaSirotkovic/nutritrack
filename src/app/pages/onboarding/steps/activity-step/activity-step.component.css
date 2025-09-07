@@ -2,53 +2,130 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100%;
     text-align: center;
-    padding: 0 16px;
+    gap: 24px;
+    margin-top: 60px;
 }
 
-.title h2{
+.intro-text {
+    color: #475467;
     margin: 0;
+    line-height: 1.5;
 }
 
-.activity-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 24px;
-    align-items: center;
-}
-
-.activity-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-    max-width: 320px;
-    --padding-top: 16px;
-    --padding-bottom: 16px;
-}
-
-.activity-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.activity-btn img {
-    width: auto;
-    height: auto;
-    margin-bottom: 8px;
-}
-
-.activity-label {
-    text-align: center;
-    color: #333;
-}
-
-.activity-label p {
+.title h2 {
     margin: 0;
-    font-size: 0.85rem;
-    color: #777;
+    color: #101828;
+    font-size: 1.6rem;
+}
+
+.activity-list {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Card-like ion-button */
+.activity-card {
+    --background: transparent;
+    --box-shadow: none;
+    width: 100%;
+    padding: 0;
+    border: 1.5px solid #d0d5dd;
+    border-radius: 20px;
+    background: #fff;
+    transition: transform .06s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.activity-card:active {
+    transform: scale(.98);
+}
+
+.activity-card.ion-focused {
+    outline: 2px solid #114da2;
+    outline-offset: 2px;
+}
+
+.activity-card .card-inner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    width: 100%;
+}
+
+.activity-card .icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: grayscale(20%);
+}
+
+.activity-card .text {
+    text-align: left;
+    flex: 1;
+}
+
+.activity-card .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.activity-card .name {
+    font-weight: 700;
+    color: #101828;
+    font-size: 1.05rem;
+}
+
+.activity-card .badge {
+    font-size: .75rem;
+    color: #114da2;
+    background: #e8f0ff;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+.activity-card .desc {
+    margin-top: 2px;
+    color: #667085;
+    font-size: .9rem;
+    line-height: 1.35;
+}
+
+/* Selected state */
+.activity-card.selected {
+    border-color: #114da2;
+    background: #f1f6ff;
+    box-shadow: 0 8px 20px rgba(17, 77, 162, .15);
+}
+
+.activity-card.selected .icon {
+    filter: none;
+}
+
+.activity-card.selected .name {
+    color: #0f1f3d;
+}
+
+.activity-card.selected .desc {
+    color: #3f4b63;
+}
+
+/* Compact on small screens */
+@media (max-width: 380px) {
+    .activity-card .card-inner {
+        padding: 12px 14px;
+    }
+
+    .activity-card .name {
+        font-size: 1rem;
+    }
+
+    .activity-card .desc {
+        font-size: .88rem;
+    }
 }

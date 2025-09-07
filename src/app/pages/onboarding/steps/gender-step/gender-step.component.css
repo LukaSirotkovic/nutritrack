@@ -3,66 +3,91 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    height: 100vh;
+    text-align: center;
+    gap: 24px;
+    margin-top: 60px;
 }
 
 .intro-text {
-    text-align: center;
     font-size: 1rem;
-    color: #3a3a3a;
-    margin-bottom: 12px;
-    padding: 0 16px;
+    color: #475467;
     line-height: 1.5;
+    margin: 0;
 }
 
 .title h2 {
-    margin-top: 0;
-    margin-bottom: 24px;
+    margin: 0;
     font-size: 1.6rem;
-}
-
-.title {
-    text-align: center;
-    margin-bottom: 24px;
-    color: #000;
+    line-height: 1.3;
+    color: #101828;
 }
 
 .gender-buttons {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    gap: 20px;
+    justify-content: space-around;
     flex-wrap: wrap;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    padding: 0 16px;
 }
 
-.gender-btn {
-    width: 140px;
-    height: 160px;
-    padding: 0;
+.step-wrapper {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #fff;
+    flex-direction: column;
+    height: 100%;
+}
 
+.text-block {
+    margin-top: 24px;
+    text-align: center;
+}
+
+
+.gender-btn {
+    --background: transparent;
+    --box-shadow: none;
+    width: 160px;
+    height: 180px;
+    padding: 0;
     border-radius: 20px;
-    --border-radius: 20px;
-    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1.5px solid #d0d5dd;
+    background: #fff;
+    transition: transform .06s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+
+    &:active {
+        transform: scale(.98);
+    }
+
+    &.ion-focused {
+        outline: 2px solid #114da2;
+        outline-offset: 2px;
+    }
+}
+
+.gender-btn.selected {
+    border-color: #114da2;
+    background: #e8f0ff;
+    box-shadow: 0 8px 20px rgba(17, 77, 162, .18);
 }
 
 .gender-content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
 }
 
 .gender-btn img {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
     object-fit: contain;
-    margin-bottom: 10px;
 }
 
 .gender-label {
-    font-weight: 500;
-    color: #000;
+    font-weight: 600;
+    color: #101828;
 }

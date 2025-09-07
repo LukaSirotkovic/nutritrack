@@ -1,22 +1,50 @@
-<div class="step-wrapper" style="text-align: center;">
+<div class="step-wrapper">
+    <p class="intro-text">
+        Tell us your goal so we can tailor your plan.
+    </p>
+
     <ion-text class="title">
         <h2>What is your fitness goal?</h2>
     </ion-text>
 
-    <div class="goal-buttons">
-        <ion-button shape="round" expand="block" fill="outline" [fill]="userData.goal === 'maintain' ? 'solid' : 'outline'"
-            (click)="selectGoal('maintain')">
-            <div class="goal-label">Maintain</div>
+    <div class="goals">
+        <!-- Maintain -->
+        <ion-button fill="clear" class="goal-card" (click)="selectGoal('maintain')"
+            [ngClass]="{ selected: userData.goal === 'maintain' }" aria-label="Maintain weight"
+            [attr.aria-pressed]="userData.goal === 'maintain'">
+            <div class="card-inner">
+                <div class="icon-wrap"><img src="../../../../../assets/media/pause_circle.svg" alt="maintain"></div>
+                <div class="text">
+                    <div class="name">Maintain</div>
+                    <div class="desc">Keep current weight</div>
+                </div>
+            </div>
         </ion-button>
 
-        <ion-button shape="round" expand="block" fill="outline" [fill]="userData.goal === 'gain' ? 'solid' : 'outline'"
-            (click)="selectGoal('gain')">
-            <div class="goal-label">Gain Weight</div>
+        <!-- Gain -->
+        <ion-button fill="clear" class="goal-card" (click)="selectGoal('gain')"
+            [ngClass]="{ selected: userData.goal === 'gain' }" aria-label="Gain weight"
+            [attr.aria-pressed]="userData.goal === 'gain'">
+            <div class="card-inner">
+                <div class="icon-wrap"><img src="../../../../../assets/media/trending_up.svg" alt="gain"></div>
+                <div class="text">
+                    <div class="name">Gain Weight</div>
+                    <div class="desc">Build mass/muscle</div>
+                </div>
+            </div>
         </ion-button>
 
-        <ion-button shape="round" expand="block" fill="outline" [fill]="userData.goal === 'lose' ? 'solid' : 'outline'"
-            (click)="selectGoal('lose')">
-            <div class="goal-label">Lose Weight</div>
+        <!-- Lose -->
+        <ion-button fill="clear" class="goal-card" (click)="selectGoal('lose')"
+            [ngClass]="{ selected: userData.goal === 'lose' }" aria-label="Lose weight"
+            [attr.aria-pressed]="userData.goal === 'lose'">
+            <div class="card-inner">
+                <div class="icon-wrap"><img src="../../../../../assets/media/trending_down.svg" alt="lose"></div>
+                <div class="text">
+                    <div class="name">Lose Weight</div>
+                    <div class="desc">Reduce body fat</div>
+                </div>
+            </div>
         </ion-button>
     </div>
 </div>

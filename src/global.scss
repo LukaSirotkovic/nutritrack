@@ -35,20 +35,79 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 /* @import '@ionic/angular/css/palettes/dark.system.css'; */
-
 :root {
-	/** Custom Primary Color **/
-	--ion-color-primary: #000000;
-	--ion-color-primary-rgb: 76, 175, 80;
+	/* Primary */
+	--ion-color-primary: #1149a5;
+	--ion-color-primary-rgb: 17, 73, 165;
 	--ion-color-primary-contrast: #ffffff;
 	--ion-color-primary-contrast-rgb: 255, 255, 255;
-	--ion-color-primary-shade: #929292;
-	--ion-color-primary-tint: #929292;
-	--ion-background-color: #eeeeee; /* tvoja nova boja pozadine */
-	--ion-background-color-rgb: 24, 25, 36; /* ako trebaš rgb */
-	--icon-color-success: #000000 !important;
-	--highlight-color: #000000 !important;
-	--highlight-color-valid: #000000 !important;
+	--ion-color-primary-shade: #0f4091;
+	--ion-color-primary-tint: #1456c3;
+
+	/* Secondary (cyan) */
+	--ion-color-secondary: #0ea5e9;
+	--ion-color-secondary-rgb: 14, 165, 233;
+	--ion-color-secondary-contrast: #ffffff;
+	--ion-color-secondary-contrast-rgb: 255, 255, 255;
+	--ion-color-secondary-shade: #0c91cd;
+	--ion-color-secondary-tint: #20b0f2;
+
+	/* Tertiary (purple) */
+	--ion-color-tertiary: #a855f7;
+	--ion-color-tertiary-rgb: 168, 85, 247;
+	--ion-color-tertiary-contrast: #ffffff;
+	--ion-color-tertiary-contrast-rgb: 255, 255, 255;
+	--ion-color-tertiary-shade: #952ff5;
+	--ion-color-tertiary-tint: #b166f8;
+
+	/* System colors */
+	--ion-color-success: #22c55e;
+	--ion-color-success-rgb: 34, 197, 94;
+	--ion-color-success-contrast: #ffffff;
+	--ion-color-success-contrast-rgb: 255, 255, 255;
+	--ion-color-success-shade: #1ead53;
+	--ion-color-success-tint: #29da6a;
+
+	--ion-color-warning: #f59e0b;
+	--ion-color-warning-rgb: 245, 158, 11;
+	--ion-color-warning-contrast: #1f2937;
+	--ion-color-warning-contrast-rgb: 31, 41, 55;
+	--ion-color-warning-shade: #d88b09;
+	--ion-color-warning-tint: #f6a823;
+
+	--ion-color-danger: #ef4444;
+	--ion-color-danger-rgb: 239, 68, 68;
+	--ion-color-danger-contrast: #ffffff;
+	--ion-color-danger-contrast-rgb: 255, 255, 255;
+	--ion-color-danger-shade: #ec2222;
+	--ion-color-danger-tint: #f15757;
+
+	/* Neutrals */
+	--ion-color-medium: #64748b;
+	--ion-color-medium-rgb: 100, 116, 139;
+	--ion-color-medium-shade: #58667a;
+	--ion-color-medium-tint: #718199;
+
+	--ion-color-light: #f6f8fc;
+	--ion-color-light-rgb: 246, 248, 252;
+	--ion-color-light-shade: #c9d5ed;
+	--ion-color-light-tint: #f7f9fc;
+
+	--ion-color-dark: #1f2937;
+	--ion-color-dark-rgb: 31, 41, 55;
+	--ion-color-dark-shade: #1b2430;
+	--ion-color-dark-tint: #2e3d52;
+
+	/* App background & text */
+	--ion-background-color: #f6f8fc;
+	--ion-background-color-rgb: 246, 248, 252;
+	--ion-text-color: #1f2937;
+	--ion-text-color-rgb: 31, 41, 55;
+
+	/* Inputs/highlights follow primary */
+	--highlight-color: var(--ion-color-primary);
+	--highlight-color-valid: var(--ion-color-primary);
+	--icon-color-success: var(--ion-color-success);
 }
 
 html,
@@ -57,9 +116,10 @@ body {
 	padding: 0 !important;
 	overflow-x: hidden;
 }
-
-
-.ion-valid.sc-ion-input-ios-h {
-    --highlight-color: #000000 !important;
-    --highlight-color-valid: #000000 !important;
+/* iOS/MD varijante inputa – koristi primarnu */
+ion-input,
+.ion-valid.sc-ion-input-ios-h,
+.ion-valid.sc-ion-input-md-h {
+	--highlight-color: var(--ion-color-primary) !important;
+	--highlight-color-valid: var(--ion-color-primary) !important;
 }

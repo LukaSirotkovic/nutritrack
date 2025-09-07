@@ -1,0 +1,27 @@
+<div class="step-wrapper">
+    <p class="intro-text">
+        Great! Let’s now enter your weight to personalize your plan.
+    </p>
+
+    <ion-text class="title">
+        <h2>Enter your weight</h2>
+    </ion-text>
+
+    <div class="ruler-wrap">
+        <div class="ruler" #ruler (scroll)="onScroll()">
+            <div class="pad" [style.height.px]="padHeight"></div>
+
+            <div class="tick" *ngFor="let v of values" [class.whole]="isWhole(v)" [class.half]="!isWhole(v)">
+                <span class="tick-label" aria-hidden="true"></span>
+            </div>
+
+            <div class="pad" [style.height.px]="padHeight"></div>
+
+            <div class="fade-top" aria-hidden="true"></div>
+            <div class="fade-bottom" aria-hidden="true"></div>
+        </div>
+
+        <div class="center-highlight" aria-hidden="true"></div>
+        <div class="center-value">{{ weight | number:'1.0-1' }} kg</div>
+    </div>
+</div>

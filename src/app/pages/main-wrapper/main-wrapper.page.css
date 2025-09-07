@@ -79,7 +79,7 @@ ion-content::-webkit-scrollbar {
 }
 
 .initials-avatar {
-    background-color: #3b82f6;
+    background-color: #1149a5;
     color: white;
     font-weight: bold;
     border-radius: 50%;
@@ -120,6 +120,9 @@ ion-content::-webkit-scrollbar {
     padding: 0;
     height: 68px;
     box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.09);
+    position: relative;
+    z-index: 10;
+    /* da footer bude iznad modala */
 }
 
 .footer-bar-with-notch {
@@ -148,9 +151,14 @@ ion-content::-webkit-scrollbar {
     transition: color 0.14s;
 }
 
+.footer-tab img {
+    width: 28px;
+    height: 28px;
+}
+
 .footer-tab:active,
 .footer-tab.active {
-    color: #3b82f6;
+    color: #1149a5;
 }
 
 .footer-label {
@@ -177,7 +185,7 @@ ion-content::-webkit-scrollbar {
 }
 
 .footer-center-btn {
-    background: #3b82f6;
+    background: #1149a5;
     border: none;
     border-radius: 50%;
     color: #fff;
@@ -196,31 +204,88 @@ ion-content::-webkit-scrollbar {
     background: #2563eb;
 }
 
-html,
-body,
-ion-app,
-.ion-page {
-    height: 100%;
-    min-height: 100%;
-    box-sizing: border-box;
+
+/* modal kao bottom sheet, odmah iznad footera (68px) */
+ion-modal.quick-actions-modal {
+    --height: auto;
+    --width: 100%;
+    --border-radius: 16px 16px 0 0;
+    --background: #fff;
+    --box-shadow: 0 -8px 24px rgba(0, 0, 0, .18);
+    align-items: flex-end;
 }
 
-ion-app {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+ion-modal.quick-actions-modal::part(content) {
+    bottom: 68px;
+    /* visina tvog footera */
 }
 
-ion-router-outlet,
-.ion-page {
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
+/* grid 2×2 */
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 16px;
 }
 
-ion-content {
-    flex: 1 1 auto;
+/* plavi box gumb */
+.qa-item {
+    position: relative;
     display: flex;
     flex-direction: column;
-    min-height: 0;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    border: 0;
+    border-radius: 14px;
+    background: #1149a5;
+    /* punija plava */
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 8px 18px rgba(59, 130, 246, .25);
+    transition: transform .12s, filter .12s;
+}
+
+.qa-item:active {
+    transform: translateY(1px) scale(.99);
+}
+
+/* ikona u “mjehuriću” + podrška za <img> i <ion-icon> */
+.qa-icon {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qa-icon img {
+    height: 70%;
+    width: 70%;
+    /* crni SVG -> bijeli */
+}
+
+.qa-icon ion-icon {
+    font-size: 24px;
+    color: #fff;
+    /* fallback ako nema img asseta */
+}
+
+/* tekst */
+.qa-text {
+    margin-top: 10px;
+    font-size: 14px;
+    letter-spacing: .015em;
+    color: #fff;
+    font-weight: 200;
+    /* bijeli tekst na plavom */
+}
+
+/* (opcionalno) hover na desktopu */
+@media (hover:hover) {
+    .qa-item:hover {
+        filter: brightness(1.05);
+    }
 }

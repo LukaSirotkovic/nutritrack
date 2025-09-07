@@ -4,30 +4,48 @@
             <img src="../../../../assets/media/arrow_back.svg" alt="">
         </button>
     </div>
-    <div class="meal-summary-header">
-        <div class="meal-info-row">
-            <span class="meal-name">{{ meal.type }}</span>
+
+
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>
+                {{ meal.type }}
+            </ion-card-title>
             <span class="meal-date">{{ mealDate | displayDate }}</span>
-        </div>
-        <div class="nutrients-totals-row">
-            <div>
-                <div class="macro-label">Calories</div>
-                <div class="macro-value calories">{{ totalCalories | smartNumber }} <span>kcal</span></div>
+        </ion-card-header>
+
+        <ion-card-content>
+            <div class="meal-content">
+                <div class="meal-macros-row">
+                    <div class="macro-block calories">
+                        <div class="macro-label">Calories</div>
+                        <div class="macro-value">
+                            {{ meal.totalMealCalories || 0 | smartNumber }}<span class="macro-unit">kcal</span>
+                        </div>
+                    </div>
+                    <div class="macro-block proteins">
+                        <div class="macro-label">Proteins</div>
+                        <div class="macro-value">
+                            {{ meal.totalMealProteins || 0 | smartNumber }}<span class="macro-unit">g</span>
+                        </div>
+                    </div>
+                    <div class="macro-block carbs">
+                        <div class="macro-label">Carbs</div>
+                        <div class="macro-value">
+                            {{ meal.totalMealCarbs || 0 | smartNumber }}<span class="macro-unit">g</span>
+                        </div>
+                    </div>
+                    <div class="macro-block fats">
+                        <div class="macro-label">Fats</div>
+                        <div class="macro-value">
+                            {{ meal.totalMealFats || 0 | smartNumber }}<span class="macro-unit">g</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <div class="macro-label">Proteins</div>
-                <div class="macro-value proteins">{{ totalProteins| smartNumber }} <span>g</span></div>
-            </div>
-            <div>
-                <div class="macro-label">Carbs</div>
-                <div class="macro-value carbs">{{ totalCarbs| smartNumber }} <span>g</span></div>
-            </div>
-            <div>
-                <div class="macro-label">Fats</div>
-                <div class="macro-value fats">{{ totalFats| smartNumber }} <span>g</span></div>
-            </div>
-        </div>
-    </div>
+        </ion-card-content>
+    </ion-card>
+
 
     <!-- Nova sekcija s gumbima -->
     <div class="meal-action-buttons">
@@ -52,10 +70,12 @@
                     <div class="food-details">
                         <!-- 2x2 grid: gore 2, dolje 2 -->
                         <div class="food-macros-grid">
-                            <div class="macro"><span>Calories(kcal)</span><strong>{{ item.calories }}</strong></div>
-                            <div class="macro"><span>Proteins(g)</span><strong>{{ item.proteins }}</strong></div>
-                            <div class="macro"><span>Carbs(g)</span><strong>{{ item.carbs }}</strong></div>
-                            <div class="macro"><span>Fats(g)</span><strong>{{ item.fats }}</strong></div>
+                            <div class="macro macro-calories"><span>Calories(kcal)</span><strong>{{ item.calories
+                                    }}</strong></div>
+                            <div class="macro macro-proteins"><span>Proteins(g)</span><strong>{{ item.proteins
+                                    }}</strong></div>
+                            <div class="macro macro-carbs"><span>Carbs(g)</span><strong>{{ item.carbs }}</strong></div>
+                            <div class="macro macro-fats"><span>Fats(g)</span><strong>{{ item.fats }}</strong></div>
                         </div>
 
                         <button class="qty-chip" slot="end" (click)="openFoodDetails(i)">

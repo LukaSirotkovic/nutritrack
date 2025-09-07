@@ -1,19 +1,30 @@
-<ion-content class="ion-padding" [scrollY]="false">
-    <ng-container *ngComponentOutlet="currentComponent inputs: { userData: userData }"></ng-container>
+<ion-content [fullscreen]="true" class="onboarding-content" [scrollY]="true">
+    <!-- Progress header -->
+    <div class="progress-wrap">
+        <div class="bar">
+            <div class="bar-fill" [style.width.%]="((stepIndex + 1) / steps.length) * 100"></div>
+        </div>
+        <div class="step-text">
+            Step {{ stepIndex + 1 }} of {{ steps.length }}
+        </div>
+    </div>
 
-    <div class="onboarding-nav">
-        <ion-button fill="outline" color="medium" (click)="prevStep()" [disabled]="stepIndex === 0">
-            ← Back
-        </ion-button>
-
-        <ion-button shape="round" size="large" color="primary" (click)="nextStep()"
-            *ngIf="stepIndex < steps.length - 1">
-            Next →
-        </ion-button>
-
-        <ion-button shape="round" size="large" color="success" (click)="onComplete()"
-            *ngIf="stepIndex === steps.length - 1">
-            Finish
-        </ion-button>
+    <!-- Step content (projected component) -->
+    <div class="step-host">
+        <ng-container *ngComponentOutlet="currentComponent; inputs: { userData: userData }">
+        </ng-container>
     </div>
 </ion-content>
+
+<!-- Sticky bottom nav -->
+<div class="onboarding-nav vertical">
+    <!-- primary CTA -->
+    <ion-button class="next-btn" expand="block" shape="round" size="large" color="primary"
+        (click)="stepIndex < steps.length - 1 ? nextStep() : onComplete()">
+        {{ stepIndex < steps.length - 1 ? 'Next →' : 'Finish' }} </ion-button>
+
+            <!-- back as underlined text -->
+            <button type="button" class="back-link" (click)="prevStep()" [disabled]="stepIndex === 0">
+                ← Back
+            </button>
+</div>

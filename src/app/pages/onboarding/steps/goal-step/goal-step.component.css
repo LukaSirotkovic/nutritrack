@@ -2,31 +2,124 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100%;
+    text-align: center;
+    gap: 24px;
+    margin-top: 60px;
 }
 
-.goal-buttons {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    gap: 16px;
-    margin: 24px 16px;
+.intro-text {
+    color: #475467;
+    margin: 0;
+    line-height: 1.5;
 }
 
-ion-button {
+.title h2 {
+    margin: 0;
+    color: #101828;
+    font-size: 1.6rem;
+}
+
+/* grid koji lijepo radi na svim širinama */
+.goals {
+    width: 100%;
+    max-width: 480px;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr;
+}
+
+
+
+.goal-card {
+    justify-content: flex-start;
+    align-items: stretch;
+    --padding-start: 0;
+    --padding-end: 0;
+    width: 100%;
+    gap: 12px;
+    padding: 0;
+    border: 1px solid #d0d5dd;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.goal-card:active {
+    transform: scale(.98);
+}
+
+.goal-card.ion-focused {
+    outline: 2px solid #114da2;
+    outline-offset: 2px;
+}
+
+.card-inner {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    --padding-top: 20px;
-    --padding-bottom: 20px;
+    gap: 12px;
+    padding: 14px 14px;
+    width: 210px;
 }
 
-ion-icon {
-    font-size: 2.5rem;
-    margin-bottom: 8px;
+/* fiksne dimenzije “kruga” i ikone -> identičan alignment */
+.icon-wrap {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1.5px solid #d0d5dd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.goal-label {
-    font-size: 1rem;
+.icon-wrap img {
+    width: 22px;
+    height: 22px;
+    display: block;
+    /* ukloni inline baseline offset */
+}
+
+/* tekstni dio neka zauzme ostatak reda */
+.text {
+    text-align: left;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.name {
+    font-weight: 700;
+    color: #101828;
+    font-size: 1.02rem;
+    line-height: 1.2;
+}
+
+.desc {
+    margin-top: 2px;
+    color: #667085;
+    font-size: .88rem;
+    line-height: 1.3;
+}
+
+/* selected state */
+.goal-card.selected {
+    border-color: #114da2;
+    background: #f1f6ff;
+    box-shadow: 0 10px 24px rgba(17, 77, 162, .16);
+}
+
+.goal-card.selected .icon-wrap {
+    background: #e8f0ff;
+    border-color: #114da2;
+}
+
+.goal-card.selected .icon-wrap ion-icon {
+    color: #114da2;
+}
+
+.goal-card.selected .name {
+    color: #0f1f3d;
+}
+
+.goal-card.selected .desc {
+    color: #3f4b63;
 }

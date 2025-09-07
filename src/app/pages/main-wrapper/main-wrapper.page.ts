@@ -13,6 +13,8 @@ import {
 	IonList,
 	IonItem,
 	IonLabel,
+	IonRippleEffect,
+	IonModal,
 } from '@ionic/angular/standalone';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -37,6 +39,8 @@ import { filter } from 'rxjs/operators';
 		IonPopover,
 		IonList,
 		IonItem,
+		IonModal,
+		IonRippleEffect,
 	],
 })
 export class MainWrapperPage implements OnInit {
@@ -101,5 +105,25 @@ export class MainWrapperPage implements OnInit {
 	async goToSettings() {
 		await this.userMenu?.dismiss(); // zatvori popover
 		this.router.navigate(['/settings']);
+	}
+
+	quickOpen = false;
+
+	onQuickAction(key: 'A' | 'B' | 'C' | 'D') {
+		console.log('Quick action', key);
+		this.quickOpen = false; // zatvori modal
+	}
+
+	onLogFood() {
+		this.quickOpen = false; /* tvoja logika */
+	}
+	onScanBarcode() {
+		this.quickOpen = false; /* tvoja logika */
+	}
+	onCreateMeal() {
+		this.quickOpen = false; /* tvoja logika */
+	}
+	onAddWater() {
+		this.quickOpen = false; /* tvoja logika */
 	}
 }

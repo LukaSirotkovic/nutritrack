@@ -1,26 +1,27 @@
 <div class="step-wrapper">
-    <p class="intro-text">
-        Welcome to <strong>NutriTrack</strong> — let's improve your diet!
-    </p>
-
+    <p class="intro-text">Welcome to <strong>NutriTrack</strong> — let's improve your diet!</p>
     <ion-text class="title">
-        <h2>Let's get to know you</h2>
+        <h2>Tell us more to personalize your experience</h2>
     </ion-text>
+
     <div class="gender-buttons">
-        <ion-button shape="round" size="default" [fill]="userData.gender === 'male' ? 'solid' : 'outline'"
-            (click)="selectGender('male')" class="gender-btn" >
+        <ion-button shape="round" size="default" class="gender-btn" [ngClass]="{ selected: userData.gender === 'male' }"
+            fill="clear" (click)="selectGender('male')" aria-label="Select male"
+            [attr.aria-pressed]="userData.gender === 'male'">
             <div class="gender-content">
-                <img src="../../../../../assets/media/man.png" alt="Male" />
+                <img src="assets/media/man.png" alt="" />
                 <div class="gender-label">Male</div>
             </div>
         </ion-button>
 
-        <ion-button shape="round" size="default" [fill]="userData.gender === 'female' ? 'solid' : 'outline'"
-            (click)="selectGender('female')" class="gender-btn">
+        <ion-button shape="round" size="default" class="gender-btn"
+            [ngClass]="{ selected: userData.gender === 'female' }" fill="clear" (click)="selectGender('female')"
+            aria-label="Select female" [attr.aria-pressed]="userData.gender === 'female'">
             <div class="gender-content">
-                <img src="../../../../../assets/media/woman.png" alt="Female" />
+                <img src="assets/media/woman.png" alt="" />
                 <div class="gender-label">Female</div>
             </div>
         </ion-button>
     </div>
+
 </div>

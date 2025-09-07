@@ -1,0 +1,199 @@
+.step-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+    margin-top: 60px;
+}
+
+.intro-text {
+    color: #475467;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.title h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    line-height: 1.25;
+    color: #101828;
+}
+
+/* kotač popunjava sav preostali prostor */
+.ruler-wrap {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    /* uzmi visinu koja ostane */
+    min-height: 360px;
+    /* da ne bude premali na jako niskim ekranima */
+}
+
+.picker-head {
+    font-weight: 700;
+    color: #344054;
+    margin-bottom: 6px;
+}
+
+/* ------- RULER -------- */
+/* fiksna visina i vlastiti scroll */
+.ruler {
+    position: relative;
+    /* važno: referenca za absolute overlay */
+    height: 240px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-snap-type: y proximity;
+    border-radius: 12px;
+    background: transparent;
+    box-shadow: none;
+    scrollbar-width: thin;
+}
+
+.ruler::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ruler::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.ruler::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.tick {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    scroll-snap-align: center;
+    position: relative;
+    user-select: none;
+    color: #98a2b3;
+    font-weight: 500;
+    font-size: 1.05rem;
+}
+
+.tick::before {
+    content: "";
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: 50%;
+    height: 1px;
+    background: #e5e7eb;
+    transform: translateY(-50%);
+    opacity: .8;
+}
+
+.tick.whole {
+    color: #1f2937;
+}
+
+.tick.whole::before {
+    height: 2px;
+    background: #cbd5e1;
+}
+
+.tick.half .tick-label {
+    display: none;
+}
+
+.tick.active {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+/* label aktivnog reda */
+
+/* sakrij sve label-e na tikovima */
+
+/* jači fokus na srednju crtu i vrijednost */
+.center-highlight {
+    pointer-events: none;
+    position: absolute;
+    /* umjesto sticky */
+    top: 41%;
+    left: 30px;
+    right: 30px;
+    transform: translateY(-50%);
+    height: 44px;
+    /* isto kao .tick */
+    border-top: 2px solid #114da2;
+    border-bottom: 2px solid #114da2;
+    border-radius: 6px;
+    z-index: 3;
+    opacity: .9;
+    padding: 0 16px;
+}
+
+/* broj – uvijek u sredini preko crte */
+.center-value {
+    pointer-events: none;
+    position: absolute;
+    /* umjesto sticky */
+    top: 41%;
+    left: 30px;
+    right: 30px;
+    transform: translateY(-50%);
+    height: 44px;
+    /* radi vertikalnog centriranja teksta */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: #0f172a;
+    z-index: 4;
+    text-shadow: 0 1px 0 #fff;
+}
+
+/* (ostali tvoji stilovi ostaju isti) */
+
+.fade-top,
+.fade-bottom {
+    position: sticky;
+    left: 0;
+    right: 0;
+    height: 64px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.fade-top {
+    top: 0;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.fade-bottom {
+    top: calc(100% - 64px);
+    background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+/* kompaktnije na manjim ekranima */
+@media (max-width: 380px),
+(max-height: 680px) {
+    .ruler {
+        height: 220px;
+    }
+
+    .tick {
+        height: 40px;
+    }
+
+    .center-highlight {
+        top: calc(50% - 20px);
+        height: 40px;
+    }
+
+    .center-value {
+        top: calc(50% - 20px);
+        height: 40px;
+    }
+}

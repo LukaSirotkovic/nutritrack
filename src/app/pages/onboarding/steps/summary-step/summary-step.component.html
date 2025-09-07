@@ -3,25 +3,91 @@
         <h2>Review your information</h2>
     </ion-text>
 
-    <ion-card>
-        <ion-card-header>
+    <ion-card class="summary-card">
+        <ion-card-header class="summary-header">
+            <div class="header-icon">👤</div>
             <ion-card-title>Profile Summary</ion-card-title>
         </ion-card-header>
+
         <ion-card-content>
-            <p><strong>Gender:</strong> {{ userData.gender }}</p>
-            <p><strong>Age:</strong> {{ userData.age }} years</p>
-            <p><strong>Height:</strong> {{ userData.height }} cm</p>
-            <p><strong>Weight:</strong> {{ userData.weight }} kg</p>
-            <p><strong>Activity Level:</strong> {{ userData.activity_level }} training</p>
-            <p><strong>Goal:</strong> {{ userData.goal }} weight</p>
-            <p *ngIf="userData.calorie_target"><strong>Calorie Target:</strong> {{ userData.calorie_target }} kcal/day</p>
-            <p *ngIf="userData.protein_target"><strong>Protein Target:</strong> {{ userData.protein_target }} g/day</p>
-            <p *ngIf="userData.carb_target"><strong>Carbohydrates Target:</strong> {{ userData.carb_target }} g/day</p>
-            <p *ngIf="userData.fat_target"><strong>Fats Target:</strong> {{ userData.fat_target }} g/day</p>
+            <!-- key/value redci -->
+            <dl class="kv">
+                <div class="row">
+                    <dt>Gender</dt>
+                    <dd class="cap">{{ userData.gender }}</dd>
+                </div>
+
+                <div class="row">
+                    <dt>Date of birth</dt>
+                    <dd>{{ userData.dateOfBirth | date:'dd.MM.yyyy' }}</dd>
+                </div>
+
+                <div class="row">
+                    <dt>Height</dt>
+                    <dd>{{ userData.height }} cm</dd>
+                </div>
+
+                <div class="row">
+                    <dt>Weight</dt>
+                    <dd>{{ userData.weight }} kg</dd>
+                </div>
+
+                <div class="row">
+                    <dt>Activity</dt>
+                    <dd>
+                        <span class="chip">
+                            <img *ngIf="userData.activity_level === 'low'" src="../../../../../assets/media/directions_walk.svg"
+                                alt="gain" />
+                            <img *ngIf="userData.activity_level === 'moderate'" src="../../../../../assets/media/fitness_center.svg"
+                                alt="maintain" />
+                            <img *ngIf="userData.activity_level === 'high'" src="../../../../../assets/media/self_improvement.svg"
+                                alt="lose" />
+                            <span class="cap">{{ userData.activity_level }}</span>
+                        </span>
+                    </dd>
+                </div>
+
+                <div class="row">
+                    <dt>Goal</dt>
+                    <dd>
+                        <span class="chip chip-alt">
+                            <img *ngIf="userData.goal === 'gain'" src="../../../../../assets/media/trending_up.svg"
+                                alt="gain" />
+                            <img *ngIf="userData.goal === 'maintain'" src="../../../../../assets/media/pause_circle.svg"
+                                alt="maintain" />
+                            <img *ngIf="userData.goal === 'lose'" src="../../../../../assets/media/trending_down.svg"
+                                alt="lose" />
+
+                            <span class="cap">{{ userData.goal }}</span>
+                        </span>
+                    </dd>
+                </div>
+            </dl>
+
+            <!-- Nutrition group -->
+            <div class="group-title"
+                *ngIf="userData.calorie_target || userData.protein_target || userData.carb_target || userData.fat_target">
+                Nutrition targets
+            </div>
+            <div class="targets"
+                *ngIf="userData.calorie_target || userData.protein_target || userData.carb_target || userData.fat_target">
+                <div class="target" *ngIf="userData.calorie_target">
+                    <div class="t-label">Calories</div>
+                    <div class="t-value">{{ userData.calorie_target }} kcal/day</div>
+                </div>
+                <div class="target" *ngIf="userData.protein_target">
+                    <div class="t-label">Protein</div>
+                    <div class="t-value">{{ userData.protein_target }} g/day</div>
+                </div>
+                <div class="target" *ngIf="userData.carb_target">
+                    <div class="t-label">Carbs</div>
+                    <div class="t-value">{{ userData.carb_target }} g/day</div>
+                </div>
+                <div class="target" *ngIf="userData.fat_target">
+                    <div class="t-label">Fats</div>
+                    <div class="t-value">{{ userData.fat_target }} g/day</div>
+                </div>
+            </div>
         </ion-card-content>
     </ion-card>
-
-    <ion-text color="medium" class="note">
-        <p>You can always update this information later in settings.</p>
-    </ion-text>
 </div>

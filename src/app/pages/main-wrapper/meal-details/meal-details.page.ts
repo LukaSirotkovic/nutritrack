@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { IonContent, IonList, IonItem, IonLabel, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MealEntry } from 'src/app/models/index';
 import { DailyLogService } from 'src/app/services/daily-log.service';
@@ -17,7 +17,7 @@ import { AlertController } from '@ionic/angular';
 	templateUrl: './meal-details.page.html',
 	styleUrls: ['./meal-details.page.css'],
 	standalone: true,
-	imports: [CommonModule, FormsModule, IonList, IonItem, IonLabel, DisplayDatePipe, SmartNumberPipe],
+	imports: [CommonModule, FormsModule, IonList, IonItem, IonLabel, DisplayDatePipe, SmartNumberPipe, IonCard, IonCardHeader, IonCardTitle, IonCardContent],
 })
 export class MealDetailsPage implements OnInit {
 	meal?: MealEntry;

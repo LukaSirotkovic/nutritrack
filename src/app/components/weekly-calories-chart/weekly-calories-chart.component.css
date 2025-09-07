@@ -1,0 +1,59 @@
+.chart-wrap {
+    width: 100%;
+    height: 200px;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+.bar {
+    fill: #1149a5;
+    /* plava */
+    rx: 6;
+    cursor: pointer;
+    transition: opacity .15s, transform .15s, filter .15s;
+}
+
+.bar:hover {
+    opacity: .9;
+    transform: translateY(-2px);
+}
+
+.bar.selected {
+    opacity: 1;
+    filter: drop-shadow(0 2px 6px rgba(59, 130, 246, .6));
+}
+
+.dim {
+    opacity: .6;
+}
+
+.target {
+    stroke: #1149a5;
+    stroke-width: 1.5;
+    stroke-dasharray: 4 3;
+}
+
+.target-label {
+    fill: #1149a5;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.xlabel {
+    fill: #6b7280;
+    font-size: 11px;
+}
+
+.ylabel {
+    fill: #9ca3af;
+    font-size: 10px;
+}
+
+.calories-label {
+    fill: #111;
+    font-size: 11px;
+    font-weight: 500;
+}

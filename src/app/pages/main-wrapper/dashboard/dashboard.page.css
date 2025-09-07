@@ -151,7 +151,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 8px;
+    gap: 15px;
 }
 
 .dashboard-calorie-text .goal-row,
@@ -161,14 +161,14 @@
     gap: 10px;
 }
 
-.dashboard-calorie-text .goal-text{
+.dashboard-calorie-text .goal-text {
     display: flex;
     flex-direction: column;
     gap: 5px
 }
 
 .dashboard-calorie-text .goal-icon img,
-.dashboard-calorie-text .food-icon img{
+.dashboard-calorie-text .food-icon img {
     width: 28px;
     height: 28px;
 }

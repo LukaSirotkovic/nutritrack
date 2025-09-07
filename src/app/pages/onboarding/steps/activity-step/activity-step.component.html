@@ -7,36 +7,53 @@
         <h2>How active are you?</h2>
     </ion-text>
 
-    <div class="activity-buttons">
-        <ion-button shape="round" size="default" [fill]="userData.activity_level === 'low' ? 'solid' : 'outline'"
-            (click)="selectActivity('low')" class="activity-btn">
-            <div class="activity-content">
-                <img src="../../../../../assets/media/directions_walk.svg" alt="Low" />
-                <div class="activity-label">
-                    <strong>Sedentary</strong>
-                    <p>(little or no exercise)</p>
+    <div class="activity-list">
+        <!-- Sedentary -->
+        <ion-button fill="clear" class="activity-card" (click)="selectActivity('low')"
+            [ngClass]="{ selected: userData.activity_level === 'low' }" aria-label="Sedentary – little or no exercise"
+            [attr.aria-pressed]="userData.activity_level === 'low'">
+            <div class="card-inner">
+                <img src="assets/media/directions_walk.svg" alt="" class="icon" />
+                <div class="text">
+                    <div class="title-row">
+                        <span class="name">Sedentary</span>
+                        <span class="badge">Low</span>
+                    </div>
+                    <div class="desc">Little or no exercise</div>
                 </div>
             </div>
         </ion-button>
 
-        <ion-button shape="round" size="default" [fill]="userData.activity_level === 'moderate' ? 'solid' : 'outline'"
-            (click)="selectActivity('moderate')" class="activity-btn">
-            <div class="activity-content">
-                <img src="../../../../../assets/media/fitness_center.svg" alt="Moderate" />
-                <div class="activity-label">
-                    <strong>Moderately active</strong>
-                    <p>(exercise/sports 3 days/week)</p>
+        <!-- Moderate -->
+        <ion-button fill="clear" class="activity-card" (click)="selectActivity('moderate')"
+            [ngClass]="{ selected: userData.activity_level === 'moderate' }"
+            aria-label="Moderately active – exercise 3 days per week"
+            [attr.aria-pressed]="userData.activity_level === 'moderate'">
+            <div class="card-inner">
+                <img src="assets/media/fitness_center.svg" alt="" class="icon" />
+                <div class="text">
+                    <div class="title-row">
+                        <span class="name">Moderately active</span>
+                        <span class="badge">Medium</span>
+                    </div>
+                    <div class="desc">Exercise/sports ~3 days/week</div>
                 </div>
             </div>
         </ion-button>
 
-        <ion-button shape="round" size="default" [fill]="userData.activity_level === 'high' ? 'solid' : 'outline'"
-            (click)="selectActivity('high')" class="activity-btn">
-            <div class="activity-content">
-                <img src="../../../../../assets/media/self_improvement.svg" alt="High" />
-                <div class="activity-label">
-                    <strong>Very active</strong>
-                    <p>(hard exercise 6-7 days/week)</p>
+        <!-- High -->
+        <ion-button fill="clear" class="activity-card" (click)="selectActivity('high')"
+            [ngClass]="{ selected: userData.activity_level === 'high' }"
+            aria-label="Very active – hard exercise 6–7 days per week"
+            [attr.aria-pressed]="userData.activity_level === 'high'">
+            <div class="card-inner">
+                <img src="assets/media/self_improvement.svg" alt="" class="icon" />
+                <div class="text">
+                    <div class="title-row">
+                        <span class="name">Very active</span>
+                        <span class="badge">High</span>
+                    </div>
+                    <div class="desc">Hard exercise 6–7 days/week</div>
                 </div>
             </div>
         </ion-button>

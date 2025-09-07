@@ -20,7 +20,7 @@
     border: none;
     font-size: 1.3rem;
     font-weight: bold;
-    color: #3b82f6;
+    color: #1149a5;
     cursor: pointer;
     transition: opacity .2s;
 }
@@ -81,7 +81,7 @@
 
 .ring-fg {
     fill: none;
-    stroke: #3b82f6;
+    stroke: #1149a5;
     /* samo dekoracija; možeš napraviti pravi progress kasnije */
     stroke-width: 12;
     stroke-dasharray: 326;

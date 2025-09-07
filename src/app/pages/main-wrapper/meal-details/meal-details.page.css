@@ -13,95 +13,98 @@
     padding: 12px 16px;
 }
 
-.meal-header-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #222;
+
+ion-card {
+    background: #fff;
+    margin: 0 24px 24px 24px;
 }
 
-.meal-summary-header {
-    background: #f8f9fa;
-    border-radius: 14px;
-    margin: 0 20px 18px 20px;
-    padding: 14px 20px;
-    box-shadow: 0 2px 9px 0 #0002;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+ion-card-title {
+    font-size: 20px;
+    margin-bottom: 0;
+    padding-bottom: 0px;
 }
 
-.nutrients-totals-row {
+ion-card-header {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    gap: 18px;
-    margin-bottom: 10px;
+    align-items: center;
+}
+
+.meal-empty {
+    color: #bbb;
+    font-size: 0.92rem;
+}
+
+.meal-summary {
+    color: #888;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.meal-food-list {
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.food-qty {
+    color: #aaa;
+    font-size: 0.9em;
+    margin-left: 4px;
+}
+
+.meal-macros-row {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.macro-block {
+    padding: 0px;
+    text-align: left;
+    min-width: 56px;
 }
 
 .macro-label {
-    color: #aaa;
-    font-size: 0.93em;
+    font-size: 0.83rem;
+    color: #888;
+    margin-bottom: 2px;
 }
 
 .macro-value {
-    font-weight: 700;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #222;
 }
 
-.macro-value.calories {
-    color: #3b82f6;
+.macro-unit {
+    font-size: 0.82rem;
+    color: #aaa;
+    margin-left: 2px;
 }
 
-.macro-value.proteins {
+.macro-block.calories .macro-value {
+    color: #1149a5;
+}
+
+.macro-block.proteins .macro-value {
     color: #10b981;
 }
 
-.macro-value.carbs {
+.macro-block.carbs .macro-value {
     color: #fbbf24;
 }
 
-.macro-value.fats {
+.macro-block.fats .macro-value {
     color: #ef4444;
-}
-
-.meal-info-row {
-    display: flex;
-    justify-content: space-between;
-    color: #555;
-    font-size: 1em;
-    margin-top: 10px;
-}
-
-.meal-name {
-    font-size: 1.13rem;
-    font-weight: 600;
-    color: #222;
-    margin: 0;
-    letter-spacing: 0.01em;
 }
 
 .meal-food-list {
     margin: 10px 16px 0 16px;
     padding: 0;
-}
-
-.food-title {
-    font-weight: 500;
-}
-
-.food-macros {
-    color: #888;
-    font-size: 0.98em;
-}
-
-.cals {
-    margin-right: 8px;
-}
-
-.prots {
-    margin-right: 8px;
-}
-
-.carbs {
-    margin-right: 8px;
 }
 
 
@@ -145,6 +148,11 @@
     font-weight: 500;
 }
 
+ion-label {
+    margin: 10px 0;
+    padding: 0;
+}
+
 .food-label {
     display: block;
 }
@@ -178,8 +186,20 @@
     justify-content: space-between;
 }
 
-.food-macros-grid .macro strong {
-    color: #111;
+.macro-calories strong {
+    color: #1149a5;
+}
+
+.macro-proteins strong {
+    color: #10b981;
+}
+
+.macro-carbs strong {
+    color: #fbbf24;
+}
+
+.macro-fats strong {
+    color: #ef4444;
 }
 
 /* desni “čip” s količinom */
@@ -192,6 +212,7 @@
     line-height: 1;
     box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
     cursor: pointer;
+    background-color: #1149a5;
 }
 
 .qty-chip:active {

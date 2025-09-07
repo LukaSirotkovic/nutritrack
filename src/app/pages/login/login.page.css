@@ -4,7 +4,15 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 16px;
+    gap: 30px;
+    padding: 16px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
 }
 
 .logo {
@@ -14,6 +22,7 @@
     letter-spacing: .4px;
     color: #2a2a2a;
     margin-bottom: 8px;
+    color: #1149a5;
 }
 
 .flavour-text {
@@ -29,6 +38,11 @@
     background: transparent;
 }
 
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
 .form-item {
     --padding-start: 0;
     --inner-padding-end: 0;
@@ -42,6 +56,13 @@
     margin-top: 2px;
 }
 
+.cta-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
 /* zajedničke postavke za ION gumbove */
 ion-button.btn {
     --height: 48px;
@@ -52,12 +73,15 @@ ion-button.btn {
     --padding-start: 16px;
     --padding-end: 16px;
     font-size: 16px;
+
+    margin: 0 !important;
 }
 
 /* puna varijanta (crni) – po želji */
 ion-button.btn-primary {
-    --background: #000;
     --color: #fff;
+
+    --margin: 0;
 }
 
 /* outline varijanta – ista visina i radius */
@@ -66,6 +90,7 @@ ion-button.btn-outline {
     --color: #1f1f1f;
     --border-radius: 16px;
     --background: #fff;
+    --margin: 0;
 }
 
 /* GOOGLE gumb – ujednači s ion-button (48px, 16px radius) */
@@ -80,7 +105,6 @@ ion-button.btn-outline {
     line-height: 1;
     /* bez vert. rastezanja */
     display: block;
-    margin-top: 12px;
     padding: 0 16px;
     /* isto kao ion-button */
     box-sizing: border-box;

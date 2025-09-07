@@ -1,10 +1,11 @@
 <ion-content class="ion-padding">
     <div class="register-wrap">
-        <div class="logo">NutriTrack</div>
-        <span class="flavour-text">Track your meals & macros easily</span>
+        <div class="header">
+            <div class="logo">NutriTrack</div>
+            <span class="flavour-text">Track your meals & macros easily</span>
 
+        </div>
 
-        <!-- underline inputi -->
         <ion-list>
             <ion-item>
                 <ion-label position="floating">Username</ion-label>
@@ -30,13 +31,16 @@
             {{ errorMessage }}
         </ion-text>
 
-        <!-- gumbi -->
-        <ion-button expand="block" class="btn btn-primary" (click)="register()">
-            Sign up
-        </ion-button>
+        <div class="cta-buttons">
+            <ion-button expand="block" class="btn btn-primary" (click)="register()">
+                Sign up
+            </ion-button>
 
-        <ion-button expand="block" class="btn btn-outline" fill="outline" routerLink="/login" routerDirection="back">
-            Already have an account?
-        </ion-button>
+            <ion-button expand="block" class="btn btn-outline" fill="outline" routerLink="/login"
+                routerDirection="back">
+                Already have an account?
+            </ion-button>
+        </div>
+
     </div>
 </ion-content>
