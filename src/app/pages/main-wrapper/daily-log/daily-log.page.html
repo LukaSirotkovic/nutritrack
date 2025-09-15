@@ -1,88 +1,96 @@
-<app-calendar-header></app-calendar-header>
-<ng-container *ngIf="!loading; else dailyLogSkeleton">
+<ion-content [fullscreen]="true">
+
+    <app-calendar-header></app-calendar-header>
+    <ng-container *ngIf="!loading; else dailyLogSkeleton">
 
 
-    <div cdkDropList [cdkDropListData]="dailyLog?.meals ?? []" (cdkDropListDropped)="dropMeal($event)"
-        class="daily-log-list">
+        <button *ngIf="!isTooOld" type="button" expand="block" fill="clear" class="add-meal-dashed-box"
+            (click)="onAddMealClick($event)">
+            <img src="assets/media/add_plavi.svg" alt="add" style="margin-right:.5rem" />
+            <span>Add meal</span>
+        </button>
 
-        <ng-container *ngIf="!loading;">
-            <div *ngIf="!isTooOld" class="add-meal-dashed-box" (click)="addNewMeal()">
-                <img src="../../../../assets/media/add_plavi.svg" alt="add">
-                <span>Dodaj obrok</span>
-            </div>
-        </ng-container>
+        <div cdkDropList [cdkDropListData]="dailyLog?.meals ?? []" (cdkDropListDropped)="dropMeal($event)"
+            class="daily-log-list">
 
-        <ion-card *ngFor="let meal of dailyLog?.meals ?? []" cdkDrag (click)="openMealDetails(meal)"
-            [class.disabled-card]="isTooOld" (press)="openMealActions(meal, $event)">
-            <div *ngIf="isTooOld" class="locked-overlay"></div>
+            <ion-card *ngFor="let meal of dailyLog?.meals ?? []" cdkDrag (click)="openMealDetails(meal)"
+                [class.disabled-card]="isTooOld" (press)="openMealActions(meal, $event)">
+                <div *ngIf="isTooOld" class="locked-overlay"></div>
 
-            <ion-card-header>
-                <ion-card-title>
-                    {{ meal.type }}
-                </ion-card-title>
-                <ion-button *ngIf="!isTooOld" class="svg-to-hide" fill="clear" size="small"
-                    (click)="openMealActions(meal, $event)">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#888">
-                        <circle cx="5" cy="12" r="2"></circle>
-                        <circle cx="12" cy="12" r="2"></circle>
-                        <circle cx="19" cy="12" r="2"></circle>
-                    </svg>
-                </ion-button>
-            </ion-card-header>
+                <ion-card-header>
+                    <ion-card-title>
+                        {{ meal.type }}
+                    </ion-card-title>
+                    <ion-button *ngIf="!isTooOld" class="svg-to-hide" fill="clear" size="small"
+                        (click)="openMealActions(meal, $event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                            fill="#888">
+                            <circle cx="5" cy="12" r="2"></circle>
+                            <circle cx="12" cy="12" r="2"></circle>
+                            <circle cx="19" cy="12" r="2"></circle>
+                        </svg>
+                    </ion-button>
+                </ion-card-header>
 
-            <ion-card-content>
-                <div class="meal-content">
-                    <div class="meal-macros-row">
-                        <div class="macro-block calories">
-                            <div class="macro-label">Calories</div>
-                            <div class="macro-value">
-                                {{ meal.totalMealCalories || 0 | smartNumber }}<span class="macro-unit">kcal</span>
+                <ion-card-content>
+                    <div class="meal-content">
+                        <div class="meal-macros-row">
+                            <div class="macro-block calories">
+                                <div class="macro-label">Calories</div>
+                                <div class="macro-value">
+                                    {{ meal.totalMealCalories || 0 | smartNumber }}<span class="macro-unit">kcal</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="macro-block proteins">
-                            <div class="macro-label">Proteins</div>
-                            <div class="macro-value">
-                                {{ meal.totalMealProteins || 0 | smartNumber }}<span class="macro-unit">g</span>
+                            <div class="macro-block proteins">
+                                <div class="macro-label">Proteins</div>
+                                <div class="macro-value">
+                                    {{ meal.totalMealProteins || 0 | smartNumber }}<span class="macro-unit">g</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="macro-block carbs">
-                            <div class="macro-label">Carbs</div>
-                            <div class="macro-value">
-                                {{ meal.totalMealCarbs || 0 | smartNumber }}<span class="macro-unit">g</span>
+                            <div class="macro-block carbs">
+                                <div class="macro-label">Carbs</div>
+                                <div class="macro-value">
+                                    {{ meal.totalMealCarbs || 0 | smartNumber }}<span class="macro-unit">g</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="macro-block fats">
-                            <div class="macro-label">Fats</div>
-                            <div class="macro-value">
-                                {{ meal.totalMealFats || 0 | smartNumber }}<span class="macro-unit">g</span>
+                            <div class="macro-block fats">
+                                <div class="macro-label">Fats</div>
+                                <div class="macro-value">
+                                    {{ meal.totalMealFats || 0 | smartNumber }}<span class="macro-unit">g</span>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </ion-card-content>
+            </ion-card>
+
+
+        </div>
+    </ng-container>
+    <ion-action-sheet mode="ios">
+    </ion-action-sheet>
+    <ion-alert>
+        
+    </ion-alert>
+
+    <!-- SKELETON -->
+    <ng-template #dailyLogSkeleton>
+        <div class="daily-log-list">
+
+            <div *ngIf="!isTooOld" class="skeleton-add-meal"></div>
+            <div class="skeleton-meal-card" *ngFor="let _ of dailyLog?.meals">
+                <div class="skeleton-meal-header">
+                    <div class="skeleton-line skeleton-sm" style="width: 120px;"></div>
+                    <div class="skeleton-btn" style="width: 28px; height: 28px;"></div>
                 </div>
-            </ion-card-content>
-        </ion-card>
 
-
-    </div>
-</ng-container>
-
-<!-- SKELETON -->
-<ng-template #dailyLogSkeleton>
-    <div class="daily-log-list">
-
-        <div *ngIf="!isTooOld" class="skeleton-add-meal"></div>
-        <div class="skeleton-meal-card" *ngFor="let _ of dailyLog?.meals">
-            <div class="skeleton-meal-header">
-                <div class="skeleton-line skeleton-sm" style="width: 120px;"></div>
-                <div class="skeleton-btn" style="width: 28px; height: 28px;"></div>
-            </div>
-
-            <div class="skeleton-meal-macros">
-                <div class="skeleton-macro" *ngFor="let __ of [1,2,3,4]">
-                    <div class="skeleton-line skeleton-xxs" style="width: 50px; margin-bottom: 6px;"></div>
-                    <div class="skeleton-line skeleton-xs" style="width: 40px;"></div>
+                <div class="skeleton-meal-macros">
+                    <div class="skeleton-macro" *ngFor="let __ of [1,2,3,4]">
+                        <div class="skeleton-line skeleton-xxs" style="width: 50px; margin-bottom: 6px;"></div>
+                        <div class="skeleton-line skeleton-xs" style="width: 40px;"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</ng-template>
+    </ng-template>
+</ion-content>

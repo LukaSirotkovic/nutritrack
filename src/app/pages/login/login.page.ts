@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonText, IonButton, IonInput, IonList } from '@ionic/angular/standalone';
-import { ToastController } from '@ionic/angular';
+import { ToastController, NavController } from '@ionic/angular';
 import { Router, RouterModule } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
@@ -31,7 +31,7 @@ export class LoginPage {
 	errorMessage = '';
 	loading = false;
 
-	constructor(private auth: AuthService, private toast: ToastController, private router: Router) {}
+	constructor(private auth: AuthService, private toast: ToastController, private nav: NavController) {}
 
 	async loginWithUsername() {
 		this.loading = true;
@@ -39,7 +39,7 @@ export class LoginPage {
 		try {
 			await this.auth.loginWithUsername(this.username, this.password);
 
-			await this.router.navigateByUrl('/', { replaceUrl: true });
+			await this.nav.navigateForward('/', { replaceUrl: true });
 
 			this.showToast('Login successful!');
 		} catch (err: any) {
@@ -57,7 +57,7 @@ export class LoginPage {
 			await this.auth.loginWithGoogle();
 
 			// neutralno: pusti guard da odluči kamo (dashboard / onboarding)
-			await this.router.navigateByUrl('/', { replaceUrl: true });
+			await this.nav.navigateForward('/', { replaceUrl: true });
 
 			this.showToast('Login successful!');
 		} catch (err: any) {

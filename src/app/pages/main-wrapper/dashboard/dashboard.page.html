@@ -1,94 +1,96 @@
-<!-- DASHBOARD KALENDAR (uvijek prikazan, ali možeš i njega skeletonizirati ako treba) -->
-<app-calendar-header></app-calendar-header>
+<ion-content [fullscreen]="true">
+    <!-- DASHBOARD KALENDAR (uvijek prikazan, ali možeš i njega skeletonizirati ako treba) -->
+    <app-calendar-header></app-calendar-header>
 
-<!-- DASHBOARD SLIDER SKELETON -->
-<ng-container *ngIf="!loading; else sliderSkeleton">
-    <swiper-container (slideChange)="onSlideChange($event)" [pagination]="true" [spaceBetween]="20" style="width: 100%;"
-        class="dashboard-swiper" (click)="goToDailyLog(selectedDate)">
-        <!-- Slide 1: Calories -->
-        <swiper-slide>
-            <div class="dashboard-box">
-                <div class="dashboard-header">
-                    <h2 class="category">Calories</h2>
-                    <p class="subtext">Remaining = Base goal - calorie intake</p>
+    <!-- DASHBOARD SLIDER SKELETON -->
+    <ng-container *ngIf="!loading; else sliderSkeleton">
+        <swiper-container (slideChange)="onSlideChange($event)" [pagination]="true" [spaceBetween]="20"
+            style="width: 100%;" class="dashboard-swiper" (click)="goToDailyLog(selectedDate)">
+            <!-- Slide 1: Calories -->
+            <swiper-slide>
+                <div class="dashboard-box">
+                    <div class="dashboard-header">
+                        <h2 class="category">Calories</h2>
+                        <p class="subtext">Remaining = Base goal - calorie intake</p>
+                    </div>
+                    <div class="dashboard-calorie-slide">
+                        <div class="dashboard-calorie-circle">
+                            <app-circle-progress [value]="totalDailyCalories" [max]="userProfile?.calorie_target ?? 0"
+                                [color]="'#1149a5'" [label]="'Remaining'" [main]="true" [animate]="activeSlide === 0"
+                                [displayValue]="(userProfile?.calorie_target ?? 0) - totalDailyCalories">
+                            </app-circle-progress>
+                        </div>
+                        <div class="dashboard-calorie-text">
+                            <div class="goal-row">
+                                <span class="goal-icon">
+                                    <img src="../../../../assets/media/award_meal.svg" alt="">
+                                </span>
+                                <div class="goal-text">
+                                    <div class="goal-label">Base Goal</div>
+                                    <div class="goal-value">{{ userProfile?.calorie_target }}</div>
+                                </div>
+                            </div>
+                            <div class="food-row">
+                                <span class="food-icon">
+                                    <img src="../../../../assets/media/local_fire_departmet.svg" alt="">
+                                </span>
+                                <div class="goal-text">
+                                    <div class="food-label">Calorie intake</div>
+                                    <div class="food-value">{{ totalDailyCalories }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="dashboard-calorie-slide">
-                    <div class="dashboard-calorie-circle">
-                        <app-circle-progress [value]="totalDailyCalories" [max]="userProfile?.calorie_target ?? 0"
-                            [color]="'#1149a5'" [label]="'Remaining'" [main]="true" [animate]="activeSlide === 0"
-                            [displayValue]="(userProfile?.calorie_target ?? 0) - totalDailyCalories">
+            </swiper-slide>
+            <!-- Slide 2: Macros -->
+            <swiper-slide>
+                <div class="dashboard-box">
+                    <div class="dashboard-header">
+                        <h2 class="category">Macros</h2>
+                    </div>
+                    <div class="dashboard-macros-slide">
+                        <app-circle-progress [value]="totalDailyProteins" [max]="userProfile?.protein_target ?? 0"
+                            [animate]="activeSlide === 1" [color]="'#10b981'" [label]="'Proteins'" [unit]="'g'"
+                            [displayValue]="totalDailyProteins">
+                        </app-circle-progress>
+                        <app-circle-progress [value]="totalDailyCarbs" [max]="userProfile?.carb_target ?? 0"
+                            [animate]="activeSlide === 1" [color]="'#fbbf24'" [label]="'Carbs'" [unit]="'g'"
+                            [displayValue]="totalDailyCarbs">
+                        </app-circle-progress>
+                        <app-circle-progress [value]="totalDailyFats" [max]="userProfile?.fat_target ?? 0"
+                            [animate]="activeSlide === 1" [color]="'#ef4444'" [label]="'Fats'" [unit]="'g'"
+                            [displayValue]="totalDailyFats">
                         </app-circle-progress>
                     </div>
-                    <div class="dashboard-calorie-text">
-                        <div class="goal-row">
-                            <span class="goal-icon">
-                                <img src="../../../../assets/media/award_meal.svg" alt="">
-                            </span>
-                            <div class="goal-text">
-                                <div class="goal-label">Base Goal</div>
-                                <div class="goal-value">{{ userProfile?.calorie_target }}</div>
-                            </div>
-                        </div>
-                        <div class="food-row">
-                            <span class="food-icon">
-                                <img src="../../../../assets/media/local_fire_departmet.svg" alt="">
-                            </span>
-                            <div class="goal-text">
-                                <div class="food-label">Calorie intake</div>
-                                <div class="food-value">{{ totalDailyCalories }}</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </div>
-        </swiper-slide>
-        <!-- Slide 2: Macros -->
-        <swiper-slide>
-            <div class="dashboard-box">
-                <div class="dashboard-header">
-                    <h2 class="category">Macros</h2>
-                </div>
-                <div class="dashboard-macros-slide">
-                    <app-circle-progress [value]="totalDailyProteins" [max]="userProfile?.protein_target ?? 0"
-                        [animate]="activeSlide === 1" [color]="'#10b981'" [label]="'Proteins'" [unit]="'g'"
-                        [displayValue]="totalDailyProteins">
-                    </app-circle-progress>
-                    <app-circle-progress [value]="totalDailyCarbs" [max]="userProfile?.carb_target ?? 0"
-                        [animate]="activeSlide === 1" [color]="'#fbbf24'" [label]="'Carbs'" [unit]="'g'"
-                        [displayValue]="totalDailyCarbs">
-                    </app-circle-progress>
-                    <app-circle-progress [value]="totalDailyFats" [max]="userProfile?.fat_target ?? 0"
-                        [animate]="activeSlide === 1" [color]="'#ef4444'" [label]="'Fats'" [unit]="'g'"
-                        [displayValue]="totalDailyFats">
-                    </app-circle-progress>
-                </div>
-            </div>
-        </swiper-slide>
-    </swiper-container>
-</ng-container>
-<ng-template #sliderSkeleton>
-    <div class="dashboard-swiper">
-        <div class="dashboard-box skeleton-card" style="height:240px"></div>
-    </div>
-</ng-template>
-
-<!-- ACTIVITIES CARD → GRAPH -->
-<ion-card class="activities">
-    <ng-container *ngIf="!loading; else activitiesSkeleton">
-        <div class="activity-header">
-            <h2 class="activity">Weekly Calories</h2>
-        </div>
-
-        <app-weekly-calories-chart [data]="weeklyData" [selectedDate]="selectedDate">
-        </app-weekly-calories-chart>
+            </swiper-slide>
+        </swiper-container>
     </ng-container>
-
-    <ng-template #activitiesSkeleton>
-        <div class="activity-header">
-            <div class="skeleton-line skeleton-md" style="width: 130px; height: 22px; margin-bottom: 8px"></div>
-        </div>
-        <div style="padding: 0 12px 12px;">
-            <div class="skeleton-card" style="height: 180px; border-radius: 12px;"></div>
+    <ng-template #sliderSkeleton>
+        <div class="dashboard-swiper">
+            <div class="dashboard-box skeleton-card" style="height:240px"></div>
         </div>
     </ng-template>
-</ion-card>
+
+    <!-- ACTIVITIES CARD → GRAPH -->
+    <ion-card class="activities">
+        <ng-container *ngIf="!loading; else activitiesSkeleton">
+            <div class="activity-header">
+                <h2 class="activity">Weekly Calories</h2>
+            </div>
+
+            <app-weekly-calories-chart [data]="weeklyData" [selectedDate]="selectedDate">
+            </app-weekly-calories-chart>
+        </ng-container>
+
+        <ng-template #activitiesSkeleton>
+            <div class="activity-header">
+                <div class="skeleton-line skeleton-md" style="width: 130px; height: 22px; margin-bottom: 8px"></div>
+            </div>
+            <div style="padding: 0 12px 12px;">
+                <div class="skeleton-card" style="height: 180px; border-radius: 12px;"></div>
+            </div>
+        </ng-template>
+    </ion-card>
+</ion-content>

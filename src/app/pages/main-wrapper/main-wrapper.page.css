@@ -1,6 +1,7 @@
 /* HEADER */
 ion-header {
     padding: 20px;
+    padding-top: calc(var(--ion-safe-area-top, 0px) + 40px);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -8,11 +9,6 @@ ion-header {
     --box-shadow: none !important;
     --ion-box-shadow: none !important;
     --background-color: none;
-}
-
-ion-content {
-    --padding-top: env(safe-area-inset-top);
-    --padding-bottom: env(safe-area-inset-bottom);
 }
 
 ion-avatar {
@@ -123,8 +119,7 @@ ion-content::-webkit-scrollbar {
 .custom-footer {
     background: #fff;
     border: none;
-    padding: 0;
-    height: 68px;
+    padding-bottom: calc(var(--ion-safe-area-bottom, 0px) + 40px);
     box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.09);
     position: relative;
     z-index: 10;
@@ -154,6 +149,7 @@ ion-content::-webkit-scrollbar {
     color: #bbb;
     outline: none;
     padding-bottom: 7px;
+    padding-top: 7px;
     transition: color 0.14s;
 }
 

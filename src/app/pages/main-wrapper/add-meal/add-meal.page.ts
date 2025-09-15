@@ -10,6 +10,7 @@ import {
 	IonButton,
 	IonSkeletonText,
 	IonBadge,
+	IonContent,
 } from '@ionic/angular/standalone';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,17 +23,7 @@ import { FoodItem } from 'src/app/models';
 	templateUrl: './add-meal.page.html',
 	styleUrls: ['./add-meal.page.css'],
 	standalone: true,
-	imports: [
-		CommonModule,
-		FormsModule,
-		IonList,
-		IonItem,
-		IonLabel,
-		IonSearchbar,
-		IonButton,
-		IonSkeletonText,
-		IonBadge,
-	],
+	imports: [CommonModule, FormsModule, IonList, IonItem, IonLabel, IonSearchbar, IonButton, IonSkeletonText, IonBadge, IonContent],
 })
 export class AddMealPage {
 	searchTerm = '';
@@ -42,7 +33,7 @@ export class AddMealPage {
 	// Info o trenutnom obroku iz query parametara
 	mealType: any = '';
 	date: string = '';
-
+	private readonly PAGE_SIZE = 10;
 	private toastCtrl = inject(ToastController);
 
 	constructor(
@@ -75,7 +66,8 @@ export class AddMealPage {
 					.filter((p: any) => (p.product_name || '').trim().length > 0)
 					.filter((p: any) => !/^\d/.test(p.product_name.trim()))
 					.filter((p: any) => (p.nutriments?.['energy-kcal_100g'] || 0) > 0)
-					.sort((a: any, b: any) => (a.product_name || '').localeCompare(b.product_name || ''));
+					.sort((a: any, b: any) => (a.product_name || '').localeCompare(b.product_name || ''))
+					.slice(0, this.PAGE_SIZE);
 				this.loading = false;
 			},
 			error: () => {
@@ -101,7 +93,8 @@ export class AddMealPage {
 					.filter((p: any) => (p.product_name || '').trim().length > 0)
 					.filter((p: any) => !/^\d/.test(p.product_name.trim()))
 					.filter((p: any) => (p.nutriments?.['energy-kcal_100g'] || 0) > 0)
-					.sort((a: any, b: any) => (a.product_name || '').localeCompare(b.product_name || ''));
+					.sort((a: any, b: any) => (a.product_name || '').localeCompare(b.product_name || ''))
+                    .slice(0, this.PAGE_SIZE);
 				this.loading = false;
 			},
 			error: () => {

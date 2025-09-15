@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonItem, IonLabel, IonNote } from '@ionic/angular/standalone';
+import { IonItem, IonLabel, IonNote, IonContent } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { DailyLogService } from 'src/app/services/daily-log.service';
 import { AlertController } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
+import { Capacitor } from '@capacitor/core';
 
 type Seg = { cls: 'carbs' | 'fats' | 'prots'; pct: number; start: number };
 
 @Component({
 	selector: 'app-food-details',
 	standalone: true,
-	imports: [CommonModule, FormsModule, IonItem, IonLabel, IonNote],
+	imports: [CommonModule, FormsModule, IonItem, IonLabel, IonNote, IonContent],
 	templateUrl: './food-details.page.html',
 	styleUrls: ['./food-details.page.css'],
 })
@@ -52,47 +54,78 @@ export class FoodDetailsPage implements OnInit {
 
 	saving = false;
 
+	addMode = false; // ➜ true kad dolazimo skenerom (novi item)
+	barcode = '';
+	barcodeObj: any = null;
+
 	constructor(
 		private alertCtrl: AlertController,
 		private route: ActivatedRoute,
 		private router: Router,
 		private auth: AuthService,
-		private daily: DailyLogService
+		private daily: DailyLogService,
+		private http: HttpClient
 	) {}
 
 	async ngOnInit() {
 		this.uid = this.auth.getUserId()!;
 		this.date = this.route.snapshot.queryParamMap.get('date')!;
 		this.mealId = this.route.snapshot.queryParamMap.get('mealId')!;
-		this.index = Number(this.route.snapshot.queryParamMap.get('index')!);
+		const indexParam = this.route.snapshot.queryParamMap.get('index');
 
-		const log = await this.daily.getDailyLog(this.uid, this.date);
-		const meal = log?.meals.find((m: any) => m.id === this.mealId);
-		if (!meal) {
-			this.back();
+		// pokupi barcode iz state-a (ako dolazimo direktno nakon skena)
+		const nav = this.router.getCurrentNavigation();
+		this.barcodeObj = nav?.extras?.state?.['barcodeObj'] ?? null;
+
+		// fallback iz query parametara
+		this.barcode = (this.route.snapshot.queryParamMap.get('barcode') || this.barcodeObj?.rawValue || this.barcodeObj?.displayValue || '').trim();
+
+		// EDIT MODE (postojeća stavka)
+		if (indexParam != null) {
+			this.index = Number(indexParam);
+			const log = await this.daily.getDailyLog(this.uid, this.date);
+			const meal = log?.meals.find((m: any) => m.id === this.mealId);
+			if (!meal) return this.back();
+
+			this.mealType = meal.type;
+			this.item = meal.items[this.index];
+			if (!this.item) return this.back();
+
+			this.unit = this.item.unit || 'g';
+			this.baseQty = Number(this.item.default_quantity || 100);
+			this.qty = this.baseQty;
+
+			this.puCalories = (this.item.calories || 0) / this.baseQty;
+			this.puProteins = (this.item.proteins || 0) / this.baseQty;
+			this.puCarbs = (this.item.carbs || 0) / this.baseQty;
+			this.puFats = (this.item.fats || 0) / this.baseQty;
+
+			this.recompute();
+			this.loading = false;
 			return;
 		}
 
-		this.mealType = meal.type;
-		this.item = meal.items[this.index];
-		if (!this.item) {
-			this.back();
+		// ADD MODE (skenirano: nema indexa, ali imamo barcode)
+		if (this.barcode) {
+			this.addMode = true;
+			// mealType dohvaćamo iz samog meala (ako treba za prikaz)
+			const log = await this.daily.getDailyLog(this.uid, this.date);
+			const meal = log?.meals?.find((m: any) => m.id === this.mealId);
+			this.mealType = meal?.type ?? '';
+
+			try {
+				await this.loadProductFromBarcode(this.barcode, this.barcodeObj?.format);
+				this.loading = false;
+			} catch (e) {
+				console.error(e);
+				await this.showAlert('Product', `Product not found for code ${this.barcode}`);
+				this.back();
+			}
 			return;
 		}
 
-		this.unit = this.item.unit || 'g';
-		this.baseQty = Number(this.item.default_quantity || 100);
-		this.qty = this.baseQty;
-
-		// per-unit (npr. per 1g/ml/pcs)
-		this.puCalories = (this.item.calories || 0) / this.baseQty;
-		this.puProteins = (this.item.proteins || 0) / this.baseQty;
-		this.puCarbs = (this.item.carbs || 0) / this.baseQty;
-		this.puFats = (this.item.fats || 0) / this.baseQty;
-
-		this.recompute();
-
-		this.loading = false;
+		// ništa od navedenog → natrag
+		this.back();
 	}
 
 	back() {
@@ -100,6 +133,61 @@ export class FoodDetailsPage implements OnInit {
 			queryParams: { date: this.date, mealId: this.mealId },
 			replaceUrl: true,
 		});
+	}
+
+	private normalizeBarcode(code: string, format?: string): string {
+		const c = code.replace(/\s/g, '');
+		// UPC-A (12) → EAN-13 (vodeća nula)
+		if ((format === 'UPC_A' || format === 'UpcA') && c.length === 12) return '0' + c;
+		return c;
+	}
+
+	private async loadProductFromBarcode(code: string, format?: string) {
+		const normalized = this.normalizeBarcode(code, format);
+		const native = Capacitor.isNativePlatform();
+
+		const url = `https://world.openfoodfacts.org/api/v2/product/${normalized}.json`;
+		const finalUrl = native ? url : `https://corsproxy.io/?${encodeURIComponent(url)}`;
+
+		const res: any = await this.http.get(finalUrl).toPromise();
+		const p = res?.product;
+		if (!p) throw new Error('OFF product not found');
+
+		this.item = this.mapOffProductToItem(p);
+		this.unit = this.item.unit || 'g';
+		this.baseQty = Number(this.item.default_quantity || 100);
+		this.qty = this.baseQty;
+
+		// per-unit (po 1 g/ml) iz per-100
+		this.puCalories = (this.item.calories || 0) / this.baseQty;
+		this.puProteins = (this.item.proteins || 0) / this.baseQty;
+		this.puCarbs = (this.item.carbs || 0) / this.baseQty;
+		this.puFats = (this.item.fats || 0) / this.baseQty;
+
+		this.recompute();
+	}
+
+	private mapOffProductToItem(p: any) {
+		const nutr = p?.nutriments ?? {};
+		const per = (k: string) => Number(nutr[k]) || 0;
+
+		const name = p.product_name || p.brands || p.generic_name || p.quantity || 'Unknown product';
+
+		return {
+			food_id: p.code || p.id || `off-${Date.now()}`,
+			name,
+			default_quantity: 100,
+			unit: 'g',
+			calories: per('energy-kcal_100g') || 0,
+			proteins: per('proteins_100g') || 0,
+			carbs: per('carbohydrates_100g') || 0,
+			fats: per('fat_100g') || 0,
+		};
+	}
+
+	private async showAlert(title: string, message: string) {
+		const a = await this.alertCtrl.create({ header: title, message, buttons: ['OK'], mode: 'ios' });
+		await a.present();
 	}
 
 	async openQtyPopup() {
@@ -153,9 +241,53 @@ export class FoodDetailsPage implements OnInit {
 
 	async save() {
 		if (!this.uid) return;
+
 		this.saving = true;
 		try {
-			await this.daily.updateItemQuantity(this.uid, this.date, this.mealId, this.index, this.qty);
+			if (!this.addMode) {
+				// EDIT postojeće stavke
+				await this.daily.updateItemQuantity(this.uid, this.date, this.mealId, this.index, this.qty);
+				this.back();
+				return;
+			}
+
+			// ADD nova stavka (iz skeniranog proizvoda)
+			let log = await this.daily.getDailyLog(this.uid, this.date);
+			if (!log) {
+				log = {
+					date: this.date,
+					meals: [],
+					totalDailyCalories: 0,
+					totalDailyProteins: 0,
+					totalDailyCarbs: 0,
+					totalDailyFats: 0,
+				};
+			}
+
+			let meal = log.meals.find((m: any) => m.id === this.mealId);
+			if (!meal) {
+				// ako nema meal-a, kreiraj novi (tip preuzmi iz mealType ako ga imaš)
+				meal = {
+					id: this.mealId || 'meal-' + Date.now(),
+					type: this.mealType || 'custom',
+					timestamp: new Date().toISOString(),
+					items: [],
+					totalMealCalories: 0,
+					totalMealProteins: 0,
+					totalMealCarbs: 0,
+					totalMealFats: 0,
+				};
+				log.meals.push(meal);
+			}
+
+			// dodaj item (per-100g makroi, default_quantity=100)
+			meal.items.push(this.item);
+			const newIndex = meal.items.length - 1;
+
+			// spremi log pa ažuriraj količinu na traženu
+			await this.daily.saveDailyLog(this.uid, log);
+			await this.daily.updateItemQuantity(this.uid, this.date, meal.id, newIndex, this.qty);
+
 			this.back();
 		} finally {
 			this.saving = false;

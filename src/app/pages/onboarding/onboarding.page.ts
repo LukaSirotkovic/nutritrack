@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonButton } from '@ionic/angular/standalone';
-import { Router } from '@angular/router';
 import { GenderStepComponent } from './steps/gender-step/gender-step.component';
 import { AgeStepComponent } from './steps/age-step/age-step.component';
 import { HeightStepComponent } from './steps/height-step/height-step.component';
@@ -13,6 +12,7 @@ import { UserProfile } from 'src/app/models/user-profile.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { WeightStepComponent } from './steps/weight-step/weight-step.component';
+import { NavController } from '@ionic/angular';
 
 @Component({
 	selector: 'app-onboarding',
@@ -36,7 +36,7 @@ export class OnboardingPage {
 		SummaryStepComponent,
 	];
 
-	constructor(private authService: AuthService, private UserService: UserService, private router: Router) {}
+	constructor(private authService: AuthService, private UserService: UserService, private nav: NavController) {}
 
 	// === HANDLERI ===
 	get currentComponent() {
@@ -57,7 +57,7 @@ export class OnboardingPage {
 		try {
 			await this.UserService.saveUserProfile(uid, this.userData as UserProfile);
 			console.log('Profil spremljen u Firestore!');
-			this.router.navigateByUrl('/dashboard'); // Dodaj redirect
+			this.nav.navigateForward('/dashboard'); // Dodaj redirect
 			// redirect to dashboard?
 		} catch (err) {
 			console.error('Greška pri spremanju:', err);

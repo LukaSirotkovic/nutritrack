@@ -43,6 +43,7 @@ ion-content {
     max-width: 460px;
     width: 100%;
     margin: 0 auto;
+    height: calc(100% - 150px);
 }
 
 

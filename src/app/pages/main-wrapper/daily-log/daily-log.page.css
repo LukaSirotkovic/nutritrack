@@ -6,6 +6,7 @@
     border-radius: 13px;
     background: white;
     animation: shimmer 1.2s linear infinite;
+    margin-top: 20px;
 }
 
 .skeleton-meal-card {
@@ -118,6 +119,11 @@
     }
 }
 
+ion-content {
+    --padding-start: 20px !important;
+    --padding-end: 20px !important;
+}
+
 /* Active styling */
 
 .date-arrow-btn:active {
@@ -204,7 +210,7 @@
 .daily-log-list {
     display: flex;
     flex-direction: column;
-    padding: 20px 20px 40px 20px;
+    padding: 0 0 40px 0;
     gap: 20px;
 }
 
@@ -297,10 +303,12 @@
 
 
 .add-meal-dashed-box {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 13px 0 12px 0;
+    margin: 20px 0;
     border: 2px dashed #b5cffc;
     border-radius: 13px;
     color: #1149a5;

@@ -123,3 +123,20 @@ ion-input,
 	--highlight-color: var(--ion-color-primary) !important;
 	--highlight-color-valid: var(--ion-color-primary) !important;
 }
+
+/* daje pametan razmak gore/dolje – radi na iOS/Android/web */
+
+/* prikaži kameru ispod WebView-a kad skeniraš */
+.scanner-active,
+.scanner-active ion-content,
+.scanner-active .ion-page {
+	--background: transparent !important;
+	background: transparent !important;
+}
+
+html,
+body,
+ion-app,
+.ion-page {
+	height: 100%;
+}

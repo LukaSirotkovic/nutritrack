@@ -74,6 +74,10 @@
 
 
 /* Dashboard swiper */
+ion-content {
+    --padding-start: 20px !important;
+    --padding-end: 20px !important;
+}
 
 .top-text h2 {
     padding: 20px;
@@ -102,8 +106,6 @@
     justify-content: flex-start;
     margin-bottom: 36px;
     gap: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
 }
 
 .dashboard-header {
@@ -179,16 +181,11 @@
     justify-content: space-between;
 }
 
-
-
-
-
-
 /* Lista dnevnih logova */
 
 .activities {
     background-color: #fff;
-    margin: 10px 20px;
+    margin: 10px 0;
     box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
     border-radius: 8px;
     overflow: hidden;

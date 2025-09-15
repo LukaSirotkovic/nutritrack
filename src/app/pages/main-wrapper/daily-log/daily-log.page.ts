@@ -3,7 +3,7 @@ import { DailyLogService } from 'src/app/services/daily-log.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { AlertController, ActionSheetController } from '@ionic/angular';
-import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton } from '@ionic/angular/standalone';
+import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonActionSheet, IonAlert } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { DailyLog, MealEntry } from 'src/app/models/index';
 import { SmartNumberPipe } from 'src/app/pipes/smart-number.pipe';
@@ -18,16 +18,19 @@ import { CalendarStateService } from 'src/app/services/calendar-state.service';
 	styleUrls: ['./daily-log.page.css'],
 	standalone: true,
 	imports: [
-		IonCard,
-		IonCardHeader,
-		IonCardTitle,
-		IonCardContent,
-		CommonModule,
-		IonButton,
-		SmartNumberPipe,
-		DragDropModule,
-		CalendarHeaderComponent,
-	],
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    CommonModule,
+    IonButton,
+    SmartNumberPipe,
+    DragDropModule,
+    CalendarHeaderComponent,
+    IonActionSheet,
+    IonContent,
+    IonAlert
+],
 })
 export class DailyLogPage implements OnInit {
 	loading: boolean = true;
@@ -216,6 +219,11 @@ export class DailyLogPage implements OnInit {
 		this.dailyLogService.saveDailyLog(this.uid, this.dailyLog);
 	}
 
+	debugSheetOpen = false;
+	onAddMealClick(ev: Event) {
+		ev.stopPropagation();
+		this.addNewMeal();
+	}
 	// --- DODAVANJE NOVOG OBROKA S POPUPOM ---
 	async addNewMeal() {
 		const sheet = await this.actionSheetCtrl.create({

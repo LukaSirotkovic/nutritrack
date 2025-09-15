@@ -1,7 +1,7 @@
 .meal-header {
     display: flex;
     align-items: center;
-    margin: 15px 16px 0px;
+    margin: 0 16px;
 }
 
 .back-btn {
@@ -16,7 +16,7 @@
 
 ion-card {
     background: #fff;
-    margin: 0 24px 24px 24px;
+    margin: 0 20px 24px 20px;
 }
 
 ion-card-title {
@@ -103,10 +103,9 @@ ion-card-header {
 }
 
 .meal-food-list {
-    margin: 10px 16px 0 16px;
+    margin: 10px 20px 0 20px;
     padding: 0;
 }
-
 
 .meal-action-buttons {
     display: flex;

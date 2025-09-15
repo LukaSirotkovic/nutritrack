@@ -2,18 +2,21 @@ import { Injectable } from '@angular/core';
 import {
 	Auth,
 	User,
+	signInWithCredential,
+	GoogleAuthProvider,
+	signInWithPopup,
 	signInWithEmailAndPassword,
 	createUserWithEmailAndPassword,
 	signOut,
 	onAuthStateChanged,
-	GoogleAuthProvider,
-	signInWithPopup,
 	updateProfile,
 } from '@angular/fire/auth';
 
 import { Firestore, doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs, serverTimestamp } from '@angular/fire/firestore';
 
 import { BehaviorSubject } from 'rxjs';
+import { Capacitor } from '@capacitor/core';
+import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -36,7 +39,7 @@ export class AuthService {
 			{
 				email,
 				username,
-				created_at: serverTimestamp(), // ⬅️ umjesto createdAt: new Date()
+				created_at: serverTimestamp(),
 				onboarded: false,
 			},
 			{ merge: true }
@@ -54,50 +57,25 @@ export class AuthService {
 		return signInWithEmailAndPassword(this.auth, email, password);
 	}
 
-	// ✅ LOGIN preko Google-a
+	// ✅ LOGIN preko Google-a (native: @capacitor/google-sign-in, web: popup)
 	async loginWithGoogle() {
-		const provider = new GoogleAuthProvider();
-		const result = await signInWithPopup(this.auth, provider);
-		const user = result.user;
+		if (Capacitor.isNativePlatform()) {
+			const result = await FirebaseAuthentication.signInWithGoogle(); // in-app Google UI
+			const idToken = result.credential?.idToken;
+			if (!idToken) throw new Error('No idToken from native Google Sign-In');
 
-		const userRef = doc(this.firestore, 'users', user.uid);
-		const snap = await getDoc(userRef);
-
-		const username = user.email?.split('@')[0] || 'user';
-		const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=random`;
-
-		if (!snap.exists()) {
-			await setDoc(
-				userRef,
-				{
-					email: user.email ?? '',
-					username,
-					displayName: user.displayName ?? username,
-					photoURL: user.photoURL ?? fallbackAvatar,
-					created_at: serverTimestamp(),
-					onboarded: false,
-					calorie_target: null,
-				},
-				{ merge: true }
-			);
+			const credential = GoogleAuthProvider.credential(idToken);
+			const userCred = await signInWithCredential(this.auth, credential);
+			await this.ensureUserDoc(userCred.user);
+			await this.fillMissingProfile(userCred.user);
+			return userCred;
 		} else {
-			// po želji: dopuni displayName/photoURL ako fale
-			const data = snap.data();
-			const updates: any = {};
-			if (!data['displayName'] && (user.displayName || username)) updates.displayName = user.displayName ?? username;
-			if (!data['photoURL'] && (user.photoURL || fallbackAvatar)) updates.photoURL = user.photoURL ?? fallbackAvatar;
-			if (Object.keys(updates).length) await updateDoc(userRef, updates);
+			const provider = new GoogleAuthProvider();
+			const result = await signInWithPopup(this.auth, provider); // samo u browseru
+			await this.ensureUserDoc(result.user);
+			await this.fillMissingProfile(result.user);
+			return result;
 		}
-
-		// osvježi Firebase Auth profil samo ako treba
-		if (!user.displayName || !user.photoURL) {
-			await updateProfile(user, {
-				displayName: user.displayName ?? username,
-				photoURL: user.photoURL ?? fallbackAvatar,
-			});
-		}
-
-		return result;
 	}
 
 	// ✅ Provjera postoji li korisnik u Firestore
@@ -116,7 +94,6 @@ export class AuthService {
 
 		if (d.onboarded === true) return true;
 
-		// prilagodi ovdje nazive koje stvarno koristiš u appu
 		const hasAll =
 			!!d.gender &&
 			!!d.dateOfBirth &&
@@ -143,5 +120,49 @@ export class AuthService {
 	// ✅ Logout
 	async logout() {
 		return signOut(this.auth);
+	}
+
+	// ===== Helpers =====
+
+	private async ensureUserDoc(user: User) {
+		const userRef = doc(this.firestore, 'users', user.uid);
+		const snap = await getDoc(userRef);
+
+		const username = user.email?.split('@')[0] || 'user';
+		const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=random`;
+
+		if (!snap.exists()) {
+			await setDoc(
+				userRef,
+				{
+					email: user.email ?? '',
+					username,
+					displayName: user.displayName ?? username,
+					photoURL: user.photoURL ?? fallbackAvatar,
+					created_at: serverTimestamp(),
+					onboarded: false,
+					calorie_target: null,
+				},
+				{ merge: true }
+			);
+		} else {
+			const data = snap.data() as any;
+			const updates: any = {};
+			if (!data['displayName'] && (user.displayName || username)) updates.displayName = user.displayName ?? username;
+			if (!data['photoURL'] && (user.photoURL || fallbackAvatar)) updates.photoURL = user.photoURL ?? fallbackAvatar;
+			if (Object.keys(updates).length) await updateDoc(userRef, updates);
+		}
+	}
+
+	private async fillMissingProfile(user: User) {
+		const username = user.email?.split('@')[0] || 'user';
+		const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=random`;
+
+		if (!user.displayName || !user.photoURL) {
+			await updateProfile(user, {
+				displayName: user.displayName ?? username,
+				photoURL: user.photoURL ?? fallbackAvatar,
+			});
+		}
 	}
 }

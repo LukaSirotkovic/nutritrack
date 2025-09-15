@@ -1,17 +1,29 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonList, IonItem, IonLabel, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonBadge } from '@ionic/angular/standalone';
+import {
+	IonList,
+	IonItem,
+	IonLabel,
+	IonCard,
+	IonCardHeader,
+	IonCardTitle,
+	IonCardContent,
+	IonButton,
+	IonBadge,
+	IonContent,
+	IonActionSheet,
+} from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FoodItem, MealEntry } from 'src/app/models/index';
 import { DailyLogService } from 'src/app/services/daily-log.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DisplayDatePipe } from 'src/app/pipes/display-date.pipe';
 import { CalendarStateService } from 'src/app/services/calendar-state.service';
-import { BarcodeScanner, BarcodeFormat } from '@capacitor-mlkit/barcode-scanning';
+import { BarcodeScanner, BarcodeFormat, Barcode } from '@capacitor-mlkit/barcode-scanning';
 import { SmartNumberPipe } from '../../../pipes/smart-number.pipe';
 import { AlertController, ActionSheetController } from '@ionic/angular';
-
+import { Capacitor } from '@capacitor/core';
 @Component({
 	selector: 'app-meal-details',
 	templateUrl: './meal-details.page.html',
@@ -31,6 +43,8 @@ import { AlertController, ActionSheetController } from '@ionic/angular';
 		IonCardContent,
 		IonButton,
 		IonBadge,
+		IonContent,
+		IonActionSheet,
 	],
 })
 export class MealDetailsPage implements OnInit {
@@ -189,52 +203,90 @@ export class MealDetailsPage implements OnInit {
 		this.router.navigate(['/daily-log']);
 	}
 
-	/* BARCODE */
-	/* BARCODE */
 	/* BARCODE – native only */
+	scanning = false;
+
+	private BARCODE_FORMATS = [BarcodeFormat.Ean13, BarcodeFormat.Ean8, BarcodeFormat.UpcA, BarcodeFormat.UpcE];
+
 	async scanBarcode() {
+		this.scanning = true;
+
+		// 0) supported?
+		const { supported } = await BarcodeScanner.isSupported();
+		if (!supported) {
+			this.scanning = false;
+			return;
+		}
+
+		const isAndroid = Capacitor.getPlatform() === 'android';
+
+		// 1) Android: Code Scanner modul (ako postoji, koristimo native UI)
+		let googleModuleAvailable = false;
+		if (isAndroid && (BarcodeScanner as any).isGoogleBarcodeScannerModuleAvailable) {
+			const res = await (BarcodeScanner as any).isGoogleBarcodeScannerModuleAvailable();
+			googleModuleAvailable = !!res?.available;
+			if (!googleModuleAvailable && (BarcodeScanner as any).installGoogleBarcodeScannerModule) {
+				try {
+					await (BarcodeScanner as any).installGoogleBarcodeScannerModule();
+					googleModuleAvailable = true;
+				} catch {
+					/* fallback niže */
+				}
+			}
+		}
+
 		try {
-			const { supported } = await BarcodeScanner.isSupported();
-			if (!supported) {
-				// npr. web ili simulator – samo izađi ili prikaži toast
-				console.warn('Barcode scanning not supported on this platform.');
+			// 2) Preferiraj native UI (scan)
+			if (googleModuleAvailable || Capacitor.getPlatform() === 'ios') {
+				const { barcodes } = await (BarcodeScanner as any).scan({ formats: this.BARCODE_FORMATS });
+				const b = this.pickFirstBarcode(barcodes);
+				if (b) this.goToFoodDetailsWithBarcode(b);
 				return;
 			}
 
-			// Permissions
-			const perm = await BarcodeScanner.checkPermissions();
-			if (perm.camera !== 'granted') {
-				const req = await BarcodeScanner.requestPermissions();
-				if (req.camera !== 'granted') return;
-			}
-
-			// Nativni skener (plugin ima .scan ili .startScan ovisno o platformi)
-			const result =
-				(await (BarcodeScanner as any).scan?.({
-					formats: [BarcodeFormat.Ean13, BarcodeFormat.Ean8, BarcodeFormat.UpcA, BarcodeFormat.UpcE],
-				})) ??
-				(await (BarcodeScanner as any).startScan?.({
-					formats: [BarcodeFormat.Ean13, BarcodeFormat.Ean8, BarcodeFormat.UpcA, BarcodeFormat.UpcE],
-				}));
-
-			// Neki buildovi vraćaju result.content, neki result.barcodes[0].rawValue
-			const code = result?.barcodes?.[0]?.rawValue ?? result?.content;
-			if (code) {
-				this.goToBarCodeDetails(String(code).trim());
-			}
+			// 3) Fallback: startScan (kamera ispod webviewa)
+			await this.ensureCameraPermission();
+			document.body.classList.add('scanner-active');
+			const { barcodes } = await (BarcodeScanner as any).startScan({ formats: this.BARCODE_FORMATS });
+			const b = this.pickFirstBarcode(barcodes);
+			if (b) this.goToFoodDetailsWithBarcode(b);
 		} catch (e) {
-			console.error('Barcode error:', e);
+			console.error('Barcode scan error:', e);
 		} finally {
-			// Ako je startScan otvorio kontinuirani session, zatvori ga
 			try {
 				await (BarcodeScanner as any).stopScan?.();
 			} catch {}
+			document.body.classList.remove('scanner-active');
+			this.scanning = false;
 		}
 	}
 
-	private goToBarCodeDetails(barcode: string) {
-		this.router.navigate(['/product-details'], {
-			queryParams: { barcode, mealId: this.meal?.id, date: this.mealDate },
+	private pickFirstBarcode(list: any[] = []) {
+		return list.find((x) => x?.rawValue) ?? list[0] ?? null;
+	}
+
+	private async ensureCameraPermission() {
+		const { camera } = await BarcodeScanner.checkPermissions();
+		if (camera !== 'granted') {
+			const res = await BarcodeScanner.requestPermissions();
+			if (res.camera !== 'granted') throw new Error('Camera permission denied');
+		}
+	}
+
+	// ✨ ovdje navigiramo na FOOD DETAILS
+	private goToFoodDetailsWithBarcode(b: any) {
+		const raw = String(b?.rawValue ?? b?.displayValue ?? '').trim();
+
+		this.router.navigate(['/food-details'], {
+			queryParams: {
+				barcode: raw,
+				mealId: this.meal?.id, // pretpostavljam da ih već imaš u ovoj klasi
+				date: this.mealDate,
+			},
+			state: {
+				barcodeObj: b, // cijeli objekt za dodatne info (format, cornerPoints…)
+				source: 'scanner',
+			},
 		});
 	}
 }

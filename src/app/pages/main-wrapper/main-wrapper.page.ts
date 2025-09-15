@@ -19,6 +19,7 @@ import {
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { filter } from 'rxjs/operators';
+import { NavController } from '@ionic/angular';
 
 @Component({
 	selector: 'app-main-wrapper',
@@ -51,7 +52,7 @@ export class MainWrapperPage implements OnInit {
 
 	@ViewChild('userMenu') userMenu?: IonPopover;
 
-	constructor(private router: Router, private authService: AuthService) {}
+	constructor(private router: Router, private authService: AuthService, private nav: NavController) {}
 
 	async ngOnInit() {
 		// ➤ Postavljanje naslova stranice prilikom promjene rute
@@ -80,15 +81,11 @@ export class MainWrapperPage implements OnInit {
 
 	// ➤ Navigacija
 	goToDashboard() {
-		this.router.navigate(['/dashboard']);
-	}
-
-	addMeal() {
-		this.router.navigate(['/add-meal']);
+		this.nav.navigateForward(['/dashboard']);
 	}
 
 	goToTodayMeals() {
-		this.router.navigate(['/daily-log']);
+		this.nav.navigateForward(['/daily-log']);
 	}
 
 	goToNotifications() {
@@ -118,12 +115,6 @@ export class MainWrapperPage implements OnInit {
 		this.quickOpen = false; /* tvoja logika */
 	}
 	onScanBarcode() {
-		this.quickOpen = false; /* tvoja logika */
-	}
-	onCreateMeal() {
-		this.quickOpen = false; /* tvoja logika */
-	}
-	onAddWater() {
 		this.quickOpen = false; /* tvoja logika */
 	}
 }

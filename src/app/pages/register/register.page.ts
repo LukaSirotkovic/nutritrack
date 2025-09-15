@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonText, IonButton, IonInput, IonList } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
-import { ToastController } from '@ionic/angular';
+import { ToastController, NavController  } from '@ionic/angular';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -32,7 +32,7 @@ export class RegisterPage {
   errorMessage = '';
 
   constructor(private auth: AuthService, private toast: ToastController, 
-    private router: Router) {}
+    private nav: NavController) {}
 
   async register() {
   if (this.password !== this.confirmPassword) {
@@ -53,7 +53,7 @@ export class RegisterPage {
       this.username,
     );
     this.showToast('Registracija uspješna!');
-    this.router.navigate(['/login']);
+    this.nav.navigateForward(['/login']);
   } catch (err: any) {
     this.errorMessage = 'Došlo je do pogreške.';
   }

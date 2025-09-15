@@ -1,177 +1,181 @@
-<ng-container *ngIf="!loading && meal; else skeleton">
-    <div class="meal-header">
-        <button class="back-btn" (click)="goBack()">
-            <img src="../../../../assets/media/arrow_back.svg" alt="">
-        </button>
-    </div>
+<ion-content [fullscreen]="true">
+
+    <ng-container *ngIf="!loading && meal; else skeleton">
+        <div class="meal-header">
+            <button class="back-btn" (click)="goBack()">
+                <img src="../../../../assets/media/arrow_back.svg" alt="">
+            </button>
+        </div>
 
 
-    <ion-card>
-        <ion-card-header>
-            <ion-card-title>
-                {{ meal.type }}
-            </ion-card-title>
-            <span class="meal-date">{{ mealDate | displayDate }}</span>
-        </ion-card-header>
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>
+                    {{ meal.type }}
+                </ion-card-title>
+                <span class="meal-date">{{ mealDate | displayDate }}</span>
+            </ion-card-header>
 
-        <ion-card-content>
-            <div class="meal-content">
-                <div class="meal-macros-row">
-                    <div class="macro-block calories">
-                        <div class="macro-label">Calories</div>
-                        <div class="macro-value">
-                            {{ meal.totalMealCalories || 0 | smartNumber }}<span class="macro-unit">kcal</span>
+            <ion-card-content>
+                <div class="meal-content">
+                    <div class="meal-macros-row">
+                        <div class="macro-block calories">
+                            <div class="macro-label">Calories</div>
+                            <div class="macro-value">
+                                {{ meal.totalMealCalories || 0 | smartNumber }}<span class="macro-unit">kcal</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="macro-block proteins">
-                        <div class="macro-label">Proteins</div>
-                        <div class="macro-value">
-                            {{ meal.totalMealProteins || 0 | smartNumber }}<span class="macro-unit">g</span>
+                        <div class="macro-block proteins">
+                            <div class="macro-label">Proteins</div>
+                            <div class="macro-value">
+                                {{ meal.totalMealProteins || 0 | smartNumber }}<span class="macro-unit">g</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="macro-block carbs">
-                        <div class="macro-label">Carbs</div>
-                        <div class="macro-value">
-                            {{ meal.totalMealCarbs || 0 | smartNumber }}<span class="macro-unit">g</span>
+                        <div class="macro-block carbs">
+                            <div class="macro-label">Carbs</div>
+                            <div class="macro-value">
+                                {{ meal.totalMealCarbs || 0 | smartNumber }}<span class="macro-unit">g</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="macro-block fats">
-                        <div class="macro-label">Fats</div>
-                        <div class="macro-value">
-                            {{ meal.totalMealFats || 0 | smartNumber }}<span class="macro-unit">g</span>
+                        <div class="macro-block fats">
+                            <div class="macro-label">Fats</div>
+                            <div class="macro-value">
+                                {{ meal.totalMealFats || 0 | smartNumber }}<span class="macro-unit">g</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </ion-card-content>
-    </ion-card>
+            </ion-card-content>
+        </ion-card>
 
 
-    <!-- Nova sekcija s gumbima -->
-    <div class="meal-action-buttons">
-        <button class="meal-action-btn" (click)="scanBarcode()">
-            <img src="../../../../assets/media/barcode_scanner_plavi.svg" alt="">
-            <span>Scan Barcode</span>
-        </button>
+        <!-- Nova sekcija s gumbima -->
+        <div class="meal-action-buttons">
+            <button class="meal-action-btn" type="button" (click)="scanBarcode()">
+                <img src="../../../../assets/media/barcode_scanner_plavi.svg" alt="">
+                <span>Scan barcode</span>
+            </button>
+            <button class="meal-action-btn" type="button" (click)="logFood()">
+                <img src="../../../../assets/media/menu_book_plavi.svg" alt="">
+                <span>Log Food</span>
+            </button>
+        </div>
 
-        <button class="meal-action-btn" (click)="logFood()">
-            <img src="../../../../assets/media/menu_book_plavi.svg" alt="">
-            <span>Log Food</span>
-        </button>
-    </div>
-
-    <div class="meal-food-list">
-        <ion-list>
-            <ion-item lines="full" *ngFor="let item of meal.items; let i = index">
-                <ion-label class="food-label">
-                    <!-- header: NAME + QTY chip -->
-                    <div class="food-header">
-                        <div class="food-header-left">
-                            <div class="food-title">
-                                {{ item.name }}
+        <div class="meal-food-list">
+            <ion-list>
+                <ion-item lines="full" *ngFor="let item of meal.items; let i = index">
+                    <ion-label class="food-label">
+                        <!-- header: NAME + QTY chip -->
+                        <div class="food-header">
+                            <div class="food-header-left">
+                                <div class="food-title">
+                                    {{ item.name }}
+                                </div>
+                                <ion-badge class="gram-badge">{{item.default_quantity}}</ion-badge>
                             </div>
-                            <ion-badge class="gram-badge">{{item.default_quantity}}</ion-badge>
+                            <ion-button slot="end" fill="clear" class="more-btn" (click)="openItemMenu(i, item)">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                                    fill="#888">
+                                    <circle cx="5" cy="12" r="2"></circle>
+                                    <circle cx="12" cy="12" r="2"></circle>
+                                    <circle cx="19" cy="12" r="2"></circle>
+                                </svg>
+                            </ion-button>
                         </div>
-                        <ion-button slot="end" fill="clear" class="more-btn" (click)="openItemMenu(i, item)">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
-                                fill="#888">
-                                <circle cx="5" cy="12" r="2"></circle>
-                                <circle cx="12" cy="12" r="2"></circle>
-                                <circle cx="19" cy="12" r="2"></circle>
-                            </svg>
-                        </ion-button>
-                    </div>
 
-                    <!-- macros -->
-                    <div class="food-details">
-                        <div class="food-macros-grid">
-                            <div class="macro macro-calories">
-                                <span>Calories(kcal)</span><strong>{{ item.calories }}</strong>
-                            </div>
-                            <div class="macro macro-proteins">
-                                <span>Proteins(g)</span><strong>{{ item.proteins }}</strong>
-                            </div>
-                            <div class="macro macro-carbs">
-                                <span>Carbs(g)</span><strong>{{ item.carbs }}</strong>
-                            </div>
-                            <div class="macro macro-fats">
-                                <span>Fats(g)</span><strong>{{ item.fats }}</strong>
+                        <!-- macros -->
+                        <div class="food-details">
+                            <div class="food-macros-grid">
+                                <div class="macro macro-calories">
+                                    <span>Calories(kcal)</span><strong>{{ item.calories }}</strong>
+                                </div>
+                                <div class="macro macro-proteins">
+                                    <span>Proteins(g)</span><strong>{{ item.proteins }}</strong>
+                                </div>
+                                <div class="macro macro-carbs">
+                                    <span>Carbs(g)</span><strong>{{ item.carbs }}</strong>
+                                </div>
+                                <div class="macro macro-fats">
+                                    <span>Fats(g)</span><strong>{{ item.fats }}</strong>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </ion-label>
+                    </ion-label>
 
-                <!-- … options on the far right -->
+                    <!-- … options on the far right -->
 
-            </ion-item>
-        </ion-list>
-    </div>
-
-</ng-container>
-
-
-<!-- SKELETON -->
-<ng-template #skeleton>
-    <!-- Header -->
-    <div class="sk-meal-header">
-        <div class="sk-header-btn sk-block"></div>
-    </div>
-
-    <!-- Summary -->
-    <div class="sk-summary">
-        <div class="sk-row" style="margin-top:10px;">
-            <div class="sk-title sk-line"></div>
-            <div class="sk-date sk-line"></div>
+                </ion-item>
+            </ion-list>
         </div>
 
-        <div class="sk-row" style="gap:18px; margin-top:16px;">
-            <div class="sk-macro-col">
-                <div class="sk-label sk-line"></div>
-                <div class="sk-value sk-line"></div>
+    </ng-container>
+
+    <ion-action-sheet mode="ios">
+    </ion-action-sheet>
+
+    <!-- SKELETON -->
+    <ng-template #skeleton>
+        <!-- Header -->
+        <div class="sk-meal-header">
+            <div class="sk-header-btn sk-block"></div>
+        </div>
+
+        <!-- Summary -->
+        <div class="sk-summary">
+            <div class="sk-row" style="margin-top:10px;">
+                <div class="sk-title sk-line"></div>
+                <div class="sk-date sk-line"></div>
             </div>
-            <div class="sk-macro-col">
-                <div class="sk-label sk-line"></div>
-                <div class="sk-value sk-line"></div>
-            </div>
-            <div class="sk-macro-col">
-                <div class="sk-label sk-line"></div>
-                <div class="sk-value sk-line"></div>
-            </div>
-            <div class="sk-macro-col">
-                <div class="sk-label sk-line"></div>
-                <div class="sk-value sk-line"></div>
+
+            <div class="sk-row" style="gap:18px; margin-top:16px;">
+                <div class="sk-macro-col">
+                    <div class="sk-label sk-line"></div>
+                    <div class="sk-value sk-line"></div>
+                </div>
+                <div class="sk-macro-col">
+                    <div class="sk-label sk-line"></div>
+                    <div class="sk-value sk-line"></div>
+                </div>
+                <div class="sk-macro-col">
+                    <div class="sk-label sk-line"></div>
+                    <div class="sk-value sk-line"></div>
+                </div>
+                <div class="sk-macro-col">
+                    <div class="sk-label sk-line"></div>
+                    <div class="sk-value sk-line"></div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Action buttons -->
-    <div class="sk-actions">
-        <div class="sk-action">
-            <div class="sk-block"></div>
+        <!-- Action buttons -->
+        <div class="sk-actions">
+            <div class="sk-action">
+                <div class="sk-block"></div>
+            </div>
+            <div class="sk-action">
+                <div class="sk-block"></div>
+            </div>
         </div>
-        <div class="sk-action">
-            <div class="sk-block"></div>
-        </div>
-    </div>
 
-    <!-- Food list -->
-    <div class="meal-food-list">
-        <ion-list>
-            <ion-item lines="full" *ngFor="let _ of [1,2,3]">
-                <ion-label class="food-label" style="width:100%;">
-                    <div class="sk-food-title sk-line"></div>
+        <!-- Food list -->
+        <div class="meal-food-list">
+            <ion-list>
+                <ion-item lines="full" *ngFor="let _ of [1,2,3]">
+                    <ion-label class="food-label" style="width:100%;">
+                        <div class="sk-food-title sk-line"></div>
 
-                    <div class="food-details" style="gap:15px;">
-                        <div class="sk-macros-grid">
-                            <div class="sk-macro-line sk-line"></div>
-                            <div class="sk-macro-line sk-line"></div>
-                            <div class="sk-macro-line sk-line"></div>
-                            <div class="sk-macro-line sk-line"></div>
+                        <div class="food-details" style="gap:15px;">
+                            <div class="sk-macros-grid">
+                                <div class="sk-macro-line sk-line"></div>
+                                <div class="sk-macro-line sk-line"></div>
+                                <div class="sk-macro-line sk-line"></div>
+                                <div class="sk-macro-line sk-line"></div>
+                            </div>
+                            <div class="sk-chip sk-block"></div>
                         </div>
-                        <div class="sk-chip sk-block"></div>
-                    </div>
-                </ion-label>
-            </ion-item>
-        </ion-list>
-    </div>
-</ng-template>
+                    </ion-label>
+                </ion-item>
+            </ion-list>
+        </div>
+    </ng-template>
+</ion-content>
